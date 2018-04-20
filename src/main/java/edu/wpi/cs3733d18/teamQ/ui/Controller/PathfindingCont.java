@@ -226,7 +226,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         initMap();
         backImagePane.getChildren().addAll(drawnPath);
-        noder.displayNodes(floorMaps.getCurrFloor(), excludedTypesFromNodes, floorMaps.getIs2D());
+        noder.displayNodes(getCurrFloor(), excludedTypesFromNodes, floorMaps.getIs2D());
         initYouAreHere();
         //new TimeoutData().initTimer(screenBinding);
         //initTimer();
@@ -354,8 +354,8 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      * Initializes the map
      */
     public void initMap(){
-        floorMaps.updateFloorMap(startingFloor);
-        updateDrawings();
+        updateFloorMap(startingFloor);
+
     }
 
 
@@ -633,7 +633,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         if(backImagePane.getChildren().contains(selectedLocation))
             backImagePane.getChildren().remove(selectedLocation);
 
-        if(n.getFloor() == floorMaps.getCurrFloor()) {
+        if(n.getFloor() == getCurrFloor()) {
             TransPoint tp1;
             tp1 = translateCoord(n);
             selectedLocation.setLayoutX(tp1.getTx() - 15);
@@ -686,7 +686,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         }
 
         // add label to start location
-        if(floorMaps.getCurrFloor() == path.get(0).getFloor()) {
+        if(getCurrFloor() == path.get(0).getFloor()) {
             starLabel.setText("    Start: " + path.get(0).getNameLong() + " ");
             starLabel.setPrefHeight(20);
             starLabel.setLayoutX(pta.get(0).getTx());
@@ -697,7 +697,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         // add label to end location
         int lastIndex = pta.size() - 1;
-        if(floorMaps.getCurrFloor() == path.get(lastIndex).getFloor()) {
+        if(getCurrFloor() == path.get(lastIndex).getFloor()) {
            // System.out.println(pta.get(lastIndex) + " " + path.get(lastIndex) + " " + path.get(lastIndex).getNameLong());
             starLabel.setText("    End: " + path.get(lastIndex).getNameLong() + " ");
             starLabel.setPrefHeight(20);
@@ -718,7 +718,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             TransPoint endpoint = pta.get(i + 1);
 
             // if both points are on the current floor, draws line
-            if ((startpoint.getFloor() == floorMaps.getCurrFloor()) && (endpoint.getFloor() == floorMaps.getCurrFloor())) {
+            if ((startpoint.getFloor() == getCurrFloor()) && (endpoint.getFloor() == getCurrFloor())) {
                 Line l = new Line(startpoint.getTx(), startpoint.getTy(), endpoint.getTx(), endpoint.getTy());
                 l.setStroke(Color.PURPLE);
                 l.setStrokeWidth(6);
@@ -759,7 +759,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                 // converts floor values from db to index so it's easier to work with
                 int endfloor = endpoint.getFloor();
                 int startfloor = startpoint.getFloor();
-                int thisfloor = floorMaps.getCurrFloor();
+                int thisfloor = getCurrFloor();
 
 
                 // chooses floor to transition too, based on whichever point is not on the current floor
@@ -799,9 +799,8 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                 }
                 // action event to transition floor
                 transButt.setOnAction((e)-> {
-                    floorMaps.updateFloorMap(goToFloor);
+                    updateFloorMap(goToFloor);
                     drawPath(queuedPath);
-                    updateDrawings();
 
                 } );
 
@@ -871,7 +870,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     public void updateDrawings(){
         //highlightSelected(floorMaps.getCurrFloor());
         noder.removeAllNodes();
-        noder.displayNodes(floorMaps.getCurrFloor(), excludedTypesFromNodes, floorMaps.getIs2D());
+        noder.displayNodes(getCurrFloor(), excludedTypesFromNodes, floorMaps.getIs2D());
 
         if(backImagePane.getChildren().contains(manImage))
             backImagePane.getChildren().remove(manImage);
@@ -931,7 +930,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
     public void toggle3D(){
         floorMaps.setIs2D(dToggle.isSelected());
-        floorMaps.updateFloorMap(floorMaps.getCurrFloor());
+        updateFloorMap(getCurrFloor());
 
         if(dToggle.isSelected()) {
             dToggle.setText("3D");
@@ -943,7 +942,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             dToggle.setStyle("-fx-base: #ca2b24;" + "-fx-background-radius: 50%;");
         }
         dToggle.setTextFill(Color.WHITE);
-        updateDrawings();
+
     }
 
 
@@ -1091,40 +1090,35 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      * Function to switch to floor 3
      */
     public void buttonFloor3(){
-        floorMaps.updateFloorMap(3);
-        updateDrawings();
+        updateFloorMap(3);
     }
 
     /**
      * Function to switch to floor 2
      */
     public void buttonFloor2(){
-        floorMaps.updateFloorMap(2);
-        updateDrawings();
+        updateFloorMap(2);
     }
 
     /**
      * Function to switch to floor 1
      */
     public void buttonFloor1(){
-        floorMaps.updateFloorMap(1);
-        updateDrawings();
+        updateFloorMap(1);
     }
 
     /**
      * Function to switch to floor L1
      */
     public void buttonFloorL1(){
-        floorMaps.updateFloorMap(-1);
-        updateDrawings();
+        updateFloorMap(-1);
     }
 
     /**
      * Function to switch to floor L2
      */
     public void buttonFloorL2(){
-        floorMaps.updateFloorMap(-2);
-        updateDrawings();
+        updateFloorMap(-2);
     }
 
     /**
@@ -1298,8 +1292,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         System.out.println("starting animation");
 
         if(transitions.size()>0){
-            floorMaps.updateFloorMap(transitions.get(0).getFloor());
-            updateDrawings();
+            updateFloorMap(transitions.get(0).getFloor());
         }
 
         SequentialTransition allTransitions = new SequentialTransition();
@@ -1330,8 +1323,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                 TransitionData nextData = transitions.get(i+1);
                 transition.setOnFinished((e) -> {
                     getSnap();
-                    floorMaps.updateFloorMap(nextData.getFloor());
-                    updateDrawings();
+                    updateFloorMap(nextData.getFloor());
                 }
                 );
             }
@@ -1408,11 +1400,61 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         }
     }
 
-    //adds the images to the allfiles arraylist
+    /**
+     * Returns the current floor
+     *
+     */
+    public int getCurrFloor(){
+        return floorMaps.getCurrFloor();
+    }
+
+    /**
+     * Changes the floor to the inputted floor integer
+     * @param floor
+     */
+   public void updateFloorMap(int floor){
+        floorMaps.updateFloorMap(floor);
+        updateDrawings();
+        highlightButton(floor);
+   }
+
+    /**
+     * highlights the button of the selected floor
+     * @param floor
+     */
+    public void highlightButton(int floor) {
+        clearBtnBorders();
+
+        switch (floor) {
+            case -2: floorL21.setStyle("-fx-border-color: YELLOW;" + "-fx-border-width: 5");
+            break;
+
+            case -1: floorL11.setStyle("-fx-border-color: YELLOW;" + "-fx-border-width: 5");
+            break;
+
+            case 1: floor11.setStyle("-fx-border-color: YELLOW;" + "-fx-border-width: 5");
+            break;
+
+            case 2: floor21.setStyle("-fx-border-color: YELLOW;" + "-fx-border-width: 5");
+            break;
+
+            case 3: floor31.setStyle("-fx-border-color: YELLOW;" + "-fx-border-width: 5");
+            break;
+        }
+    }
 
 
+    /**
+     * clears the borders of all the floor selector buttons
+     */
+    public void clearBtnBorders(){
+        floorL21.setStyle(null);
+        floorL11.setStyle(null);
+        floor11.setStyle(null);
+        floor21.setStyle(null);
+        floor31.setStyle(null);
 
-
+    }
 
     @Override
     public void insertUpdate(DocumentEvent e) {
