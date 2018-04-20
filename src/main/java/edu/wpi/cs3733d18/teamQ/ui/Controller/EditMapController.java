@@ -525,8 +525,6 @@ public class EditMapController implements Initializable, IZoomableCont {
         curFloor3D.setScaleX(startScale);
         threeDScroll.setHvalue((threeDScroll.getHmax() - threeDScroll.getHmin()) / 2.0);
         threeDScroll.setVvalue((threeDScroll.getVmax() - threeDScroll.getVmin()) / 2.0);
-
-
     }
 
     /**
@@ -1164,7 +1162,7 @@ public class EditMapController implements Initializable, IZoomableCont {
 
         });
         circle.setOnMouseDragged((t) -> {
-
+            threeDScroll.setPannable(false);
             double offsetX = t.getX() - orgPosXCirc3D;
             double offsetY = t.getY() - orgPosYCirc3D;
 
@@ -1183,6 +1181,7 @@ public class EditMapController implements Initializable, IZoomableCont {
 
         circle.setOnMouseReleased((t)->{
             System.out.println("saving node 3d");
+            threeDScroll.setPannable(true);
             saveToSingleton(circle, 3);
         });
 
@@ -1261,6 +1260,7 @@ public class EditMapController implements Initializable, IZoomableCont {
         });
 
         circle.setOnMouseDragged((t) -> {
+            twoDScroll.setPannable(false);
             System.out.println("dragging 2d node");
             double offsetX = t.getX() - orgPosXCirc;
             double offsetY = t.getY() - orgPosYCirc;
@@ -1280,6 +1280,7 @@ public class EditMapController implements Initializable, IZoomableCont {
         });
 
         circle.setOnMouseReleased((t)->{
+            twoDScroll.setPannable(true);
             System.out.println("saving node 2d");
             saveToSingleton(circle, 2);
         });
