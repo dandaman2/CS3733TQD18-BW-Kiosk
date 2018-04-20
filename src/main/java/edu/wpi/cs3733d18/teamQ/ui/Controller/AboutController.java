@@ -55,12 +55,17 @@ public class AboutController {
        Wong.setStyle("-fx-font-size: 12pt;");
 
 
-       Label thanksTitle = new Label("Special Thanks");
+       Label thanksTitle = new Label("Special Thanks:");
        thanksTitle.setStyle("-fx-font-size: 15pt;");
        Label thanksText = new Label("Thank you to Brigham and Women’s Faulkner Hospital and Andrew\n" +
                "Shinn for their time and input on this application.");
        thanksText.setStyle("-fx-font-size: 12pt;");
        thanksText.setTextAlignment(TextAlignment.CENTER);
+
+       teamName.setStyle("-fx-font-size: 15pt;");
+       Label copyState = new Label("The Brigham & Women’s Hospital maps and data used in this application are copyrighted\n" + "and provided for the sole use of educational purposes");
+       teamMembers.setStyle("-fx-font-size: 12pt;");
+       teamMembers.setTextAlignment(TextAlignment.CENTER);
 
 
        // Formatting for the admin login
@@ -72,6 +77,10 @@ public class AboutController {
        Region reg2 = new Region();
        Region reg3 = new Region();
        Region reg4 = new Region();
+       Region reg5 = new Region();
+       Region reg6 = new Region();
+       Region reg7 = new Region();
+       Region reg8 = new Region();
 
        // Filling a grid pane that holds the username and password fields
        grid.add(reg1, 0, 0);
@@ -83,6 +92,12 @@ public class AboutController {
        grid.add(reg4, 1, 3);
        grid.add(thanksTitle, 0, 4);
        grid.add(thanksText, 0, 5);
+
+       grid.add(reg5, 0, 6);
+       grid.add(reg6, 1, 6);
+       grid.add(reg7, 1, 7);
+       grid.add(reg8, 1, 7);
+       grid.add(copyState, 0, 7);
 
        // Filling a Vbox that holds the main message the grid and the submit button
        vb.getChildren().addAll(label, grid, aPane);

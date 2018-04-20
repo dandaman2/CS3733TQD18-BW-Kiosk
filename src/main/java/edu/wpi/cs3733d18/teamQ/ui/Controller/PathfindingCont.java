@@ -251,7 +251,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         Image info;
         if(runningFromIntelliJ()) {
-            info = new Image("../resources/ButtonImages/whiteHut.png");
+            info = new Image("/ButtonImages/whiteHut.png");
         } else{
             info = new Image("ButtonImages/whiteHut.png");
         }

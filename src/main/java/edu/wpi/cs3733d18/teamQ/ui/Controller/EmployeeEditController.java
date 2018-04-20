@@ -96,7 +96,7 @@ public class EmployeeEditController implements Initializable {
 
         Image info;
         if(runningFromIntelliJ()) {
-            info = new Image("../resources/ButtonImages/home.png");
+            info = new Image("/ButtonImages/home.png");
         } else{
             info = new Image("ButtonImages/home.png");
         }
