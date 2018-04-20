@@ -1,0 +1,57 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+version = '1.0'
+mainClassName = 'Main_ui'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	testCompile(
+		[group: 'junit', name: 'junit', version: '4.12'],
+		[group: 'org.controlsfx', name: 'controlsfx', version: '8.40.14'],
+		[group: 'com.jfoenix', name: 'jfoenix', version: '8.0.2'],
+		[group: 'com.sun.mail', name: 'javax.mail', version: '1.6.1'],
+		[group: 'javax.activation', name: 'activation', version: '1.1.1'],
+		[group: 'com.github.fedy2', name: 'yahoo-weather-java-api', version: '2.0.2'],
+		[group: 'org.mindrot', name: 'jbcrypt', version: '0.4'],
+		[group: 'org.apache.derby', name: 'derby', version: '10.11.1.1'],
+		[group: 'org.apache.derby', name: 'derbyclient', version: '10.11.1.1'],
+		[group: 'org.apache.derby', name: 'derbytools', version: '10.11.1.1']
+	)
+	compile(
+		[group: 'junit', name: 'junit', version: '4.12'],
+		[group: 'org.controlsfx', name: 'controlsfx', version: '8.40.14'],
+		[group: 'com.jfoenix', name: 'jfoenix', version: '8.0.2'],
+		[group: 'com.sun.mail', name: 'javax.mail', version: '1.6.1'],
+		[group: 'javax.activation', name: 'activation', version: '1.1.1'],
+		[group: 'com.github.fedy2', name: 'yahoo-weather-java-api', version: '2.0.2'],
+		[group: 'org.mindrot', name: 'jbcrypt', version: '0.4'],
+		[group: 'org.apache.derby', name: 'derby', version: '10.11.1.1'],
+		[group: 'org.apache.derby', name: 'derbyclient', version: '10.11.1.1'],
+		[group: 'org.apache.derby', name: 'derbytools', version: '10.11.1.1']
+	)
+    compile 'junit:junit:4.12'
+    compile 'junit:junit:4.12'
+	//compile 'javax/mail/javax.mail-api/:1.6.1'
+	//maven2/javax/mail/javax.mail-api/
+}
+
+jar {
+
+	manifest {
+		attributes 'Main-Class': mainClassName
+	}
+	from configurations.runtime.collect { zipTree(it) }
+}
+
+//task run(type: JavaExec) {
+//	main = 'Main_ui.java'
+//	classpath = sourceSets.main.runtimeClasspath
+//}
+
