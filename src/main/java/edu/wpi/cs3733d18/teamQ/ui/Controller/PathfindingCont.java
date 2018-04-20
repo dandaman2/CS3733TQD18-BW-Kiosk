@@ -779,7 +779,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                 // creates label to appear next to button
                 Label transLabel = new Label( "    " + path.get(i).getNameShort() + " to floor " + goToString +  " ");
                 transLabel.setPrefHeight(size);
-                transLabel.setLayoutX(buttX);
+                transLabel.setLayoutX(buttX + size);
                 transLabel.setLayoutY(buttY - size/2 + 3);
                 transLabel.setTextFill(Color.WHITE);
 
@@ -1304,8 +1304,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         SequentialTransition allTransitions = new SequentialTransition();
 
-        Circle movingPart = new Circle(10.0f);
-        movingPart.setFill(Color.PURPLE);
+//        Circle movingPart = new Circle(10.0f);
+//        movingPart.setFill(Color.PURPLE);
+        ImageView movingPart = new ImageView(new Image("dog.gif"));
         backImagePane.getChildren().add(movingPart);
 
 
