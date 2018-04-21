@@ -307,47 +307,48 @@ public class User {
     public void initLoadMaps(){
 
         System.out.println("Loading Map Images into Array");
-        if(runningFromIntelliJ()) {
-            // adds subbasement 2 maps
-            maps3D.add(new Image("/Maps/L2-ICONS.png"));
-            maps2D.add(new Image("/Maps/00_thelowerlevel2.png"));
+        if(maps3D.isEmpty() && maps2D.isEmpty()) {
+            if (runningFromIntelliJ()) {
+                // adds subbasement 2 maps
+                maps3D.add(new Image("/Maps/L2-ICONS.png"));
+                maps2D.add(new Image("/Maps/00_thelowerlevel2.png"));
 
-            // adds subbasement 1 maps
-            maps3D.add(new Image("/Maps/L1-ICONS.png"));
-            maps2D.add(new Image("/Maps/00_thelowerlevel1.png"));
+                // adds subbasement 1 maps
+                maps3D.add(new Image("/Maps/L1-ICONS.png"));
+                maps2D.add(new Image("/Maps/00_thelowerlevel1.png"));
 
-            // adds level 1 maps
-            maps3D.add(new Image("/Maps/1-ICONS.png"));
-            maps2D.add(new Image("/Maps/01_thefirstfloor.png"));
+                // adds level 1 maps
+                maps3D.add(new Image("/Maps/1-ICONS.png"));
+                maps2D.add(new Image("/Maps/01_thefirstfloor.png"));
 
-            // adds level 2 maps
-            maps3D.add(new Image("/Maps/2-ICONS.png"));
-            maps2D.add(new Image("/Maps/02_thesecondfloor.png"));
+                // adds level 2 maps
+                maps3D.add(new Image("/Maps/2-ICONS.png"));
+                maps2D.add(new Image("/Maps/02_thesecondfloor.png"));
 
-            // adds level 3 maps
-            maps3D.add(new Image("/Maps/3-ICONS.png"));
-            maps2D.add(new Image("/Maps/03_thethirdfloor.png"));
-        }
-        else{
-            // adds subbasement 2 maps
-            maps3D.add(new Image("Maps/L2-ICONS.png"));
-            maps2D.add(new Image("Maps/00_thelowerlevel2.png"));
+                // adds level 3 maps
+                maps3D.add(new Image("/Maps/3-ICONS.png"));
+                maps2D.add(new Image("/Maps/03_thethirdfloor.png"));
+            } else {
+                // adds subbasement 2 maps
+                maps3D.add(new Image("Maps/L2-ICONS.png"));
+                maps2D.add(new Image("Maps/00_thelowerlevel2.png"));
 
-            // adds subbasement 1 maps
-            maps3D.add(new Image("Maps/L1-ICONS.png"));
-            maps2D.add(new Image("Maps/00_thelowerlevel1.png"));
+                // adds subbasement 1 maps
+                maps3D.add(new Image("Maps/L1-ICONS.png"));
+                maps2D.add(new Image("Maps/00_thelowerlevel1.png"));
 
-            // adds level 1 maps
-            maps3D.add(new Image("Maps/1-ICONS.png"));
-            maps2D.add(new Image("Maps/01_thefirstfloor.png"));
+                // adds level 1 maps
+                maps3D.add(new Image("Maps/1-ICONS.png"));
+                maps2D.add(new Image("Maps/01_thefirstfloor.png"));
 
-            // adds level 2 maps
-            maps3D.add(new Image("Maps/2-ICONS.png"));
-            maps2D.add(new Image("Maps/02_thesecondfloor.png"));
+                // adds level 2 maps
+                maps3D.add(new Image("Maps/2-ICONS.png"));
+                maps2D.add(new Image("Maps/02_thesecondfloor.png"));
 
-            // adds level 3 maps
-            maps3D.add(new Image("Maps/3-ICONS.png"));
-            maps2D.add(new Image("Maps/03_thethirdfloor.png"));
+                // adds level 3 maps
+                maps3D.add(new Image("Maps/3-ICONS.png"));
+                maps2D.add(new Image("Maps/03_thethirdfloor.png"));
+            }
         }
         System.out.println("Maps loaded");
     }

@@ -306,7 +306,9 @@ public class EmployeeEditController implements Initializable {
 
                     ObservableList<Employee> allEmployees = FXCollections.observableArrayList(getEmployees());
                     final TreeItem<Employee> pendingRoot = new RecursiveTreeItem<Employee>(allEmployees, RecursiveTreeObject::getChildren);
-                    employeeTTV.setRoot(pendingRoot);
+                    if(pendingRoot.getValue() != null) {
+                        employeeTTV.setRoot(pendingRoot);
+                    }
                     employeeTTV.setShowRoot(false);
 
                     resetDefault();
@@ -329,7 +331,9 @@ public class EmployeeEditController implements Initializable {
 
                     ObservableList<Employee> allEmployees = FXCollections.observableArrayList(getEmployees());
                     final TreeItem<Employee> pendingRoot = new RecursiveTreeItem<Employee>(allEmployees, RecursiveTreeObject::getChildren);
-                    employeeTTV.setRoot(pendingRoot);
+                    if(pendingRoot.getValue() != null) {
+                        employeeTTV.setRoot(pendingRoot);
+                    }
                     employeeTTV.setShowRoot(false);
 
                     resetDefault();

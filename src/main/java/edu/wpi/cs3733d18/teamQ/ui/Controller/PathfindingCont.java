@@ -415,7 +415,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             sTempEnd = endingNodeField.getText();
             if (!(startingNodeField.getText().isEmpty()) && !(endingNodeField.getText().isEmpty())) {
                 getNodeFromTextFields(startingNodeField, endingNodeField);
-                generatePath();
+                if(startNode != null && curSelected != null) {
+                    generatePath();
+                }
             }else {
                 isPathDisplayed = false;
                 drawPath(null);
