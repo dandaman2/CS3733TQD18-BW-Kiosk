@@ -145,7 +145,7 @@ public class WholeSystemIntegrationTest {
         expectedPath.add(endNode);
         testGraph.init2(databaseSystem.getNodes(), databaseSystem.getEdges());
 
-        ArrayList<Node> foundPath = testGraph.findShortestPath(startNode, endNode, noType);
+        ArrayList<Node> foundPath = testGraph.findShortestPath(startNode, endNode, noType, );
 
         assertEquals(expectedPath.size(), foundPath.size());
         for(int i = 0; i < expectedPath.size(); i++){
