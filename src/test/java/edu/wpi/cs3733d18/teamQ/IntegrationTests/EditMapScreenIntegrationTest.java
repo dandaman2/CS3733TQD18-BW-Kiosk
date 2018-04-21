@@ -24,12 +24,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class EditMapScreenIntegrationTest extends ApplicationTest {
-    //TODO put in the right path
+    private final double EXPECTED_X_COORD = 1740.0;
+    private final double EXPECTED_Y_COORD = 1416.0;
+    private final int DRAG_BY = -270;
     private final String PATH_TO_EDITMAPFXML = "/fxmlFiles/EditMap.fxml";
     private static User user;
     private EditMapController editCont;
-    ScreenUtil sdUtil = new ScreenUtil();
-
     /**
      * Creates the stages and loads initial user data
      * @param stage
@@ -37,7 +37,7 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
      */
     @Override
     public void start(Stage stage) throws Exception{
-      /*  user.setPrimaryStage(stage);
+        user.setPrimaryStage(stage);
         user.initLoadMaps();
         user.setNodes(getNodes());
         user.setEdges(getEdges());
@@ -53,7 +53,7 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
         stage.setMinHeight(645);
         //stage.setScene(pathfindingScene);
         stage.show();
-        stage.toFront();*/
+        stage.toFront();
     }
 
     /*
@@ -62,20 +62,26 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
     @Rule
     public final ExpectedException exception = ExpectedException.none();
 
-    @BeforeClass @Ignore
+    @BeforeClass
     public static void initialize(){
         user = User.getUser();
         initializeDb();
     }
 
     /**
+     * Moves the cursor to the top right of the map
+     */
+    private void moveToNodeLocation(){
+        clickOn("#mapFrame2D");
+        moveBy(DRAG_BY, DRAG_BY);
+    }
+
+
+    /**
      * Script for adding a node. Automates inputing all of the data
      */
     public void addNodeInputs(){
-        clickOn("#mapFrame2D");
-        moveBy(-375, -310);
-        press(MouseButton.PRIMARY);
-        release(MouseButton.PRIMARY);
+
         doubleClickOn("#nameField");
         write("testNode");
         //clickOn("#x2dNode_toEdgeField");
@@ -94,23 +100,27 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
     /**
      * Tests that a node can be edited as expected by a user
      */
-    @Test @Ignore
+    @Test
     public void editNodeTest(){
         switchToNode();
+        moveToNodeLocation();
+        press(MouseButton.PRIMARY);
+        release(MouseButton.PRIMARY);
         addNodeInputs();
 
         clickOn("#mapFrame2D");
-        moveBy(-375, -310);
+        moveBy(DRAG_BY, DRAG_BY);
         press(MouseButton.PRIMARY);
         moveBy(0.0, 99.0);
         release(MouseButton.PRIMARY);
-        doubleClickOn("#y2dNode_fromEdgeField");
+        doubleClickOn("#y2dNode_fromEdgeField")
+        ;
         //clickOn("#addButton");
         Node fetched = user.getNode("QREST05902");
         System.out.println(fetched.getyPos());
-        assertTrue(fetched.getyPos().equals(122.0));
+        assertTrue(fetched.getyPos().equals(1614.0));
         clickOn("#mapFrame2D");
-        moveBy(-375, -310);
+        moveBy(DRAG_BY, DRAG_BY);
         moveBy(0.0, 99.0);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
@@ -121,20 +131,24 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
     /**
      * Tests that a node can be added as expected by a user
      */
-    @Test @Ignore
+    @Test
     public void addNodeTest(){
         switchToNode();
+        moveToNodeLocation();
+        press(MouseButton.PRIMARY);
+        release(MouseButton.PRIMARY);
         addNodeInputs();
 
         Node fetchedNode = user.getNode("QREST05902");
-        assertTrue(fetchedNode.getyPos().equals(23.0));
-        assertTrue(fetchedNode.getxPos().equals(9.0));
+        System.out.println(fetchedNode.getyPos());
+        assertTrue(fetchedNode.getyPos().equals(EXPECTED_Y_COORD));
+        assertTrue(fetchedNode.getxPos().equals(EXPECTED_X_COORD));
         assertTrue(fetchedNode.getyPos3D().equals(1.0));
         assertTrue(fetchedNode.getxPos3D().equals(1.0));
         assertEquals(fetchedNode.getType(), "REST");
         clickOn("#mapFrame2D");
 
-        moveBy(-375, -310);
+        moveBy(DRAG_BY, DRAG_BY);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
         clickOn("#removeButton");
@@ -144,12 +158,15 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
     /**
      * Tests that a node can be deleted as expected by a user
      */
-    @Test @Ignore
+    @Test
     public void deleteNodeTest(){
         switchToNode();
+        moveToNodeLocation();
+        press(MouseButton.PRIMARY);
+        release(MouseButton.PRIMARY);
         addNodeInputs();
         clickOn("#mapFrame2D");
-        moveBy(-375, -310);
+        moveBy(DRAG_BY, DRAG_BY);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
         clickOn("#removeButton");
@@ -194,22 +211,27 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
     /**
      * Tests that an edge can be added as expected by a user
      */
-    @Test @Ignore
+    @Test
     public void addEdgeTest(){
         switchToNode();
         //ADD THE NODES
+        moveToNodeLocation();
+        press(MouseButton.PRIMARY);
+        release(MouseButton.PRIMARY);
         addNodeInputs();
         clickOn("#clearButton");
-        addNodeInputs();
-        clickOn("#mapFrame2D");
-        moveBy(-375, -310);
-        press(MouseButton.PRIMARY);
+
+        moveToNodeLocation();
         moveBy(0.0, 99.0);
+        press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
+        addNodeInputs();
+
+
         switchToEdge();
         //SELECT THE NODES
         clickOn("#mapFrame2D");
-        moveBy(-375, -310);
+        moveBy(DRAG_BY, DRAG_BY);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
         moveBy(0.0, 99.0);
@@ -232,12 +254,12 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
         switchToNode();
         //TEARDOWN -- REMOVE NODES
         clickOn("#mapFrame2D");
-        moveBy(-375, -310);
+        moveBy(DRAG_BY, DRAG_BY);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
         clickOn("#removeButton");
         clickOn("#mapFrame2D");
-        moveBy(-375, -310);
+        moveBy(DRAG_BY, DRAG_BY);
         moveBy(0.0, 99.0);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
@@ -247,23 +269,26 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
     /**
      * Tests that an edge can be removed as expected by a user
      */
-    @Test @Ignore
+    @Test
     public void removeEdgeTest(){
         switchToNode();
         //ADD THE NODES
+        moveToNodeLocation();
+        press(MouseButton.PRIMARY);
+        release(MouseButton.PRIMARY);
         addNodeInputs();
         clickOn("#clearButton");
-        addNodeInputs();
-        clickOn("#mapFrame2D");
-        moveBy(-375, -310);
-        press(MouseButton.PRIMARY);
+
+        moveToNodeLocation();
         moveBy(0.0, 99.0);
+        press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
+        addNodeInputs();
 
         switchToEdge();
         //SELECT THE NODES
         clickOn("#mapFrame2D");
-        moveBy(-375, -310);
+        moveBy(DRAG_BY, DRAG_BY);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
         moveBy(0.0, 99.0);
@@ -272,7 +297,7 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
         //ADD THE EDGE
         clickOn("#addButton");
         clickOn("#mapFrame2D");
-        moveBy(-375, -310);
+        moveBy(DRAG_BY, DRAG_BY);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
         moveBy(0.0, 99.0);
@@ -294,12 +319,12 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
         //Teardown -- remove the nodes
         switchToNode();
         clickOn("#mapFrame2D");
-        moveBy(-375, -310);
+        moveBy(DRAG_BY, DRAG_BY);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
         clickOn("#removeButton");
         clickOn("#mapFrame2D");
-        moveBy(-375, -310);
+        moveBy(DRAG_BY, DRAG_BY);
         moveBy(0.0, 99.0);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
