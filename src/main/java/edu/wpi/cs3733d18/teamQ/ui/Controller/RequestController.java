@@ -280,6 +280,7 @@ public class  RequestController implements Initializable{
         sanitationDescription.setPromptText("Enter Description ... ");
     }
 
+
     //Initialize buttons of request screen
     private void setUpButtons() {
         clear.setOnAction(e -> handleAction(e));
