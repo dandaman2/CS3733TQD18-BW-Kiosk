@@ -1385,8 +1385,7 @@ public class EditMapController implements Initializable, IZoomableCont {
 
         }
         if(mode.equals("ee")){
-            Edge edgeToRemove = getEdgeFromNodes(curSel1.getNode(), curSel2.getNode());
-
+            Edge edgeToRemove = editUtil.getCurSel().getEdge();
             user.removeEdgeSingleton(edgeToRemove);
             System.out.println("EDGE REMOVED");
             updateDrawings();
