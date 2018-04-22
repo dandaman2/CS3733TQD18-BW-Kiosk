@@ -895,6 +895,7 @@ public class  RequestController implements Initializable{
         treeTableViewPending.getColumns().setAll(priorityColumn, idColumn, typeColumn, roomColumn, lastNameColumn);
         treeTableViewPending.setRoot(pendingRoot);
         treeTableViewPending.setShowRoot(false);
+        treeTableViewPending.setColumnResizePolicy(TreeTableView.CONSTRAINED_RESIZE_POLICY);
     }
 
 
@@ -948,6 +949,7 @@ public class  RequestController implements Initializable{
         treeTableViewFulfilled.getColumns().setAll(priorityColumn, idColumn, typeColumn, roomColumn, lastNameColumn);
         treeTableViewFulfilled.setRoot(pendingRoot);
         treeTableViewFulfilled.setShowRoot(false);
+        treeTableViewFulfilled.setColumnResizePolicy(TreeTableView.CONSTRAINED_RESIZE_POLICY);
     }
 
 
