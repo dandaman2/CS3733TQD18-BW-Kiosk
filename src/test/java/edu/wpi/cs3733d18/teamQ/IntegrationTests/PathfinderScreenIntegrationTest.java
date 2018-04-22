@@ -110,6 +110,11 @@ public class PathfinderScreenIntegrationTest extends ApplicationTest {
         //**Should** enter the search bar, write a node id, then search it
         clickOn("#endingNodeField");
         write(nodeID);
+        try{
+            Thread.sleep(200);
+        }catch (Exception e){
+
+        }
         push(KeyCode.DOWN);
         release(KeyCode.DOWN);
         push(KeyCode.ENTER);
