@@ -17,6 +17,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -55,17 +57,18 @@ public class AlertBox {
         // Formatting the window
         BorderPane layout = new BorderPane(); // Implements a Border Pane (splits screen into 5 sections)
         AnchorPane aPane = addAnchorPane();
-        HBox hb = addHBox();
-        hb.setStyle("-fx-background-color: #012D5A;"); // Makes the top blue
-        layout.setTop(hb);
-        aPane.setStyle("-fx-background-color: #012D5A;"); // Makes the top blue
-        layout.setBottom(aPane); // Sets the top of the window to an anchor pane
-        VBox midVbox = new VBox(10);
-        layout.setCenter(midVbox); // Sets the center of the window to a Vbox
-        midVbox.setAlignment(Pos.CENTER);
 
         // Only runs for the Admin Login
         if (title.equals("Admin Login")) {
+            HBox hb = addHBox();
+            hb.setStyle("-fx-background-color: #012D5A;"); // Makes the top blue
+            layout.setTop(hb);
+            aPane.setStyle("-fx-background-color: #012D5A;"); // Makes the top blue
+            layout.setBottom(aPane); // Sets the top of the window to an anchor pane
+            VBox midVbox = new VBox(10);
+            layout.setCenter(midVbox); // Sets the center of the window to a Vbox
+            midVbox.setAlignment(Pos.CENTER);
+
             Label lbluName = new Label("Username:");
             lbluName.setStyle("-fx-font-size: 15pt;");
             TextField tfuName = new TextField();
@@ -151,6 +154,15 @@ public class AlertBox {
 
         // Runs for Add a Custom Edge AlertBox
         if (title.equals("Add a Custom Edge")) {
+            HBox hb = addHBox();
+            hb.setStyle("-fx-background-color: #012D5A;"); // Makes the top blue
+            layout.setTop(hb);
+            aPane.setStyle("-fx-background-color: #012D5A;"); // Makes the top blue
+            layout.setBottom(aPane); // Sets the top of the window to an anchor pane
+            VBox midVbox = new VBox(10);
+            layout.setCenter(midVbox); // Sets the center of the window to a Vbox
+            midVbox.setAlignment(Pos.CENTER);
+
             window.setMinWidth(700);
             window.setMinHeight(125);
             // Buttons and text fields specific edge additions
@@ -230,20 +242,43 @@ public class AlertBox {
 
         // Runs for Emergency AlertBox
         if (title.equals("Emergency")) {
-            HBox bottom = addHBox();
-            bottom.setStyle("-fx-background-color: #FF0000;");
-            layout.setBottom(bottom);
-            HBox top = addHBox();
-            top.setStyle("-fx-background-color: #FF0000;");
-            layout.setTop(top);
+            //HBox hb = addHBox();
+            //hb.setStyle("-fx-background-color: #012D5A;"); // Makes the top blue
+            //layout.setTop(hb);
+            aPane.setStyle("-fx-background-color: #012D5A;"); // Makes the top blue
+            layout.setBottom(aPane); // Sets the top of the window to an anchor pane
+            VBox midVbox = new VBox(10);
+            layout.setCenter(midVbox); // Sets the center of the window to a Vbox
+            midVbox.setAlignment(Pos.CENTER);
 
-            AnchorPane anchorPane = new AnchorPane();
-            layout.setCenter(anchorPane);
-            anchorPane.setStyle("-fx-background-color: #FF0000;");
-            anchorPane.getChildren().add(label);
-            label.setAlignment(Pos.CENTER);
-            label.setText(message);
-            label.setTextFill(Color.WHITE);
+//            HBox bottom = addHBox();
+//            bottom.setStyle("-fx-background-color: #FF0000;");
+//            layout.setBottom(bottom);
+//            HBox top = addHBox();
+//            top.setPrefHeight(30);
+//            top.setStyle("-fx-background-color: #FF0000;");
+//            layout.setTop(top);
+
+            StackPane pane = new StackPane();
+            layout.setCenter(pane);
+            pane.setStyle("-fx-background-color: #FF0000;");
+            Image emergencyIcon;
+            if(runningFromIntelliJ()) {
+                emergencyIcon = new Image("/ButtonImages/Emergency_Icon5.png");
+            } else{
+                emergencyIcon = new Image("/ButtonImages/Emergency_Icon5.png");
+            }
+            ImageView emergencyView = new ImageView(emergencyIcon);
+            emergencyView.setFitWidth(1400);
+            emergencyView.setFitHeight(500);
+
+            pane.getChildren().add(emergencyView);
+            StackPane.setAlignment(emergencyView, Pos.CENTER);
+
+//            anchorPane.getChildren().add(label);
+//            label.setAlignment(Pos.CENTER);
+//            label.setText(message);
+//            label.setTextFill(Color.WHITE);
             label.setStyle("-fx-font-size: 70pt;");
 
 
@@ -257,12 +292,22 @@ public class AlertBox {
 
             window.setMinWidth(1500);
             window.setMinHeight(300);
+            window.setMaxHeight(600);
 
 
 
         }
 
         if(title.equals("Weather")){
+            HBox hb = addHBox();
+            hb.setStyle("-fx-background-color: #012D5A;"); // Makes the top blue
+            layout.setTop(hb);
+            aPane.setStyle("-fx-background-color: #012D5A;"); // Makes the top blue
+            layout.setBottom(aPane); // Sets the top of the window to an anchor pane
+            VBox midVbox = new VBox(10);
+            layout.setCenter(midVbox); // Sets the center of the window to a Vbox
+            midVbox.setAlignment(Pos.CENTER);
+
             HBox bottom = addHBox();
             bottom.setStyle("-fx-background-color: #012D5A;");
             layout.setBottom(bottom);
