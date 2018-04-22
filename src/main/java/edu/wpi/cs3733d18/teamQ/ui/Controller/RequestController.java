@@ -27,6 +27,9 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import me.xdrop.fuzzywuzzy.FuzzySearch;
+import me.xdrop.fuzzywuzzy.model.ExtractedResult;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
 import javax.naming.ServiceUnavailableException;
@@ -36,6 +39,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.*;
@@ -58,8 +62,8 @@ public class  RequestController implements Initializable{
     private JFXTextField firstNameTF;
     @FXML
     private JFXTextField lastNameTF;
-    @FXML
-    private JFXTextField roomLocationTF;
+
+    AutoCompleteTextField roomLocationTF;
     @FXML
     private JFXTextField emailTF;
     @FXML
@@ -184,6 +188,7 @@ public class  RequestController implements Initializable{
     // screenUtil object for request room searching
     ScreenUtil pUtil = new ScreenUtil();
     public ArrayList<Node> nodes;
+    public ArrayList<String> currentFilter;
 
 
     //Initializes the scene
@@ -249,8 +254,14 @@ public class  RequestController implements Initializable{
         lastNameTF.setPromptText("Requester's Last Name");
         lastNameTF.setText(null);
 
+        roomLocationTF = new AutoCompleteTextField();
         roomLocationTF.setPromptText("Room Location");
-        roomLocationTF.setText(null);
+        roomLocationTF.setText("");
+        grid1_1_1.add(roomLocationTF,0,3);
+        //roomLocationTF.setOnInputMethodTextChanged(event -> updateFilter(roomLocationTF.getText()));
+        //roomLocationTF.setOnKeyPressed(event -> updateFilter(roomLocationTF.getText()));
+        roomLocationTF.setOnKeyReleased(event -> updateFilter(roomLocationTF.getText()));
+        //roomLocationTF.setOnKeyTyped(event -> updateFilter(roomLocationTF.getText()));
 
         emailTF.setPromptText("Email");
         emailTF.setText(null);
@@ -947,7 +958,27 @@ public class  RequestController implements Initializable{
     private void initAutoComp(ArrayList<Node> nodeList) {
         ArrayList<String> nodeIdentification = pUtil.getNameIdNode(nodeList);
 
-        TextFields.bindAutoCompletion(roomLocationTF, nodeIdentification);
+        //TextFields.bindAutoCompletion(roomLocationTF, nodeIdentification);
+    }
+
+
+    /**
+     * updates the filter for the searching
+     * @param text
+     */
+    private void updateFilter(String text) {
+        ArrayList<String> nodeIdentification = pUtil.getNameIdNode(nodes);
+        List<ExtractedResult> fuzzyFilter =  FuzzySearch.extractSorted(text, nodeIdentification);
+
+        currentFilter = new ArrayList<String>();
+        for(int i = 0; i < fuzzyFilter.size(); i++){
+            ExtractedResult current = fuzzyFilter.get(i);
+            //System.out.println(current.getString() + " - " + current.getScore() + " for " +text);
+
+            currentFilter.add(current.getString());
+        }
+
+        roomLocationTF.getEntries().addAll(currentFilter);
     }
 
     //Helper Methods-----------------------------------------------------------------------------------------------
@@ -1265,7 +1296,7 @@ public class  RequestController implements Initializable{
     private void resetTextFields(){
         firstNameTF.setText(null);
         lastNameTF.setText(null);
-        roomLocationTF.setText(null);
+        roomLocationTF.setText("");
         emailTF.setText(null);
         phoneNumberTF.setText(null);
         sanitationDescription.setText(null);

@@ -119,7 +119,6 @@
                                                                      <children>
                                                                         <JFXTextField fx:id="firstNameTF" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
                                                                         <JFXTextField fx:id="lastNameTF" GridPane.rowIndex="2" />
-                                                                        <JFXTextField fx:id="roomLocationTF" GridPane.rowIndex="3" />
                                                                         <JFXTextField fx:id="emailTF" GridPane.rowIndex="4" />
                                                                         <JFXTextField fx:id="phoneNumberTF" GridPane.rowIndex="5" />
                                                                         <ChoiceBox fx:id="priorityLevel" prefHeight="27.0" prefWidth="194.0" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="CENTER">

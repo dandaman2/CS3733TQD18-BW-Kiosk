@@ -39,6 +39,7 @@ dependencies {
 	)
     compile 'junit:junit:4.12'
     compile 'junit:junit:4.12'
+	compile 'me.xdrop:fuzzywuzzy:1.1.10'
 	//compile 'javax/mail/javax.mail-api/:1.6.1'
 	//maven2/javax/mail/javax.mail-api/
 }
