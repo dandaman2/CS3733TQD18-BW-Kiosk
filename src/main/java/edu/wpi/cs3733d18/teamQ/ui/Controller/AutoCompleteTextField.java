@@ -1,5 +1,6 @@
 package edu.wpi.cs3733d18.teamQ.ui.Controller;
 
+import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733d18.teamQ.pathfinding.Node;
 import javafx.geometry.Side;
 import javafx.scene.control.ContextMenu;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 
 import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.getNodes;
 
-public class AutoCompleteTextField extends TextField{
+public class AutoCompleteTextField extends JFXTextField {
     //Local variables
     //entries to autocomplete
     private final ArrayList<String> entries;
