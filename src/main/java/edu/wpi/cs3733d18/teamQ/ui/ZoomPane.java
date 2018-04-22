@@ -1,5 +1,6 @@
 package edu.wpi.cs3733d18.teamQ.ui;
 
+import edu.wpi.cs3733d18.teamQ.pathfinding.Node;
 import edu.wpi.cs3733d18.teamQ.ui.Controller.PathfindingCont;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -15,6 +16,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.StackPane;
+
+import java.util.ArrayList;
 
 public class ZoomPane {
     IZoomableCont controller;
@@ -209,6 +212,44 @@ public class ZoomPane {
 
        scroller.setVvalue(vvmiddle);
        scroller.setHvalue(hhmiddle);
+    }
+
+    //centers the scroller to the average path location
+    public void centerScrollToPath(ArrayList<Node> path, int floor, boolean is2D){
+        double avgXCoord=0;
+        double avgYCoord=0;
+        double numNodes=0;
+        for(Node n : path){
+            if(n.getFloor() == floor){
+                numNodes++;
+                if(is2D){
+                    avgXCoord+=n.getxPos();
+                    avgYCoord+=n.getyPos();
+                }
+                else{
+                    avgXCoord+=n.getxPos3D();
+                    avgYCoord+=n.getyPos3D();
+                }
+            }
+        }
+        if(avgXCoord+avgYCoord+numNodes>0){
+            double imgWidth = 5000;
+            double imgHeight;
+            if(is2D){
+                imgHeight=3400;
+            }
+            else{
+                imgHeight = 2774;
+            }
+            scroller.setVvalue(avgYCoord/numNodes/imgHeight);
+            scroller.setHvalue(avgXCoord/numNodes/imgWidth);
+            System.out.println("x pos: " + avgXCoord);
+            System.out.println("y pos: " + avgYCoord);
+            System.out.println("H middle: " + (scroller.getHmax() - scroller.getHmin())/2);
+            System.out.println("V middle: " + (scroller.getVmax() - scroller.getVmin())/2);
+            System.out.println("Nodes: " + numNodes);
+        }
+
     }
 
 }
