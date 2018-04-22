@@ -102,7 +102,7 @@ public class WelcomeController implements Initializable {
         // Sets the action of buttons
         aboutButton.setOnAction(e -> AboutController.displayAboutPage());
         adminButt.setOnAction(e -> AlertBox.display("Admin Login", "Please input your username and password."));
-        directButt.setDisableVisualFocus(true);
+        //directButt.setDisableVisualFocus(true);
         hoursButt.setOnAction(e -> HoursController.display());
         searchButt.setOnAction(e -> QuickSearchController.display());
     }

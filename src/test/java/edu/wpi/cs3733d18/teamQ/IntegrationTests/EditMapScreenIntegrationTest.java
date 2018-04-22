@@ -55,6 +55,7 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
         stage.toFront();
     }
 
+
     /*
     *This rule is because some exceptions need to be expected but the rest of the code needs to work
      */
@@ -65,6 +66,10 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
     public static void initialize(){
         user = User.getUser();
         initializeDb();
+        System.setProperty("testfx.robot", "glass");
+        System.setProperty("testfx.headless", "true");
+        System.setProperty("prism.order", "sw");
+        System.setProperty("prism.text", "t2k");
     }
 
     /**

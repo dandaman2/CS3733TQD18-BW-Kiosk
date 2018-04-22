@@ -68,7 +68,7 @@ public class AdminHomeScreenController implements Initializable {
         logOut.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
         logOut.setStyle("-fx-text-fill: #FFFFFF;");
         logOut.setRipplerFill(Paint.valueOf("#FFFFFF"));
-        directionBtn.setDisableVisualFocus(true);
+        //directionBtn.setDisableVisualFocus(true);
 
         directionBtn.setVisible(true);
         requestBtn.setVisible(true);
