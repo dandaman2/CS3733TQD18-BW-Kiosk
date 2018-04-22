@@ -113,8 +113,7 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
         press(MouseButton.PRIMARY);
         moveBy(0.0, 99.0);
         release(MouseButton.PRIMARY);
-        doubleClickOn("#y2dNode_fromEdgeField")
-        ;
+        doubleClickOn("#y2dNode_fromEdgeField");
         //clickOn("#addButton");
         Node fetched = user.getNode("QREST05902");
         System.out.println(fetched.getyPos());
