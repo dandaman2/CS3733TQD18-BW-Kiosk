@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class EmployeeScreenIntegrationTest extends ApplicationTest {
-    private final String PATH_TO_EMPLOYEEFXML = "/fxmlFiles/EmployeeEditController.fxml ";
+    private final String PATH_TO_EMPLOYEEFXML = "/EmployeeEditController.fxml ";
     private static User user;
     private EmployeeEditController empEditCont;
     private static Stage primaryStage;
@@ -144,10 +144,13 @@ public class EmployeeScreenIntegrationTest extends ApplicationTest {
         release(KeyCode.DOWN);
         press(KeyCode.ENTER);
 
-        String userName = lookup("#usernameTF").queryAs(TextField.class).getText();
 
+        String userName = lookup("#usernameTF").queryAs(TextField.class).getText();
         clickOn("#confirmBtn");
         Employee changedEmployee = getEmployee(userName);
+
+        removeEmployeeInputs();
+        clickOn("#confirmBtn");
 
 
 
