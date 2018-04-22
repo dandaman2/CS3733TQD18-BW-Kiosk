@@ -184,45 +184,4 @@ public class PathfinderScreenIntegrationTest extends ApplicationTest {
             assertEquals(path.get(i).getNodeID(), pathIDs.get(i));
         }
     }
-
-    /**
-     * Tests that the nearest bathroom can be found as expected by the user
-     */
-    @Test @Ignore
-    public void testFindNearestBathroom(){
-        //TODO unignore if/when the button gets put back
-        ArrayList<String> pathIDs = new ArrayList<>();
-        pathIDs.add(kioskNodeID);
-        pathIDs.add(firstBathroomID);
-        pathIDs.add(secondBathroomID);
-        pathIDs.add(nearestBathroomID);
-        clickOn("#quickBath");
-        ArrayList<edu.wpi.cs3733d18.teamQ.pathfinding.Node> path = pathCont.queuedPath;
-        for(int i = 0; i < path.size(); i++){
-            assertEquals(path.get(i).getNodeID(), pathIDs.get(i));
-        }
-    }
-
-    /**
-     * Tests that the nearest exit can be found as expected by the user
-     */
-    @Test @Ignore
-    public void findNearestExit(){
-        //TODO unignore if/when the button gets put back
-        ArrayList<String> pathIDs = new ArrayList<>();
-        pathIDs.add(kioskNodeID);
-        pathIDs.add(firstExitID);
-        pathIDs.add(secondExitID);
-        pathIDs.add(thirdExitID);
-        pathIDs.add(fourthExitID);
-        pathIDs.add(fifthExitID);
-        pathIDs.add(sixthExitID);
-        pathIDs.add(seventhExitID);
-        pathIDs.add(exitID);
-        clickOn("#quickExit");
-        ArrayList<edu.wpi.cs3733d18.teamQ.pathfinding.Node> path = pathCont.queuedPath;
-        for(int i = 0; i < path.size(); i++){
-            assertEquals(path.get(i).getNodeID(), pathIDs.get(i));
-        }
-    }
 }
