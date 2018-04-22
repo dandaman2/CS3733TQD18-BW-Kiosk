@@ -1081,6 +1081,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     public void getNodeFromTextFields(TextField start, TextField end) {
         if(start.getText().isEmpty()){
             startNode = youHere;
+            if(!isSelected){
+                start.setText("Current Location");
+            }
             String[] valuesEnd = end.getText().split(",");
             //if text reads a node
             if (valuesEnd.length==2) {
@@ -1094,6 +1097,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                 }
             }
         } else {
+            if(start.getText().equals("Current Location")){
+                start.setText(youHere.getNameLong()+ ","+youHere.getNodeID());
+            }
             String[] valuesStart = start.getText().split(",");
             String[] valuesEnd = end.getText().split(",");
             //if text reads a node
