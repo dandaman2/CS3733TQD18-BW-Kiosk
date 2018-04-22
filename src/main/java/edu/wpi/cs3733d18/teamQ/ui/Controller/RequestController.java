@@ -47,8 +47,6 @@ public class  RequestController implements Initializable{
     private AnchorPane requestPane;
 
     //Drop Down Menu
-    @FXML
-    private ComboBox<String> dropDown;
 
     private ChoiceBox<String> interpreterCB = new ChoiceBox<String>();
 
@@ -149,10 +147,6 @@ public class  RequestController implements Initializable{
     private PieChart pieChart1;
     private BarChart<String,Number> barChart;
 
-    //api
-    @FXML
-    JFXButton apiBtn;
-
 
 
     //Global Variables to monitor:------------
@@ -227,13 +221,6 @@ public class  RequestController implements Initializable{
 
     //initialize the drop down menus
     private void setUpDropBox() {
-        dropDown.getItems().add("Interpreter");
-        dropDown.getItems().add("Sanitation");
-        //dropDown.getItems().add("Delivery");
-        //dropDown.getItems().add("Religious");
-        dropDown.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> displayRequestType(newValue));
-
-
         //create ChoiceBox for an Interpreter request
         interpreterCB.getItems().add("English");
         interpreterCB.getItems().add("French");
@@ -321,7 +308,6 @@ public class  RequestController implements Initializable{
         infoView.setFitWidth(42);
         infoView.setFitHeight(40);
         backBtn.setGraphic(infoView);
-
         backBtn.setOnAction(e->goToAdminHome(e));
 
 
@@ -341,23 +327,90 @@ public class  RequestController implements Initializable{
         stat3.setRipplerFill(Paint.valueOf("#FFFFFF"));
         stat3.setOnAction(e->showStat3(e));
 
-        apiBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        apiBtn.setStyle("-fx-text-fill: #FFFFFF;");
-        apiBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
 
+        //Buttons on first tab
+        Image interpreterIcon;
+        if(runningFromIntelliJ()) {
+            interpreterIcon = new Image("/ButtonImages/Interpreter_Icon3.png");
+        } else{
+            interpreterIcon = new Image("ButtonImages/Interpreter_Icon3.png");
+        }
+        ImageView interpreterView = new ImageView(interpreterIcon);
+        interpreterView.setFitWidth(280);
+        interpreterView.setFitHeight(180);
+
+        interpreterBtn.setGraphic(interpreterView);
         interpreterBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
         interpreterBtn.setStyle("-fx-text-fill: #FFFFFF;");
         interpreterBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
+        interpreterBtn.setOnAction(e  -> displayRequestType("Interpreter"));
 
+
+        Image sanitationIcon;
+        if(runningFromIntelliJ()) {
+            sanitationIcon = new Image("/ButtonImages/Sanitation_Icon3.png");
+        } else{
+            sanitationIcon = new Image("ButtonImages/Sanitation_Icon3.png");
+        }
+        ImageView sanitationView = new ImageView(sanitationIcon);
+        sanitationView.setFitWidth(280);
+        sanitationView.setFitHeight(180);
+
+        sanitationBtn.setGraphic(sanitationView);
         sanitationBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
         sanitationBtn.setStyle("-fx-text-fill: #FFFFFF;");
         sanitationBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
+        sanitationBtn.setOnAction(e  -> displayRequestType("Sanitation"));
 
+
+        Image giftIcon;
+        if(runningFromIntelliJ()) {
+            giftIcon = new Image("/ButtonImages/Gift_Icon3.png");
+        } else{
+            giftIcon = new Image("ButtonImages/Gift_Icon3.png");
+        }
+        ImageView giftView = new ImageView(giftIcon);
+        giftView.setFitWidth(280);
+        giftView.setFitHeight(180);
+
+        giftBtn.setGraphic(giftView);
         giftBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
         giftBtn.setStyle("-fx-text-fill: #FFFFFF;");
         giftBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
+        giftBtn.setOnAction(e  -> displayRequestType("Gift"));
+
+    }
 
 
+    /**
+     * highlights the button of the selected floor
+     */
+    public void highlightButton() {
+        clearBtnBorders();
+
+        switch (requestType) {
+            case "Interpreter": interpreterBtn.setStyle("-fx-border-color: YELLOW;" + "-fx-border-width: 5;" + "-fx-text-fill: #FFFFFF;");
+                break;
+
+            case "Sanitation": sanitationBtn.setStyle("-fx-border-color: YELLOW;" + "-fx-border-width: 5;" + "-fx-text-fill: #FFFFFF;");
+                break;
+
+            case "Gift": giftBtn.setStyle("-fx-border-color: YELLOW;" + "-fx-border-width: 5;" + "-fx-text-fill: #FFFFFF;");
+                break;
+
+            default:
+                break;
+        }
+    }
+
+
+    /**
+     * clears the borders of all the floor selector buttons
+     */
+    public void clearBtnBorders(){
+        interpreterBtn.setStyle("-fx-text-fill: #FFFFFF;");
+        sanitationBtn.setStyle("-fx-text-fill: #FFFFFF;");
+        giftBtn.setStyle("-fx-text-fill: #FFFFFF;");
     }
 
     /**
@@ -1034,24 +1087,23 @@ public class  RequestController implements Initializable{
             case "Interpreter":
                 resetDefault();
                 requestType = "Interpreter";
+                highlightButton();
                 interpreterCB.setVisible(true);
                 break;
             //Sanitation
             case "Sanitation":
                 resetDefault();
                 requestType = "Sanitation";
+                highlightButton();
                 sanitationDescription.setVisible(true);
                 break;
-            //Delivery
-            case "Delivery":
+            //Gift
+            case "Gift":
                 resetDefault();
-                System.out.println("Delivery");
+                requestType = "Gift";
+                highlightButton();
                 break;
-            //Religious
-            case "Religious":
-                resetDefault();
-                System.out.println("Religious");
-                break;
+
             default:
         }
     }
@@ -1170,6 +1222,7 @@ public class  RequestController implements Initializable{
                 System.out.println("Sent!");
                 resetTextFields();
                 hideError();
+                clearBtnBorders();
             }
             else if(requestType == "Sanitation"){
 
@@ -1200,6 +1253,7 @@ public class  RequestController implements Initializable{
                 System.out.println("Sent!");
                 resetTextFields();
                 hideError();
+                clearBtnBorders();
             }
         }
     }
@@ -1272,17 +1326,17 @@ public class  RequestController implements Initializable{
     }
 
 
-    //runAPI
-    public void runAPI() throws IOException {
-        RequestController2 requestController2 = new RequestController2();
-        try {
-            requestController2.run(0, 0, 1900, 1000, (String)null, (String)null, (String)null);
-        } catch (ServiceUnavailableException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
+//    //runAPI
+//    public void runAPI() throws IOException {
+//        RequestController2 requestController2 = new RequestController2();
+//        try {
+//            requestController2.run(0, 0, 1900, 1000, (String)null, (String)null, (String)null);
+//        } catch (ServiceUnavailableException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
 }
 
