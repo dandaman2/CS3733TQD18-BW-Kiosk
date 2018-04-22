@@ -61,32 +61,9 @@ public class EmployeeScreenIntegrationTest extends ApplicationTest {
     }
 
     /**
-     * Makes sure that the given employees remain in the database
+     * Scripts adding an employee to the database
      */
-    @AfterClass
-    public static void shutdown(){
-        //Make sure that preloaded staff remain in the db
-        Employee staff = new Employee("staff", "staff", false, "");
-        Employee admin = new Employee("admin", "admin", true, "");
-
-        try {
-            addEmployee(staff);
-        }catch (Exception e){
-
-        }
-        try {
-            addEmployee(admin);
-        }catch (Exception e){
-
-        }
-    }
-
-    /**
-     * Tests that an employee can be added as expected by an admin
-     */
-    @Test
-    public void addStaffTest(){
-
+    private void addEmployeeInputs(){
         //Select add
         clickOn("#actionCB");
         press(KeyCode.DOWN);
@@ -103,11 +80,43 @@ public class EmployeeScreenIntegrationTest extends ApplicationTest {
         release(KeyCode.DOWN);
         press(KeyCode.ENTER);
         clickOn("#confirmBtn");
+    }
+
+    /**
+     * Scripts Removing an employee from the database
+     */
+    private void removeEmployeeInputs(){
+        clickOn("#actionCB");
+        press(KeyCode.DOWN);
+        release(KeyCode.DOWN);
+        press(KeyCode.DOWN);
+        release(KeyCode.DOWN);
+        press(KeyCode.DOWN);
+        release(KeyCode.DOWN);
+        press(KeyCode.ENTER);
+
+        clickOn("#employeeTTV");
+        moveBy(0, -75);
+        press(MouseButton.PRIMARY);
+        release(MouseButton.PRIMARY);
+    }
+
+
+    /**
+     * Tests that an employee can be added as expected by an admin
+     */
+    @Test
+    public void addStaffTest(){
+        addEmployeeInputs();
 
         Employee addedEmployee = getEmployee("testUser");
+        removeEmployeeInputs();
+        clickOn("#confirmBtn");
+
         assertEquals(addedEmployee.getUsername(), "testUser");
         assertTrue(addedEmployee.checkPassword("testPassword"));
         assertEquals(addedEmployee.getIsAdmin(), "1");
+
     }
 
     /**
@@ -116,15 +125,17 @@ public class EmployeeScreenIntegrationTest extends ApplicationTest {
     @Test
     public void editEmployeeTest(){
         //Select edit
+        addEmployeeInputs();
+
         clickOn("#actionCB");
         press(KeyCode.DOWN);
         release(KeyCode.DOWN);
-        press(KeyCode.DOWN);
-        release(KeyCode.DOWN);
+        //press(KeyCode.DOWN);
+        //release(KeyCode.DOWN);
         press(KeyCode.ENTER);
 
         clickOn("#employeeTTV");
-        moveBy(0, -150);
+        moveBy(0, -75);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
 
@@ -137,7 +148,11 @@ public class EmployeeScreenIntegrationTest extends ApplicationTest {
 
         clickOn("#confirmBtn");
         Employee changedEmployee = getEmployee(userName);
+
+
+
         assertEquals(changedEmployee.getIsAdmin(), "2");
+
         //exception.expect(Exception.class);
     }
 
@@ -146,20 +161,8 @@ public class EmployeeScreenIntegrationTest extends ApplicationTest {
      */
     @Test
     public void removeEmployeeTest(){
-        //Select remove
-        clickOn("#actionCB");
-        press(KeyCode.DOWN);
-        release(KeyCode.DOWN);
-        press(KeyCode.DOWN);
-        release(KeyCode.DOWN);
-        press(KeyCode.DOWN);
-        release(KeyCode.DOWN);
-        press(KeyCode.ENTER);
-
-        clickOn("#employeeTTV");
-        moveBy(0, -200);
-        press(MouseButton.PRIMARY);
-        release(MouseButton.PRIMARY);
+        addEmployeeInputs();
+        removeEmployeeInputs();
 
         String userName = lookup("#usernameTF").queryAs(TextField.class).getText();
 
