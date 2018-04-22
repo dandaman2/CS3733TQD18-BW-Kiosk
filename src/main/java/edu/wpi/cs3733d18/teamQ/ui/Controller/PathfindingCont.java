@@ -300,7 +300,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if(newValue.equals("")){
-                    startingNodeField.setText(youHere.getNameLong()+ ","+youHere.getNodeID());
+                    //startingNodeField.setText(youHere.getNameLong()+ ","+youHere.getNodeID());
                     updatePath();
                 }else {
                     updatePath();
@@ -407,13 +407,13 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         System.out.println("Running");
 
         if (startingNodeField.getText().isEmpty()){
-            startingNodeField.setText(youHere.getNameLong()+ ","+youHere.getNodeID());
+            //startingNodeField.setText(youHere.getNameLong()+ ","+youHere.getNodeID());//TODO this line causes the field editing bug
         }
 
         if ((!sTempStart.equals(startingNodeField.getText())) || (!sTempEnd.equals(endingNodeField.getText()))){
             sTempStart = startingNodeField.getText();
             sTempEnd = endingNodeField.getText();
-            if (!(startingNodeField.getText().isEmpty()) && !(endingNodeField.getText().isEmpty())) {
+            if (!(endingNodeField.getText().isEmpty())) {
                 getNodeFromTextFields(startingNodeField, endingNodeField);
                 generatePath();
             }else {
@@ -1079,22 +1079,38 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      * @param end Ending node textfield
      */
     public void getNodeFromTextFields(TextField start, TextField end) {
-            String[] valuesStart = start.getText().split(",");
+        if(start.getText().isEmpty()){
+            startNode = youHere;
             String[] valuesEnd = end.getText().split(",");
             //if text reads a node
-            if (valuesStart.length == 2 && valuesEnd.length==2) {
-                Node startingNode = selectedNode(valuesStart[1]);
+            if (valuesEnd.length==2) {
                 Node endingNode = selectedNode(valuesEnd[1]);
-                if ((startingNode != null) && (endingNode !=null)) {
-                    showSelection(startingNode);
+                if ((endingNode !=null)) {
                     showSelection(endingNode);
-                    startNode = startingNode;
                     curSelected = endingNode;
                     isSelected=true;
                 } else {
                     System.out.println("BadNode");
                 }
             }
+        } else {
+            String[] valuesStart = start.getText().split(",");
+            String[] valuesEnd = end.getText().split(",");
+            //if text reads a node
+            if (valuesStart.length == 2 && valuesEnd.length == 2) {
+                Node startingNode = selectedNode(valuesStart[1]);
+                Node endingNode = selectedNode(valuesEnd[1]);
+                if ((startingNode != null) && (endingNode != null)) {
+                    showSelection(startingNode);
+                    showSelection(endingNode);
+                    startNode = startingNode;
+                    curSelected = endingNode;
+                    isSelected = true;
+                } else {
+                    System.out.println("BadNode");
+                }
+            }
+        }
     }
 
 
