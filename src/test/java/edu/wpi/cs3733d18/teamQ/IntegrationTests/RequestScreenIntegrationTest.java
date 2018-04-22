@@ -98,7 +98,7 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
      */
     public void selectRequest(){
         clickOn("#treeTableViewPending");
-        moveBy(20,-80);
+        moveBy(0,-20);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
     }
@@ -109,15 +109,12 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
      */
     @Test
     public void addInterpreterRequestTest() throws InterruptedException {
-        clickOn("Pending Requests");
+        clickOn("Add Request");
 
         int reqNum = getNewRequestID();
         InterpreterRequest expectedLoggedRequest = new InterpreterRequest("Test First", "Test Last", "test@test.com", "1111111111", "Elevator N Node 25 Floor 2,GELEV00N02", "English");
         //Select Interpreter
-        clickOn("#dropDown");
-        Thread.sleep(500);
-        press(KeyCode.DOWN);
-        press(KeyCode.ENTER);
+        clickOn("#interpreterBtn");
 
         fillInRequestFieldsWithTestValues();
 
@@ -139,22 +136,17 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
      */
     @Test
     public void addSanitationRequestTest() throws InterruptedException {
-        clickOn("Pending Requests");
+        clickOn("Add Request");
 
         int reqNum = getNewRequestID();
         SanitationRequest expectedLoggedRequest = new SanitationRequest("Test First", "Test Last", "test@test.com", "1111111111", "Elevator N Node 25 Floor 2,GELEV00N02", "TEST");
         //Select Sanitation
-        clickOn("#dropDown");
-        Thread.sleep(500);
-        press(KeyCode.DOWN);
-        release(KeyCode.DOWN);
-        press(KeyCode.DOWN);
-        press(KeyCode.ENTER);
+        clickOn("#sanitationBtn");
 
         fillInRequestFieldsWithTestValues();
 
        //TODO probably make this not so hard coded but testFX is picky with changing visibility
-        moveBy(0, 50);
+        moveBy(0, 150);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
         write("TEST");
@@ -171,9 +163,14 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
      * @throws NullPointerException
      */
     @Test
-    public void removeRequestUnfulfilledTest() throws NullPointerException{
-        clickOn("Pending Requests");
+    public void removeRequestUnfulfilledTest() throws InterruptedException{
+        clickOn("Add Request");
 
+        clickOn("#interpreterBtn");
+        fillInRequestFieldsWithTestValues();
+        clickOn("#submitRequest");
+
+        clickOn("Pending Requests");
         selectRequest();
         String requestAllData = lookup("#scrollPane").queryAs(ScrollPane.class).getContent().toString();
         //System.out.println(requestAllData);
@@ -192,15 +189,13 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
      */
     @Test
     public void fulfillRequestTest() throws InterruptedException{
-        clickOn("Pending Requests");
+        clickOn("Add Request");
 
-        clickOn("#dropDown");
-        Thread.sleep(500);
-        press(KeyCode.DOWN);
-        press(KeyCode.ENTER);
+        clickOn("#interpreterBtn");
         fillInRequestFieldsWithTestValues();
         clickOn("#submitRequest");
 
+        clickOn("Pending Requests");
         selectRequest();
         String requestAllData = lookup("#scrollPane").queryAs(ScrollPane.class).getContent().toString();
         String requestID = requestAllData.substring(15, requestAllData.indexOf("\n", 15));
@@ -221,15 +216,13 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
      */
     @Test
     public void removeRequestFulfilledTest() throws Exception {
-        clickOn("Pending Requests");
+        clickOn("Add Request");
 
-        clickOn("#dropDown");
-        Thread.sleep(500);
-        press(KeyCode.DOWN);
-        press(KeyCode.ENTER);
+        clickOn("#interpreterBtn");
         fillInRequestFieldsWithTestValues();
         clickOn("#submitRequest");
 
+        clickOn("Pending Requests");
         selectRequest();
         clickOn("#whoFulfilled");
         write("Test Person");
@@ -239,7 +232,7 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
 
         clickOn("FulFilled Requests");
         clickOn("#treeTableViewFulfilled");
-        moveBy(20,-80);
+        moveBy(0,-20);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
 
@@ -249,7 +242,7 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
         clickOn("#removeFulFilled");
         fetchedRequest = getRequest(requestID);
         assertEquals( null, fetchedRequest);
-        clickOn("Pending Requests");
-        selectRequest();
+        clickOn("Add Request");
+//        selectRequest();
     }
 }

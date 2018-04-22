@@ -1,5 +1,6 @@
 package edu.wpi.cs3733d18.teamQ.ui.Controller;
 
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -31,29 +32,22 @@ public class AboutController {
 
        Label teamName = new Label("The Quenched Quinotaurs:");
        teamName.setStyle("-fx-font-size: 15pt;");
-       Label teamMembers = new Label("Lead Software Engineer: Daniel Duff\n" +
-               "Assistant Lead Software Engineers: James Kenney, Nugzar Chkhaidze\n" +
-               "Project Manager/Assistant Lead: Aleksander Ibro\n" +
+       Label teamMembers = new Label("Lead Software Engineer: Dan Duff\n" +
+               "Algorithms Lead: Nugzar Chkhaidze\n" +
+               "Database Lead - James Kenney\n" +
+               "Assistant Lead Software Engineers:\n" +
+               "Norman Delorey, Andrew DeRusha, Jesse d'Almeida, Aleksander Ibro\n" +
+               "Project Manager: Aleksander Ibro\n" +
                "Scrum Master: Maggie Goodwin\n" +
-               "Product Owner/Assistant Lead: Andrew DeRusha\n" +
-               "Test Engineer/Assistant Lead: Norman Delorey\n" +
+               "Product Owner: Andrew DeRusha\n" +
+               "Test Engineer: Norman Delorey\n" +
                "Documentation Analyst: Sarah Armstrong\n" +
-               "Software Engineers: Jesse d'Almeida, Krysta Murdy\n" +
+               "Software Engineers: Krysta Murdy\n" +
                "Team Coach: Andrew Rottier\n" +
                "Professor Wilson Wong\n" +
                "Worcester Polytechnic Institute Computer Science Department");
        teamMembers.setStyle("-fx-font-size: 12pt;");
        teamMembers.setTextAlignment(TextAlignment.CENTER);
-
-       Label SA = new Label("SA");
-       SA.setStyle("-fx-font-size: 12pt; -fx-font-style: bold;");
-       Label SAndrew = new Label("Andrew Rottier");
-       SAndrew.setStyle("-fx-font-size: 12pt;");
-       Label Prof = new Label("Professor");
-       Prof.setStyle("-fx-font-size: 12pt; -fx-font-style: bold;");
-       Label Wong = new Label("Wilson Wong");
-       Wong.setStyle("-fx-font-size: 12pt;");
-
 
        Label thanksTitle = new Label("Special Thanks:");
        thanksTitle.setStyle("-fx-font-size: 15pt;");
@@ -62,10 +56,11 @@ public class AboutController {
        thanksText.setStyle("-fx-font-size: 12pt;");
        thanksText.setTextAlignment(TextAlignment.CENTER);
 
-       teamName.setStyle("-fx-font-size: 15pt;");
-       Label copyState = new Label("The Brigham & Women’s Hospital maps and data used in this application are copyrighted\n" + "and provided for the sole use of educational purposes");
-       teamMembers.setStyle("-fx-font-size: 12pt;");
-       teamMembers.setTextAlignment(TextAlignment.CENTER);
+       Label copyState = new Label("The Brigham & Women’s Hospital maps and data used in this application\n" +
+               "are copyrighted and provided for the sole use of\n" +
+               "educational purposes");
+       copyState.setStyle("-fx-font-size: 12pt;");
+       copyState.setTextAlignment(TextAlignment.CENTER);
 
 
        // Formatting for the admin login

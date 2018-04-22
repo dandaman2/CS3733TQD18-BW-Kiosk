@@ -428,6 +428,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         updateDrawings();
 
 
+
     }
 
 
@@ -437,6 +438,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void generatePath() {
         backImagePane.getChildren().removeAll(drawnPath);
+        
         ArrayList<String> RestrictedTYPES = new ArrayList<String>();
 //        if(checkElevator.isSelected() == true)
 //            RestrictedTYPES.add("ELEV");
@@ -471,11 +473,21 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             user.editNodeSingleton(n);
         }
 
-
+        setToStart(queuedPath);
         drawPath(queuedPath);
+
         isPathDisplayed = true;
     }
 
+    /**
+     * Sets the user view to the center of the map on the starting floor
+     * @param path The path to set the start view to
+     */
+    public void setToStart(ArrayList<Node> path){
+        int floor = path.get(0).getFloor();
+        updateFloorMap(floor);
+        zoom.centerScrollToPath(path,floor,floorMaps.getIs2D());
+    }
 
     /**
      * Function to find the nearest location of the parsed type
@@ -1326,6 +1338,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                 transition.setOnFinished((e) -> {
                     getSnap();
                     updateFloorMap(nextData.getFloor());
+                    //zoom.centerScrollToPath(nextData.getNodeShells(),nextData.getFloor(),floorMaps.getIs2D());
                 }
                 );
             }
@@ -1341,6 +1354,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             allTransitions.getChildren().add(transition);
 
         }
+
         allTransitions.play();
         System.out.println("Play has been run");
 

@@ -56,6 +56,19 @@ public class TransitionData {
         return length/PIXELSPERSECOND;
     }
 
+    //returns the polyline as a list of nodes
+    public ArrayList<Node> getNodeShells(){
+        ArrayList<Node> nodes = new ArrayList<>();
+        for(int i=0; i<pathData.getPoints().size()-1; i+=2){
+            double x = pathData.getPoints().get(i);
+            double y = pathData.getPoints().get(i+1);
+            Node temp = new Node(x,y,floor,x,y);
+            nodes.add(temp);
+        }
+        return nodes;
+
+    }
+
 
 
     public int getFloor() {

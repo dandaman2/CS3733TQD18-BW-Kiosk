@@ -25,6 +25,14 @@ public class Node {
         this.hits = 0.0;
     }
 
+    public Node(Double xPos, Double yPos, int floor, Double xPos3D, Double yPos3D) {
+        this.xPos = xPos;
+        this.yPos = yPos;
+        this.floor = floor;
+        this.xPos3D = xPos3D;
+        this.yPos3D = yPos3D;
+    }
+
     public Node(String nodeID, Double xCoord, Double yCoord, int floorNum, String building,
                 String nodeType, String longName, String shortName, String team, Double xCoord3D, Double yCoord3D, Double hits){
         this.nodeID = nodeID;
