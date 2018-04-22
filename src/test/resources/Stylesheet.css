@@ -1,0 +1,16 @@
+/* External Stylesheet: buttons */
+
+JFXButton {
+    -fx-background-color: rgba(1,64,120,.9);
+    -fx-text-fill: white;
+}
+JFXButton:hover {
+    -fx-background-color: rgba(1,45,90,1);
+}
+JFXButton:pressed {
+    -fx-background-color: rgba(1,60,120,1);
+}
+
+#EmergencyBtn {
+    -fx-background-color: #FF0000;
+}

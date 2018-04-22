@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="mapPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="750.0" prefWidth="988.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamQ.ui.Controller.EditMapController">
+   <children>
+      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="80.0" prefWidth="726.0" style="-fx-border-color: black; -fx-background-color: #012D5A;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXButton fx:id="backBtn" prefHeight="78.0" prefWidth="221.0">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </JFXButton>
+            <Region prefHeight="78.0" prefWidth="175.0" HBox.hgrow="ALWAYS" />
+            <HBox prefHeight="32.0" prefWidth="319.0">
+               <children>
+                  <AnchorPane>
+                     <children>
+                        <ChoiceBox fx:id="algChoice" layoutY="34.0" prefHeight="31.0" prefWidth="158.0" AnchorPane.topAnchor="25.0" />
+                        <ChoiceBox fx:id="floorChoice" layoutX="161.0" layoutY="34.0" prefHeight="31.0" prefWidth="158.0" AnchorPane.topAnchor="25.0" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
+            <Region prefHeight="78.0" prefWidth="107.0" HBox.hgrow="NEVER" />
+            <JFXToggleButton fx:id="heatToggle" onAction="#updateDrawings" prefHeight="78.0" prefWidth="138.0" text="Heatmap" textFill="WHITE" toggleColor="RED" />
+            <ToggleButton fx:id="dToggle" mnemonicParsing="false" onAction="#toggleMap" prefHeight="78.0" prefWidth="81.0" text="ToggleButton" HBox.hgrow="NEVER">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font></ToggleButton>
+         </children>
+      </HBox>
+      <HBox layoutY="100.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+         <children>
+            <Region maxWidth="25.0" minWidth="25.0" prefHeight="650.0" prefWidth="25.0" HBox.hgrow="NEVER" />
+            <GridPane fx:id="editMapSide" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.0" prefWidth="169.0" HBox.hgrow="NEVER">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="224.0" GridPane.rowIndex="2">
+                     <children>
+                        <Label fx:id="nameLabel" text="Node Name">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <JFXTextField fx:id="nameField" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="3">
+                     <children>
+                        <Label text="2D x-coordinate" fx:id="x2dNode_toEdgeLabel">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <JFXTextField fx:id="x2dNode_toEdgeField" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="4">
+                     <children>
+                        <Label fx:id="y2dNode_fromEdgeLabel" text="2D y-coordinate">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <JFXTextField fx:id="y2dNode_fromEdgeField" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="6">
+                     <children>
+                        <Label text="3D x-coordinate" fx:id="x3dLabel">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <JFXTextField fx:id="x3dField" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="7">
+                     <children>
+                        <Label fx:id="y3dLabel" text="3D y-coordinate">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <JFXTextField fx:id="y3dField" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="8">
+                     <children>
+                        <Label fx:id="typeLabel" text="Node Type">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <JFXTextField fx:id="typeField" />
+                     </children>
+                  </VBox>
+                  <ComboBox fx:id="selector" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="210.0" promptText="Select Edit Option" />
+                  <JFXButton fx:id="addButton" onAction="#handleAction" prefHeight="50.0" prefWidth="267.0" text="Add Node" GridPane.rowIndex="9">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font></JFXButton>
+                  <JFXButton fx:id="removeButton" onAction="#removeFromMap" prefHeight="50.0" prefWidth="267.0" text="Remove Node" GridPane.rowIndex="10">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font></JFXButton>
+                  <JFXButton fx:id="betweenFloorEdges" onAction="#multiFloorEdgeAdd" prefHeight="50.0" prefWidth="267.0" text="Connect Floors" GridPane.rowIndex="11">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font></JFXButton>
+                  <JFXButton fx:id="clearButton" onAction="#handleAction" prefHeight="50.0" prefWidth="267.0" text="Clear" GridPane.rowIndex="12">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font></JFXButton>
+                  <JFXButton fx:id="guessBtn" onAction="#estimateCoords" prefHeight="50.0" prefWidth="267.0" text="Estimate Coords" GridPane.rowIndex="5">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </GridPane>
+            <Region maxWidth="23.0" minWidth="23.0" prefHeight="650.0" prefWidth="23.0" HBox.hgrow="NEVER" />
+            <AnchorPane prefHeight="650.0" prefWidth="772.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <SplitPane fx:id="mapSplitter" dividerPositions="0.5" layoutX="414.0" layoutY="172.0" orientation="VERTICAL" prefHeight="650.0" prefWidth="821.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                           <children>
+                              <ScrollPane fx:id="twoDScroll" prefHeight="321.0" prefWidth="819.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="0.0">
+                                 <content>
+                                    <AnchorPane fx:id="mapFrame2D">
+                                       <children>
+                                          <ImageView fx:id="curFloor2D" fitHeight="3400.0" fitWidth="5000.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                           <children>
+                              <ScrollPane fx:id="threeDScroll" layoutX="171.0" layoutY="121.0" prefHeight="321.0" prefWidth="986.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <content>
+                                    <AnchorPane fx:id="mapFrame3D">
+                                       <children>
+                                          <ImageView fx:id="curFloor3D" fitHeight="2774.0" fitWidth="5000.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <GridPane alignment="TOP_RIGHT" prefHeight="112.0" prefWidth="73.0" vgap="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="90.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <JFXButton fx:id="zoomOutButt" buttonType="RAISED" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#zoomOut" prefHeight="50.0" prefWidth="50.0" text="-" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <font>
+                  <Font name="Georgia Bold" size="19.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="zoomInButt" buttonType="RAISED" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#zoomIn" prefHeight="50.0" prefWidth="50.0" text="+" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <font>
+                  <Font name="Georgia Bold" size="19.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>
