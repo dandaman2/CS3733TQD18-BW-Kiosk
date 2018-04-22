@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class EmployeeScreenIntegrationTest extends ApplicationTest {
-    private final String PATH_TO_EMPLOYEEFXML = "/EmployeeEditController.fxml ";
+    private final String PATH_TO_EMPLOYEEFXML = "/fxmlFiles/EmployeeEditController.fxml ";
     private static User user;
     private EmployeeEditController empEditCont;
     private static Stage primaryStage;
