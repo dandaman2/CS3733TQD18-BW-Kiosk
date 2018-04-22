@@ -3,7 +3,6 @@ package edu.wpi.cs3733d18.teamQ.IntegrationTests;
 import edu.wpi.cs3733d18.teamQ.pathfinding.Edge;
 import edu.wpi.cs3733d18.teamQ.pathfinding.Node;
 import edu.wpi.cs3733d18.teamQ.ui.Controller.EditMapController;
-import edu.wpi.cs3733d18.teamQ.ui.Controller.ScreenUtil;
 import edu.wpi.cs3733d18.teamQ.ui.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 public class EditMapScreenIntegrationTest extends ApplicationTest {
     private final double EXPECTED_X_COORD = 1740.0;
     private final double EXPECTED_Y_COORD = 1416.0;
-    private final int DRAG_BY = -270;
+    private final int MOVE_BY = -270;
     private final String PATH_TO_EDITMAPFXML = "/fxmlFiles/EditMap.fxml";
     private static User user;
     private EditMapController editCont;
@@ -73,15 +72,15 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
      */
     private void moveToNodeLocation(){
         clickOn("#mapFrame2D");
-        moveBy(DRAG_BY, DRAG_BY);
+        moveBy(MOVE_BY, MOVE_BY);
     }
 
 
     /**
      * Script for adding a node. Automates inputing all of the data
      */
-    public void addNodeInputs(){
-
+    public String addNodeInputs(){
+        String id = editCont.generateID("REST");
         doubleClickOn("#nameField");
         write("testNode");
         //clickOn("#x2dNode_toEdgeField");
@@ -95,6 +94,7 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
         doubleClickOn("#typeField");
         write("REST");
         clickOn("#addButton");
+        return id;
     }
 
     /**
@@ -106,20 +106,20 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
         moveToNodeLocation();
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
-        addNodeInputs();
+        String id = addNodeInputs();
 
         clickOn("#mapFrame2D");
-        moveBy(DRAG_BY, DRAG_BY);
+        moveBy(MOVE_BY, MOVE_BY);
         press(MouseButton.PRIMARY);
         moveBy(0.0, 99.0);
         release(MouseButton.PRIMARY);
         doubleClickOn("#y2dNode_fromEdgeField");
         //clickOn("#addButton");
-        Node fetched = user.getNode("QREST05902");
+        Node fetched = user.getNode(id);
         System.out.println(fetched.getyPos());
         assertTrue(fetched.getyPos().equals(1614.0));
         clickOn("#mapFrame2D");
-        moveBy(DRAG_BY, DRAG_BY);
+        moveBy(MOVE_BY, MOVE_BY);
         moveBy(0.0, 99.0);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
@@ -132,13 +132,15 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
      */
     @Test
     public void addNodeTest(){
+        //Add node
         switchToNode();
         moveToNodeLocation();
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
-        addNodeInputs();
+        String id = addNodeInputs();
 
-        Node fetchedNode = user.getNode("QREST05902");
+        //Select and assert the node is correct
+        Node fetchedNode = user.getNode(id);
         System.out.println(fetchedNode.getyPos());
         assertTrue(fetchedNode.getyPos().equals(EXPECTED_Y_COORD));
         assertTrue(fetchedNode.getxPos().equals(EXPECTED_X_COORD));
@@ -147,7 +149,8 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
         assertEquals(fetchedNode.getType(), "REST");
         clickOn("#mapFrame2D");
 
-        moveBy(DRAG_BY, DRAG_BY);
+        //Remove node
+        moveBy(MOVE_BY, MOVE_BY);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
         clickOn("#removeButton");
@@ -163,13 +166,13 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
         moveToNodeLocation();
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
-        addNodeInputs();
+        String id = addNodeInputs();
         clickOn("#mapFrame2D");
-        moveBy(DRAG_BY, DRAG_BY);
+        moveBy(MOVE_BY, MOVE_BY);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
         clickOn("#removeButton");
-        assertEquals(user.getNode("QREST05902"), null);
+        assertEquals(user.getNode(id), null);
     }
 
     /**
@@ -217,20 +220,20 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
         moveToNodeLocation();
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
-        addNodeInputs();
+        String id1 = addNodeInputs();
         clickOn("#clearButton");
 
         moveToNodeLocation();
         moveBy(0.0, 99.0);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
-        addNodeInputs();
+        String id2 = addNodeInputs();
 
 
         switchToEdge();
         //SELECT THE NODES
         clickOn("#mapFrame2D");
-        moveBy(DRAG_BY, DRAG_BY);
+        moveBy(MOVE_BY, MOVE_BY);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
         moveBy(0.0, 99.0);
@@ -241,8 +244,8 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
         boolean edgeFound = false;
         ArrayList<Edge> edges = user.getEdges();
         for(int i = 0; i < edges.size(); i++){
-            if(edges.get(i).getStartNode().getNodeID().equals("QREST05902") || edges.get(i).getEndNode().getNodeID().equals("QREST05902")){
-                if (edges.get(i).getStartNode().getNodeID().equals("QREST06002") || edges.get(i).getEndNode().getNodeID().equals("QREST06002")){
+            if(edges.get(i).getStartNode().getNodeID().equals(id1) || edges.get(i).getEndNode().getNodeID().equals(id1)){
+                if (edges.get(i).getStartNode().getNodeID().equals(id2) || edges.get(i).getEndNode().getNodeID().equals(id2)){
                     edgeFound = true;
                 }
             }
@@ -253,12 +256,12 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
         switchToNode();
         //TEARDOWN -- REMOVE NODES
         clickOn("#mapFrame2D");
-        moveBy(DRAG_BY, DRAG_BY);
+        moveBy(MOVE_BY, MOVE_BY);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
         clickOn("#removeButton");
         clickOn("#mapFrame2D");
-        moveBy(DRAG_BY, DRAG_BY);
+        moveBy(MOVE_BY, MOVE_BY);
         moveBy(0.0, 99.0);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
@@ -275,19 +278,19 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
         moveToNodeLocation();
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
-        addNodeInputs();
+        String id1 = addNodeInputs();
         clickOn("#clearButton");
 
         moveToNodeLocation();
         moveBy(0.0, 99.0);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
-        addNodeInputs();
+        String id2 = addNodeInputs();
 
         switchToEdge();
         //SELECT THE NODES
         clickOn("#mapFrame2D");
-        moveBy(DRAG_BY, DRAG_BY);
+        moveBy(MOVE_BY, MOVE_BY);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
         moveBy(0.0, 99.0);
@@ -296,7 +299,7 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
         //ADD THE EDGE
         clickOn("#addButton");
         clickOn("#mapFrame2D");
-        moveBy(DRAG_BY, DRAG_BY);
+        moveBy(MOVE_BY, MOVE_BY);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
         moveBy(0.0, 99.0);
@@ -307,8 +310,8 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
         boolean edgeFound = false;
         ArrayList<Edge> edges = user.getEdges();
         for(int i = 0; i < edges.size(); i++){
-            if(edges.get(i).getStartNode().getNodeID().equals("QREST05902") || edges.get(i).getEndNode().getNodeID().equals("QREST05902")){
-                if (edges.get(i).getStartNode().getNodeID().equals("QREST06002") || edges.get(i).getEndNode().getNodeID().equals("QREST06002")){
+            if(edges.get(i).getStartNode().getNodeID().equals(id1) || edges.get(i).getEndNode().getNodeID().equals(id1)){
+                if (edges.get(i).getStartNode().getNodeID().equals(id2) || edges.get(i).getEndNode().getNodeID().equals(id2)){
                     edgeFound = true;
                 }
             }
@@ -318,12 +321,12 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
         //Teardown -- remove the nodes
         switchToNode();
         clickOn("#mapFrame2D");
-        moveBy(DRAG_BY, DRAG_BY);
+        moveBy(MOVE_BY, MOVE_BY);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
         clickOn("#removeButton");
         clickOn("#mapFrame2D");
-        moveBy(DRAG_BY, DRAG_BY);
+        moveBy(MOVE_BY, MOVE_BY);
         moveBy(0.0, 99.0);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
