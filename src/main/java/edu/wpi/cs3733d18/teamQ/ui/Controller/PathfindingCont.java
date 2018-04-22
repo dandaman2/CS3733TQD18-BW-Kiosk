@@ -4,7 +4,7 @@ package edu.wpi.cs3733d18.teamQ.ui.Controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import edu.wpi.cs3733d18.teamQ.pathfinding.*;
-import edu.wpi.cs3733d18.teamQ.ui.ArrowShapes.ProgressArrows;
+import edu.wpi.cs3733d18.teamQ.ui.ArrowShapes.BreadCrumber;
 import edu.wpi.cs3733d18.teamQ.ui.*;
 import edu.wpi.cs3733d18.teamQ.ui.ProxyMaps.FloorMaps;
 import edu.wpi.cs3733d18.teamQ.ui.ProxyMaps.IMap;
@@ -29,7 +29,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
@@ -49,7 +48,6 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.runningFromIntelli
 import static edu.wpi.cs3733d18.teamQ.ui.PathInstructions.captureAndSaveDisplay;
 import static java.lang.Math.acos;
 import static java.lang.Math.sqrt;
-import com.sun.javafx.css.Stylesheet;
 
 public class PathfindingCont extends JPanel implements Initializable, IZoomableCont, DocumentListener {
 
@@ -137,8 +135,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     @FXML
     private Button playButton;
 
-//    private NavigationBreadCrumb breadCrumb;
-
 
     //animation variables
     public ArrayList<TransitionData> transitions = new ArrayList<>();
@@ -176,6 +172,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     // Drawing nodes on map
     private MapNoder noder;
     private ArrayList<String> excludedTypesFromNodes = new ArrayList<String>();
+    private BreadCrumber breadCrumb;
 
 
     //Strings used to see if change was made
@@ -228,6 +225,8 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         backImagePane.getChildren().addAll(drawnPath);
         noder.displayNodes(getCurrFloor(), excludedTypesFromNodes, floorMaps.getIs2D());
         initYouAreHere();
+
+        breadCrumb = new BreadCrumber(floorMaps, hboxProgress, this);
         //new TimeoutData().initTimer(screenBinding);
         //initTimer();
     }
@@ -634,7 +633,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     }
 
 
-    ProgressArrows arrows = new ProgressArrows();
+    BreadCrumber arrows = new BreadCrumber();
 
 
     /**
@@ -678,18 +677,19 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         backImagePane.getChildren().removeAll(transList);
         backImagePane.getChildren().removeAll(labelList);
         backImagePane.getChildren().remove(starLabel);
-
-        hboxProgress.getChildren().removeAll(arrows.getStackList());
-
+//        breadCrumb.removeArrows();
+        hboxProgress.getChildren().removeAll(breadCrumb.getStackList());
 
         // clears list
         transList.clear();
         labelList.clear();
         starLabel = new Label();
-        arrows = new ProgressArrows(path, floorMaps, hboxProgress, this, arrows.getCurrSelected());
 
         // Arraylist to hold lines to be drawn
         drawnPath = new ArrayList<Line>();
+
+        // creates breadcrumbs
+        breadCrumb.drawCrumbs(path);
 
         // translates all nodes to new coords for when map moves
         for(Node nodeToTranslate : path){
@@ -811,9 +811,14 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                 }
                 // action event to transition floor
                 transButt.setOnAction((e)-> {
+                    if(arrowView.getRotate() == 0) // arrow pointing up
+                        breadCrumb.setCurrSelected(breadCrumb.getCurrSelected() + 1);
+                    else
+
+                        breadCrumb.setCurrSelected(breadCrumb.getCurrSelected() - 1);
+
                     updateFloorMap(goToFloor);
                     drawPath(queuedPath);
-
                 } );
 
                 transButt.setGraphic(arrowView);
@@ -870,9 +875,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         backImagePane.getChildren().addAll(labelList);
         backImagePane.getChildren().add(starLabel);
         backImagePane.getChildren().addAll(transList);
-        arrows.addArrows();
-
-
     }
 
 
