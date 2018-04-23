@@ -60,9 +60,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     @FXML
     GridPane gridTop;
 
-    private JFXTextField startingNodeField;
+    private AutoCompleteTextField startingNodeField;
 
-    private JFXTextField endingNodeField;
+    private AutoCompleteTextField endingNodeField;
 
     @FXML
     private Button exchange;
@@ -244,23 +244,23 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      ******************************************************/
 
     private void initializeTF(){
-        startingNodeField = new JFXTextField();//AutoCompleteTextField();
+        startingNodeField = new AutoCompleteTextField();
         startingNodeField.setPromptText("Start Location");
         startingNodeField.setText("");
         startingNodeField.setFont(Font.font("Georgia", 15));
         startingNodeField.setStyle("-fx-text-inner-color: white;");
         gridTop.add(startingNodeField,0,0);
         startingNodeField.setOnMousePressed(event -> updatePath());
-        //startingNodeField.setOnKeyPressed(event -> updateFilterStart(startingNodeField.getText()));
+        startingNodeField.setOnKeyPressed(event -> updateFilterStart(startingNodeField.getText()));
 
-        endingNodeField = new JFXTextField();//AutoCompleteTextField();
+        endingNodeField = new AutoCompleteTextField();
         endingNodeField.setPromptText("End Location");
         endingNodeField.setText("");
         endingNodeField.setStyle("-fx-text-inner-color: white;");
         endingNodeField.setFont(Font.font("Georgia", 15));
         gridTop.add(endingNodeField,2,0);
         endingNodeField.setOnMousePressed(event -> updatePath());
-        //endingNodeField.setOnKeyPressed(event -> updateFilterStart(endingNodeField.getText()));
+        endingNodeField.setOnKeyPressed(event -> updateFilterStart(endingNodeField.getText()));
     }
 
 
@@ -310,8 +310,8 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         ArrayList<String> nodeIdentification = pUtil.getNameIdNode(nodeList);
         //startingNodeField.setOnKeyReleased(event -> updateFilterStart(startingNodeField.getText()));
         //endingNodeField.setOnKeyReleased(event -> updateFilterEnd(endingNodeField.getText()));
-        TextFields.bindAutoCompletion(startingNodeField, nodeIdentification);
-        TextFields.bindAutoCompletion(endingNodeField, nodeIdentification);
+        //TextFields.bindAutoCompletion(startingNodeField, nodeIdentification);
+        //TextFields.bindAutoCompletion(endingNodeField, nodeIdentification);
         endingNodeField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {

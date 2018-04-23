@@ -45,7 +45,7 @@ public class AutoCompleteTextField extends JFXTextField {
         textProperty().addListener((observable, oldValue, newValue) -> {
             String enteredText = getText();
             //always hide suggestion if nothing has been entered (only "spacebars" are dissallowed in TextFieldWithLengthLimit)
-            if (enteredText == null || enteredText.isEmpty()) {
+            if (enteredText == null || enteredText.isEmpty() || stringExists()) {
                 entriesPopup.hide();
             } else {
                 //filter all possible suggestions depends on "Text", case insensitive
@@ -76,7 +76,7 @@ public class AutoCompleteTextField extends JFXTextField {
      *
      * @param searchResult The set of matching strings.
      */
-    private void populatePopup(List<String> searchResult, String searchReauest) {
+    private void populatePopup(List<String> searchResult, String searchRequest) {
         //List of "suggestions"
         List<CustomMenuItem> menuItems = new LinkedList<>();
         //List size - 10 or founded suggestions count
@@ -134,10 +134,23 @@ public class AutoCompleteTextField extends JFXTextField {
         return currentFilter;
     }
 
+
     /**
-     * hides the dropdown
+     * determines if the input string is a string that already exists so the drop down doesn't needlessly show
+     * @return
      */
-    public void hideDropDown(){
-        entriesPopup.hide();
+    private boolean stringExists(){
+        String text = this.getText();
+        String compare;
+
+        for (int i = 0; i< entries.size(); i++){
+            compare = entries.get(i);
+
+            if(text.equals(compare)){
+                return true;
+            }
+        }
+
+        return false;
     }
 }
