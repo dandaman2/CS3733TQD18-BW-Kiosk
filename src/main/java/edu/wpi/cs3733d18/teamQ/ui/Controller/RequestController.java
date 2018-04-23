@@ -2,6 +2,7 @@ package edu.wpi.cs3733d18.teamQ.ui.Controller;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import edu.wpi.cs3733d18.teamOapi.giftShop.GiftShop;
 import edu.wpi.cs3733d18.teamQ.pathfinding.Node;
 import edu.wpi.cs3733d18.teamQ.ui.Email;
 import edu.wpi.cs3733d18.teamQ.ui.Requests.InterpreterRequest;
@@ -1135,6 +1136,7 @@ public class  RequestController implements Initializable{
                 resetDefault();
                 requestType = "Gift";
                 highlightButton();
+                runAPI();
                 break;
 
             default:
@@ -1359,6 +1361,12 @@ public class  RequestController implements Initializable{
     }
 
 
+    //runAPI
+    public void runAPI() {
+        GiftShop giftShop = new GiftShop();
+        giftShop.run(0, 0, 1900, 1000, (String)null, "Path A", (String)null);
+    }
+
 //    //runAPI
 //    public void runAPI() throws IOException {
 //        RequestController2 requestController2 = new RequestController2();
@@ -1370,6 +1378,6 @@ public class  RequestController implements Initializable{
 //            e.printStackTrace();
 //        }
 //    }
-//
+
 }
 
