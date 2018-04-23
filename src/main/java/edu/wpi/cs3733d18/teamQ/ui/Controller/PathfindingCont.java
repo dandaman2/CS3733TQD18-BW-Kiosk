@@ -3,6 +3,7 @@ package edu.wpi.cs3733d18.teamQ.ui.Controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733d18.teamQ.pathfinding.*;
 import edu.wpi.cs3733d18.teamQ.ui.ArrowShapes.BreadCrumber;
 import edu.wpi.cs3733d18.teamQ.ui.*;
@@ -31,8 +32,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import me.xdrop.fuzzywuzzy.FuzzySearch;
+import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 import org.controlsfx.control.textfield.TextFields;
 
 import javax.swing.*;
@@ -41,6 +45,7 @@ import javax.swing.event.DocumentListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.getNodes;
@@ -53,12 +58,11 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
     //Path Inputs
     @FXML
-    private TextField startingNodeField;
+    GridPane gridTop;
 
+    private JFXTextField startingNodeField;
 
-
-    @FXML
-    private TextField endingNodeField;
+    private JFXTextField endingNodeField;
 
     @FXML
     private Button exchange;
@@ -204,11 +208,12 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         //get array of all nodes
         //make an array of string that are gotten from the nodes
         //once user selects string, go through array of nodes to find the appropriate node
-        initAutoComp(nodes);
         youHere = user.getNode("GELEV00N02");
         startNode = youHere;
 
         initializeButtons();
+        initializeTF();
+        initAutoComp(nodes);
         initZoom();
         initEmailDrawer();
         initStar();
@@ -238,16 +243,32 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      *
      ******************************************************/
 
+    private void initializeTF(){
+        startingNodeField = new JFXTextField();//AutoCompleteTextField();
+        startingNodeField.setPromptText("Start Location");
+        startingNodeField.setText("");
+        startingNodeField.setFont(Font.font("Georgia", 15));
+        startingNodeField.setStyle("-fx-text-inner-color: white;");
+        gridTop.add(startingNodeField,0,0);
+        startingNodeField.setOnMousePressed(event -> updatePath());
+        //startingNodeField.setOnKeyPressed(event -> updateFilterStart(startingNodeField.getText()));
+
+        endingNodeField = new JFXTextField();//AutoCompleteTextField();
+        endingNodeField.setPromptText("End Location");
+        endingNodeField.setText("");
+        endingNodeField.setStyle("-fx-text-inner-color: white;");
+        endingNodeField.setFont(Font.font("Georgia", 15));
+        gridTop.add(endingNodeField,2,0);
+        endingNodeField.setOnMousePressed(event -> updatePath());
+        //endingNodeField.setOnKeyPressed(event -> updateFilterStart(endingNodeField.getText()));
+    }
+
 
     private void initializeTopBar(){
         topBar.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
     }
 
     private void initializeButtons(){
-        //homeButton.setBackground(new Background(new BackgroundFill(Paint.valueOf("#ECECEC"), new CornerRadii(0), null)));
-        //homeButton.setStyle("-fx-text-fill: #FFFFFF;");
-        //homeButton.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
         Image info;
         if(runningFromIntelliJ()) {
             info = new Image("/ButtonImages/whiteHut.png");
@@ -287,6 +308,8 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     private void initAutoComp(ArrayList<Node> nodeList) {
         ArrayList<String> nodeIdentification = pUtil.getNameIdNode(nodeList);
+        //startingNodeField.setOnKeyReleased(event -> updateFilterStart(startingNodeField.getText()));
+        //endingNodeField.setOnKeyReleased(event -> updateFilterEnd(endingNodeField.getText()));
         TextFields.bindAutoCompletion(startingNodeField, nodeIdentification);
         TextFields.bindAutoCompletion(endingNodeField, nodeIdentification);
         endingNodeField.textProperty().addListener(new ChangeListener<String>() {
@@ -403,6 +426,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
 // Sends the updated path info to the Pathfinding Controller
     public void updatePath() {
+
         System.out.println("Running");
 
         if (startingNodeField.getText().isEmpty()){
@@ -1024,7 +1048,44 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      *
      ******************************************************/
 
-    //TODO: Change color of floor button that is selected
+    /**
+     * updates the filter for the searching of the start node
+     * @param text
+     */
+    private void updateFilterStart(String text) {
+        ArrayList<String> nodeIdentification = pUtil.getNameIdNode(nodes);
+        List<ExtractedResult> fuzzyFilter =  FuzzySearch.extractSorted(text, nodeIdentification);
+
+        ArrayList<String> currentFilter = new ArrayList<String>();
+        for(int i = 0; i < fuzzyFilter.size(); i++){
+            ExtractedResult current = fuzzyFilter.get(i);
+            //System.out.println(current.getString() + " - " + current.getScore() + " for " +text);
+
+            currentFilter.add(current.getString());
+        }
+
+        //startingNodeField.getEntries().addAll(currentFilter);
+    }
+
+    /**
+     * updates the filter for the searching of the end node
+     * @param text
+     */
+    private void updateFilterEnd(String text) {
+        ArrayList<String> nodeIdentification = pUtil.getNameIdNode(nodes);
+        List<ExtractedResult> fuzzyFilter =  FuzzySearch.extractSorted(text, nodeIdentification);
+
+        ArrayList<String> currentFilter = new ArrayList<String>();
+        for(int i = 0; i < fuzzyFilter.size(); i++){
+            ExtractedResult current = fuzzyFilter.get(i);
+            //System.out.println(current.getString() + " - " + current.getScore() + " for " +text);
+
+            currentFilter.add(current.getString());
+        }
+
+        //endingNodeField.getEntries().addAll(currentFilter);
+    }
+
 
     /**
      * Function to exchange the text between

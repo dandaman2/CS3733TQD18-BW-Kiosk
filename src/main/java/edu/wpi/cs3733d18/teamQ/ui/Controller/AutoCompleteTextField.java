@@ -89,7 +89,7 @@ public class AutoCompleteTextField extends JFXTextField {
             Label entryLabel = new Label();
             entryLabel.setText(result);
             //entryLabel.setGraphic(Styles.buildTextFlow(result, searchReauest));
-            entryLabel.setPrefWidth(400);
+            entryLabel.setPrefWidth(300);
             entryLabel.setPrefHeight(15);  //don't sure why it's changed with "graphic"
             CustomMenuItem item = new CustomMenuItem(entryLabel, true);
             menuItems.add(item);
@@ -127,10 +127,17 @@ public class AutoCompleteTextField extends JFXTextField {
         ArrayList<String> currentFilter = new ArrayList<String>();
         for(int i = 0; i < fuzzyFilter.size(); i++){
             ExtractedResult current = fuzzyFilter.get(i);
-            System.out.println(current.getString() + " - " + current.getScore() + " for " +text);
+            //System.out.println(current.getString() + " - " + current.getScore() + " for " +text);
 
             currentFilter.add(current.getString());
         }
         return currentFilter;
+    }
+
+    /**
+     * hides the dropdown
+     */
+    public void hideDropDown(){
+        entriesPopup.hide();
     }
 }
