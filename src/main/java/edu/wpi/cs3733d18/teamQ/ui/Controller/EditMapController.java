@@ -1,6 +1,7 @@
 package edu.wpi.cs3733d18.teamQ.ui.Controller;
 
 import com.jfoenix.controls.*;
+import edu.wpi.cs3733d18.teamQ.ui.LineEdge;
 import edu.wpi.cs3733d18.teamQ.pathfinding.Edge;
 import edu.wpi.cs3733d18.teamQ.pathfinding.Node;
 import edu.wpi.cs3733d18.teamQ.ui.*;
@@ -27,7 +28,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.textfield.TextFields;
@@ -67,13 +67,13 @@ public class EditMapController implements Initializable, IZoomableCont {
     private Label x2dNode_toEdgeLabel;
 
     @FXML
-    private JFXTextField x2dNode_toEdgeField;
+    JFXTextField x2dNode_toEdgeField;
 
     @FXML
     private Label y2dNode_fromEdgeLabel;
 
     @FXML
-    private JFXTextField y2dNode_fromEdgeField;
+    JFXTextField y2dNode_fromEdgeField;
 
     @FXML
     private JFXButton guessBtn;
@@ -204,8 +204,12 @@ public class EditMapController implements Initializable, IZoomableCont {
     CircleNode otherSel1 = new CircleNode();
     CircleNode otherSel2 = new CircleNode();
 
-    ArrayList<Line> drawn3DEdges = new ArrayList<>();
-    ArrayList<Line> drawn2DEdges = new ArrayList<>();
+//    ArrayList<Line> drawn3DEdges = new ArrayList<>();
+//    ArrayList<Line> drawn2DEdges = new ArrayList<>();
+
+
+    ArrayList<LineEdge> drawn3DEdges = new ArrayList<>();
+    ArrayList<LineEdge> drawn2DEdges = new ArrayList<>();
 
     MapEditUtil editUtil = new MapEditUtil(this);
     IMap floorMap2D;
@@ -338,48 +342,48 @@ public class EditMapController implements Initializable, IZoomableCont {
         zoomOutButt.setPrefWidth(dToggle.getPrefWidth());
     }
 
-    /*public void showHeatmap(ActionEvent actionEvent) {
-        ArrayList<Node> floorNodes = user.getFloorNodes(floorMap2D.getCurrFloor()); //getNodesByFloor(floorMap2D.getCurrFloor());
-
-        //for 3D
-        mapFrame3D.getChildren().removeAll(threeDPoints);
-        threeDPoints = new ArrayList<>();
-
-        //for 2D
-        mapFrame2D.getChildren().removeAll(twoDPoints);
-        twoDPoints = new ArrayList<>();
-
-        double maxHits = user.getMaxHits();
+    private void displayHeat(CircleNode cn){
+        double maxHits = Math.max(user.getMaxHits(),1);
         double scale = 255.0/maxHits;
-        double heatColor1;
-        double heatColor2;
-        //TransPoint tp;
-        for (Node n : floorNodes) {
-            CircleNode circle3d = generate3DCircleNode(n);
-            CircleNode circle2d = generate2DCircleNode(n);
-//            System.out.println(circle2d.getNode().getxPos());
-            heatColor1 = n.getHits()*scale;
-            String heatString1 = Integer.toHexString((int) heatColor1);
-            if(heatColor1<=15) {
-                heatString1 = "0"+heatString1;
+        double sizeScale = 10.0/maxHits;
+        int heatColor1;
+        int heatColor2;
+        double nodeSize;
+        if(heatToggle.isSelected()) {
+            heatColor1 = (int) (cn.getNode().getHits() * scale);
+            String heatString1 = Integer.toHexString(heatColor1);
+            if (heatColor1 <= 15) {
+                heatString1 = "0" + heatString1;
             }
 
-            heatColor2 = 255-(n.getHits()*scale);
-            String heatString2 = Integer.toHexString((int) heatColor2);
-            if(heatColor2<=15) {
-                heatString2 = "0"+heatString2;
+            heatColor2 = (int) (255 - (cn.getNode().getHits() * scale));
+            String heatString2 = Integer.toHexString(heatColor2);
+            if (heatColor2 <= 15) {
+                heatString2 = "0" + heatString2;
             }
-            circle2d.setStyle("-fx-fill: #"+heatString1+"00"+heatString2+";");
-            circle3d.setStyle("-fx-fill: #"+heatString1+"00"+heatString2+";");
-
-            threeDPoints.add(circle3d);
-            twoDPoints.add(circle2d);
-            //saveToSingleton(circle3d, circle2d);
+            nodeSize = (cn.getNode().getHits() * sizeScale) + 7;
+            //cn.setStyle("-fx-fill: #" + heatString1 + "00" + heatString2 + ";");
+            cn.setFill(Color.rgb(heatColor1,0,heatColor2));
+            cn.setRadius(nodeSize);
         }
+        else {
+            cn.setFill(nodeColor);
+            cn.setRadius(10);
+        }
+    }
 
-        mapFrame3D.getChildren().addAll(threeDPoints);
-        mapFrame2D.getChildren().addAll(twoDPoints);
-    }*/
+//    private Color getHeatColor(CircleNode){
+//        double maxHits = Math.max(user.getMaxHits(),1);
+//        double scale = 255.0/maxHits;
+//        double sizeScale = 10.0/maxHits;
+//        double heatColor1;
+//        double heatColor2;
+//        double nodeSize;
+//        if(heatToggle.isSelected()) {
+//            heatColor1 = cn.getNode().getHits() * scale;
+//
+//            heatColor2 = 255 - (cn.getNode().getHits() * scale);
+//    }
 
     public void estimateCoords(){
         boolean xy2DFilled = false;
@@ -595,8 +599,21 @@ public class EditMapController implements Initializable, IZoomableCont {
                             loadSelection((String) selected);
                             System.out.println("Selected " + selected);
 //                            updateDrawings();
-                            curSel1.setFill(nodeColor);
-                            curSel2.setFill(nodeColor);
+                            //curSel1.setFill(nodeColor);
+                            //curSel2.setFill(nodeColor);
+//                            if(heatToggle.isSelected()){
+//                                displayHeat(curSel1);
+//                                displayHeat(curSel2);
+//                            } else {
+//                                curSel1.setFill(nodeColor);
+//                                curSel2.setFill(nodeColor);
+//                            }
+                            if(curSel1.getNode()!=null){
+                                displayHeat(curSel1);
+                            }
+                            if(curSel2.getNode()!=null){
+                                displayHeat(curSel2);
+                            }
                             curSel1 = new CircleNode();
                             curSel2 = new CircleNode();
 //                            saveToDatabase();
@@ -607,8 +624,21 @@ public class EditMapController implements Initializable, IZoomableCont {
                 });
         selector.getSelectionModel().selectFirst();
         loadSelection("Edit Nodes");
-        curSel1.setFill(nodeColor);
-        curSel2.setFill(nodeColor);
+        //curSel1.setFill(nodeColor);
+        //curSel2.setFill(nodeColor);
+//        if(heatToggle.isSelected()){
+//            displayHeat(curSel1);
+//            displayHeat(curSel2);
+//        } else {
+//            curSel1.setFill(nodeColor);
+//            curSel2.setFill(nodeColor);
+//        }
+        if(curSel1.getNode()!=null){
+            displayHeat(curSel1);
+        }
+        if(curSel2.getNode()!=null){
+            displayHeat(curSel2);
+        }
         curSel1 = new CircleNode();
         curSel2 = new CircleNode();
 //        saveToDatabase();
@@ -1065,7 +1095,7 @@ public class EditMapController implements Initializable, IZoomableCont {
             CircleNode circle3d = generate3DCircleNode(n);
             CircleNode circle2d = generate2DCircleNode(n);
 
-            if(heatToggle.isSelected()) {
+            /*if(heatToggle.isSelected()) {
                 heatColor1 = n.getHits() * scale;
                 String heatString1 = Integer.toHexString((int) heatColor1);
                 if (heatColor1 <= 15) {
@@ -1082,7 +1112,9 @@ public class EditMapController implements Initializable, IZoomableCont {
                 circle2d.setRadius(nodeSize);
                 circle3d.setStyle("-fx-fill: #" + heatString1 + "00" + heatString2 + ";");
                 circle3d.setRadius(nodeSize);
-            }
+            }*/
+            displayHeat(circle2d);
+            displayHeat(circle3d);
 
             threeDPoints.add(circle3d);
             twoDPoints.add(circle2d);
@@ -1107,7 +1139,9 @@ public class EditMapController implements Initializable, IZoomableCont {
         circle.setCenterX(tp.getTx());
         circle.setCenterY(tp.getTy());
         circle.setRadius(10.0f);
-        circle.setFill(nodeColor);
+        //circle.setFill(nodeColor);
+        displayHeat(circle);
+        //circle.setFill(Color.rgb(0,0,0));
 
         circle.setCursor(Cursor.HAND);
 
@@ -1115,7 +1149,10 @@ public class EditMapController implements Initializable, IZoomableCont {
 
             if(mode.equals("en")){
                 resetNodeColoring();
-                curSel1.setFill(nodeColor);
+                //curSel1.setFill(nodeColor);
+                if(curSel1.getNode()!=null){
+                    displayHeat(curSel1);
+                }
                 curSel1 = circle;
                 curSel1.setFill(select1Color);
                 hlOther(curSel1);
@@ -1127,7 +1164,10 @@ public class EditMapController implements Initializable, IZoomableCont {
 
                     try {
                         resetNodeColoring();
-                        curSel1.setFill(nodeColor);
+                        //curSel1.setFill(nodeColor);
+                        if(curSel1.getNode()!=null){
+                            displayHeat(curSel1);
+                        }
                         curSel1 = curSel2;
                         curSel1.setFill(select1Color);
                         curSel2 = circle;
@@ -1142,8 +1182,14 @@ public class EditMapController implements Initializable, IZoomableCont {
                 }
                 else{
                     resetNodeColoring();
-                    curSel1.setFill(nodeColor);
-                    curSel2.setFill(nodeColor);
+                    //curSel1.setFill(nodeColor);
+                    //curSel2.setFill(nodeColor);
+                    if(curSel1.getNode()!=null){
+                        displayHeat(curSel1);
+                    }
+                    if(curSel2.getNode()!=null){
+                        displayHeat(curSel2);
+                    }
                     curSel1 = circle;
                     curSel1.setFill(select1Color);
                     curSel2 = curSel1;
@@ -1164,7 +1210,7 @@ public class EditMapController implements Initializable, IZoomableCont {
 
         });
         circle.setOnMouseDragged((t) -> {
-
+            threeDScroll.setPannable(false);
             double offsetX = t.getX() - orgPosXCirc3D;
             double offsetY = t.getY() - orgPosYCirc3D;
 
@@ -1183,6 +1229,7 @@ public class EditMapController implements Initializable, IZoomableCont {
 
         circle.setOnMouseReleased((t)->{
             System.out.println("saving node 3d");
+            threeDScroll.setPannable(true);
             saveToSingleton(circle, 3);
         });
 
@@ -1202,7 +1249,9 @@ public class EditMapController implements Initializable, IZoomableCont {
         circle.setCenterX(tp.getTx());
         circle.setCenterY(tp.getTy());
         circle.setRadius(10.0f);
-        circle.setFill(nodeColor);
+        //circle.setFill(nodeColor);
+        //circle.setFill(Color.rgb(0,0,0));
+        displayHeat(circle);
 
         circle.setCursor(Cursor.HAND);
 
@@ -1212,7 +1261,11 @@ public class EditMapController implements Initializable, IZoomableCont {
 
             if(mode.equals("en")){
                 resetNodeColoring();
-                curSel1.setFill(nodeColor);
+                if(curSel1.getNode()!=null){
+                    displayHeat(curSel1);
+                }
+                //curSel1.setFill(Color.rgb(0,0,0));
+                //displayHeat(curSel1);
                 curSel1 = circle;
                 curSel1.setFill(select1Color);
                 hlOther(curSel1);
@@ -1224,7 +1277,10 @@ public class EditMapController implements Initializable, IZoomableCont {
                     System.out.println("Same dim");
                     try {
                         resetNodeColoring();
-                        curSel1.setFill(nodeColor);
+                        //curSel1.setFill(nodeColor);
+                        if(curSel1.getNode()!=null){
+                            displayHeat(curSel1);
+                        }
                         curSel1 = curSel2;
                         curSel1.setFill(select1Color);
                         curSel2 = circle;
@@ -1239,8 +1295,14 @@ public class EditMapController implements Initializable, IZoomableCont {
                 } else {
                     System.out.println("diff dim");
                     resetNodeColoring();
-                    curSel1.setFill(nodeColor);
-                    curSel2.setFill(nodeColor);
+                    //curSel1.setFill(nodeColor);
+                    //curSel2.setFill(nodeColor);
+                    if(curSel1.getNode()!=null){
+                        displayHeat(curSel1);
+                    }
+                    if(curSel2.getNode()!=null){
+                        displayHeat(curSel2);
+                    }
                     curSel1 = circle;
                     curSel1.setFill(select1Color);
                     curSel2 = curSel1;
@@ -1261,6 +1323,7 @@ public class EditMapController implements Initializable, IZoomableCont {
         });
 
         circle.setOnMouseDragged((t) -> {
+            twoDScroll.setPannable(false);
             System.out.println("dragging 2d node");
             double offsetX = t.getX() - orgPosXCirc;
             double offsetY = t.getY() - orgPosYCirc;
@@ -1280,6 +1343,7 @@ public class EditMapController implements Initializable, IZoomableCont {
         });
 
         circle.setOnMouseReleased((t)->{
+            twoDScroll.setPannable(true);
             System.out.println("saving node 2d");
             saveToSingleton(circle, 2);
         });
@@ -1370,34 +1434,10 @@ public class EditMapController implements Initializable, IZoomableCont {
         mapFrame3D.getChildren().removeAll(drawn3DEdges);
         mapFrame2D.getChildren().removeAll(drawn2DEdges);
 
-//        ArrayList<Node> nodesOnFloor = getNodesByFloor(floor);
-//        ArrayList<Edge> edgesOnFloor = getEdgesByFloor(floor);
-//
-//        drawn3DEdges = new ArrayList<>();
-//
-//        for (Edge e : edgesOnFloor) {
-//
-//            Line line = new Line();
-//            try {
-//                line.startXProperty().bind(getCircleFor(e.getStartNode()).centerXProperty());
-//                line.startYProperty().bind(getCircleFor(e.getStartNode()).centerYProperty());
-//
-//                line.endXProperty().bind(getCircleFor(e.getEndNode()).centerXProperty());
-//                line.endYProperty().bind(getCircleFor(e.getEndNode()).centerYProperty());
-//
-//
-//                line.setStrokeWidth(3);
-//                line.setStroke(Color.BLUE);
-//                drawn3DEdges.add(line);
-//            } catch (NullPointerException err) {
-//                System.out.println("floor edge prob");
-//            }
-//        }
-
-        drawn3DEdges = editUtil.SetEdges(drawn3DEdges,floorMap3D.getCurrFloor(),3, heatToggle.isSelected());
+        drawn3DEdges = editUtil.SetEdges(floorMap3D.getCurrFloor(),3, heatToggle.isSelected());
         mapFrame3D.getChildren().addAll(drawn3DEdges);
 
-        drawn2DEdges = editUtil.SetEdges(drawn2DEdges,floorMap2D.getCurrFloor(),2, heatToggle.isSelected());
+        drawn2DEdges = editUtil.SetEdges(floorMap2D.getCurrFloor(),2, heatToggle.isSelected());
         mapFrame2D.getChildren().addAll(drawn2DEdges);
     }
 
@@ -1430,23 +1470,6 @@ public class EditMapController implements Initializable, IZoomableCont {
         nodeToEdit.setxPos(circle2d.getCenterX());
         nodeToEdit.setyPos(circle2d.getCenterY());
         user.editNodeSingleton(nodeToEdit);
-        /*for(CircleNode cn : threeDPoints){
-            Node nodeToEdit = cn.getNode();
-            nodeToEdit.setxPos3D(cn.getCenterX());
-            nodeToEdit.setyPos3D(cn.getCenterY());
-            user.editNodeSingleton(nodeToEdit);
-            //user.addNodeToEdit(nodeToEdit);
-            //editNodeSingleton(nodeToEdit);
-        }
-        //for 2d
-        for(CircleNode cn : twoDPoints){
-            Node nodeToEdit = cn.getNode();
-            nodeToEdit.setxPos(cn.getCenterX());
-            nodeToEdit.setyPos(cn.getCenterY());
-            user.editNodeSingleton(nodeToEdit);
-            //user.addNodeToEdit(nodeToEdit);
-            //editNodeSingleton(nodeToEdit);
-        }*/
     }
 
     //removes the selected node or edge from the map
@@ -1473,28 +1496,29 @@ public class EditMapController implements Initializable, IZoomableCont {
 
         }
         if(mode.equals("ee")){
-            Node node1 = curSel1.getNode();
-            Node node2 = curSel2.getNode();
-            ArrayList<Edge> edges1 = user.getNodeEdges(node1); //getEdgesByNode(node1);
-            ArrayList<Edge> edges2 = user.getNodeEdges(node2); //getEdgesByNode(node2);
-            System.out.println("REMOVING EDGE");
-            for(Edge e1: edges1){
-                for(Edge e2 : edges2){
-                    if(e2.getEdgeID().equals(e1.getEdgeID())){
-                        user.removeEdgeSingleton(e1);
-                        System.out.println("EDGE REMOVED");
-                        //removeEdgeSingleton(e1);
-                        updateDrawings();
-                        return;
-                    }
-                }
-            }
-
-
+            Edge edgeToRemove = editUtil.getCurSel().getEdge();
+            user.removeEdgeSingleton(edgeToRemove);
+            System.out.println("EDGE REMOVED");
+            updateDrawings();
         }
 
 
 
+    }
+
+    public Edge getEdgeFromNodes(Node node1, Node node2){
+        ArrayList<Edge> edges1 = user.getNodeEdges(node1); //getEdgesByNode(node1);
+        ArrayList<Edge> edges2 = user.getNodeEdges(node2); //getEdgesByNode(node2);
+        System.out.println("REMOVING EDGE");
+        for(Edge e1: edges1){
+            for(Edge e2 : edges2){
+                if(e2.getEdgeID().equals(e1.getEdgeID())){
+                    return e1;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -1520,28 +1544,34 @@ public class EditMapController implements Initializable, IZoomableCont {
         int dem = circNode.getDimension();
         if(dem == 3){
             for(CircleNode cn : twoDPoints){
-                cn.setFill(nodeColor);
+                //cn.setFill(nodeColor);
+                //cn.setFill(Color.rgb(0,0,0));
             }
             for(CircleNode cn: twoDPoints){
                 if(cn.getNode().getNodeID().equals(circNode.getNode().getNodeID())){
                     cn.setFill(select2Color);
                 }
                 else {
-                    cn.setFill(nodeColor);
+                    //cn.setFill(nodeColor);
+                    //cn.setFill(Color.rgb(0,0,0));
+                    displayHeat(cn);
                 }
 
             }
         }
         if(dem == 2){
             for(CircleNode cn : threeDPoints){
-                cn.setFill(nodeColor);
+                //cn.setFill(nodeColor);
+                //cn.setFill(Color.rgb(0,0,0));
             }
             for(CircleNode cn: threeDPoints){
                 if(cn.getNode().getNodeID().equals(circNode.getNode().getNodeID())){
                     cn.setFill(select2Color);
                 }
                 else {
-                    cn.setFill(nodeColor);
+                    //cn.setFill(nodeColor);
+                    //cn.setFill(Color.rgb(0,0,0));
+                    displayHeat(cn);
                 }
 
             }
@@ -1555,7 +1585,7 @@ public class EditMapController implements Initializable, IZoomableCont {
         int dem = cn1.getDimension();
         if(dem == 3){
             for(CircleNode cn : twoDPoints){
-                cn.setFill(nodeColor);
+                //cn.setFill(nodeColor);
             }
             for(CircleNode cn: twoDPoints){
                 if(cn.getNode().getNodeID().equals(cn1.getNode().getNodeID())){
@@ -1565,14 +1595,16 @@ public class EditMapController implements Initializable, IZoomableCont {
                     cn.setFill(select2Color);
                 }
                 else {
-                    cn.setFill(nodeColor);
+                    //cn.setFill(nodeColor);
+                    //cn.setFill(Color.rgb(0,0,0));
+                    displayHeat(cn);
                 }
 
             }
         }
         if(dem == 2){
             for(CircleNode cn : threeDPoints){
-                cn.setFill(nodeColor);
+                //cn.setFill(nodeColor);
             }
             for(CircleNode cn: threeDPoints){
                 if(cn.getNode().getNodeID().equals(cn1.getNode().getNodeID())){
@@ -1582,7 +1614,9 @@ public class EditMapController implements Initializable, IZoomableCont {
                     cn.setFill(select2Color);
                 }
                 else {
-                    cn.setFill(nodeColor);
+                    //cn.setFill(nodeColor);
+                    //cn.setFill(Color.rgb(0,0,0));
+                    displayHeat(cn);
                 }
 
             }
@@ -1592,10 +1626,14 @@ public class EditMapController implements Initializable, IZoomableCont {
     //Resets all the node coloring to the default node color
     public void resetNodeColoring(){
         for(CircleNode cn : threeDPoints){
-            cn.setFill(nodeColor);
+            //cn.setFill(nodeColor);
+            //cn.setFill(Color.rgb(255,255,255));
+            displayHeat(cn);
         }
         for(CircleNode cn : twoDPoints){
-            cn.setFill(nodeColor);
+            //cn.setFill(nodeColor);
+            //cn.setFill(Color.rgb(255,255,255));
+            displayHeat(cn);
         }
     }
 

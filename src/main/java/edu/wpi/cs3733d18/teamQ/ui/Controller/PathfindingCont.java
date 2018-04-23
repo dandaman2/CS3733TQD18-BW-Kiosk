@@ -3,8 +3,9 @@ package edu.wpi.cs3733d18.teamQ.ui.Controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733d18.teamQ.pathfinding.*;
-import edu.wpi.cs3733d18.teamQ.ui.ArrowShapes.ProgressArrows;
+import edu.wpi.cs3733d18.teamQ.ui.ArrowShapes.BreadCrumber;
 import edu.wpi.cs3733d18.teamQ.ui.*;
 import edu.wpi.cs3733d18.teamQ.ui.ProxyMaps.FloorMaps;
 import edu.wpi.cs3733d18.teamQ.ui.ProxyMaps.IMap;
@@ -29,11 +30,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import me.xdrop.fuzzywuzzy.FuzzySearch;
+import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 import org.controlsfx.control.textfield.TextFields;
 
 import javax.swing.*;
@@ -42,6 +45,7 @@ import javax.swing.event.DocumentListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.getNodes;
@@ -49,18 +53,16 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.runningFromIntelli
 import static edu.wpi.cs3733d18.teamQ.ui.PathInstructions.captureAndSaveDisplay;
 import static java.lang.Math.acos;
 import static java.lang.Math.sqrt;
-import com.sun.javafx.css.Stylesheet;
 
 public class PathfindingCont extends JPanel implements Initializable, IZoomableCont, DocumentListener {
 
     //Path Inputs
     @FXML
-    private TextField startingNodeField;
+    GridPane gridTop;
 
+    private JFXTextField startingNodeField;
 
-
-    @FXML
-    private TextField endingNodeField;
+    private JFXTextField endingNodeField;
 
     @FXML
     private Button exchange;
@@ -137,8 +139,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     @FXML
     private Button playButton;
 
-//    private NavigationBreadCrumb breadCrumb;
-
 
     //animation variables
     public ArrayList<TransitionData> transitions = new ArrayList<>();
@@ -176,6 +176,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     // Drawing nodes on map
     private MapNoder noder;
     private ArrayList<String> excludedTypesFromNodes = new ArrayList<String>();
+    private BreadCrumber breadCrumb;
 
 
     //Strings used to see if change was made
@@ -207,11 +208,12 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         //get array of all nodes
         //make an array of string that are gotten from the nodes
         //once user selects string, go through array of nodes to find the appropriate node
-        initAutoComp(nodes);
         youHere = user.getNode("GELEV00N02");
         startNode = youHere;
 
         initializeButtons();
+        initializeTF();
+        initAutoComp(nodes);
         initZoom();
         initEmailDrawer();
         initStar();
@@ -228,6 +230,8 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         backImagePane.getChildren().addAll(drawnPath);
         noder.displayNodes(getCurrFloor(), excludedTypesFromNodes, floorMaps.getIs2D());
         initYouAreHere();
+
+        breadCrumb = new BreadCrumber(floorMaps, hboxProgress, this);
         //new TimeoutData().initTimer(screenBinding);
         //initTimer();
     }
@@ -239,16 +243,32 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      *
      ******************************************************/
 
+    private void initializeTF(){
+        startingNodeField = new JFXTextField();//AutoCompleteTextField();
+        startingNodeField.setPromptText("Start Location");
+        startingNodeField.setText("");
+        startingNodeField.setFont(Font.font("Georgia", 15));
+        startingNodeField.setStyle("-fx-text-inner-color: white;");
+        gridTop.add(startingNodeField,0,0);
+        startingNodeField.setOnMousePressed(event -> updatePath());
+        //startingNodeField.setOnKeyPressed(event -> updateFilterStart(startingNodeField.getText()));
+
+        endingNodeField = new JFXTextField();//AutoCompleteTextField();
+        endingNodeField.setPromptText("End Location");
+        endingNodeField.setText("");
+        endingNodeField.setStyle("-fx-text-inner-color: white;");
+        endingNodeField.setFont(Font.font("Georgia", 15));
+        gridTop.add(endingNodeField,2,0);
+        endingNodeField.setOnMousePressed(event -> updatePath());
+        //endingNodeField.setOnKeyPressed(event -> updateFilterStart(endingNodeField.getText()));
+    }
+
 
     private void initializeTopBar(){
         topBar.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
     }
 
     private void initializeButtons(){
-        //homeButton.setBackground(new Background(new BackgroundFill(Paint.valueOf("#ECECEC"), new CornerRadii(0), null)));
-        //homeButton.setStyle("-fx-text-fill: #FFFFFF;");
-        //homeButton.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
         Image info;
         if(runningFromIntelliJ()) {
             info = new Image("/ButtonImages/whiteHut.png");
@@ -288,6 +308,8 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     private void initAutoComp(ArrayList<Node> nodeList) {
         ArrayList<String> nodeIdentification = pUtil.getNameIdNode(nodeList);
+        //startingNodeField.setOnKeyReleased(event -> updateFilterStart(startingNodeField.getText()));
+        //endingNodeField.setOnKeyReleased(event -> updateFilterEnd(endingNodeField.getText()));
         TextFields.bindAutoCompletion(startingNodeField, nodeIdentification);
         TextFields.bindAutoCompletion(endingNodeField, nodeIdentification);
         endingNodeField.textProperty().addListener(new ChangeListener<String>() {
@@ -404,6 +426,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
 // Sends the updated path info to the Pathfinding Controller
     public void updatePath() {
+
         System.out.println("Running");
 
         if (startingNodeField.getText().isEmpty()){
@@ -426,6 +449,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         updateDrawings();
 
 
+
     }
 
 
@@ -435,6 +459,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void generatePath() {
         backImagePane.getChildren().removeAll(drawnPath);
+        
         ArrayList<String> RestrictedTYPES = new ArrayList<String>();
 //        if(checkElevator.isSelected() == true)
 //            RestrictedTYPES.add("ELEV");
@@ -469,11 +494,21 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             user.editNodeSingleton(n);
         }
 
-
+        setToStart(queuedPath);
         drawPath(queuedPath);
+
         isPathDisplayed = true;
     }
 
+    /**
+     * Sets the user view to the center of the map on the starting floor
+     * @param path The path to set the start view to
+     */
+    public void setToStart(ArrayList<Node> path){
+        int floor = path.get(0).getFloor();
+        updateFloorMap(floor);
+        zoom.centerScrollToPath(path,floor,floorMaps.getIs2D());
+    }
 
     /**
      * Function to find the nearest location of the parsed type
@@ -622,7 +657,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     }
 
 
-    ProgressArrows arrows = new ProgressArrows();
+    BreadCrumber arrows = new BreadCrumber();
 
 
     /**
@@ -666,18 +701,19 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         backImagePane.getChildren().removeAll(transList);
         backImagePane.getChildren().removeAll(labelList);
         backImagePane.getChildren().remove(starLabel);
-
-        hboxProgress.getChildren().removeAll(arrows.getStackList());
-
+//        breadCrumb.removeArrows();
+        hboxProgress.getChildren().removeAll(breadCrumb.getStackList());
 
         // clears list
         transList.clear();
         labelList.clear();
         starLabel = new Label();
-        arrows = new ProgressArrows(path, floorMaps, hboxProgress, this, arrows.getCurrSelected());
 
         // Arraylist to hold lines to be drawn
         drawnPath = new ArrayList<Line>();
+
+        // creates breadcrumbs
+        breadCrumb.drawCrumbs(path);
 
         // translates all nodes to new coords for when map moves
         for(Node nodeToTranslate : path){
@@ -799,9 +835,14 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                 }
                 // action event to transition floor
                 transButt.setOnAction((e)-> {
+                    if(arrowView.getRotate() == 0) // arrow pointing up
+                        breadCrumb.setCurrSelected(breadCrumb.getCurrSelected() + 1);
+                    else
+
+                        breadCrumb.setCurrSelected(breadCrumb.getCurrSelected() - 1);
+
                     updateFloorMap(goToFloor);
                     drawPath(queuedPath);
-
                 } );
 
                 transButt.setGraphic(arrowView);
@@ -858,9 +899,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         backImagePane.getChildren().addAll(labelList);
         backImagePane.getChildren().add(starLabel);
         backImagePane.getChildren().addAll(transList);
-        arrows.addArrows();
-
-
     }
 
 
@@ -1010,7 +1048,44 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      *
      ******************************************************/
 
-    //TODO: Change color of floor button that is selected
+    /**
+     * updates the filter for the searching of the start node
+     * @param text
+     */
+    private void updateFilterStart(String text) {
+        ArrayList<String> nodeIdentification = pUtil.getNameIdNode(nodes);
+        List<ExtractedResult> fuzzyFilter =  FuzzySearch.extractSorted(text, nodeIdentification);
+
+        ArrayList<String> currentFilter = new ArrayList<String>();
+        for(int i = 0; i < fuzzyFilter.size(); i++){
+            ExtractedResult current = fuzzyFilter.get(i);
+            //System.out.println(current.getString() + " - " + current.getScore() + " for " +text);
+
+            currentFilter.add(current.getString());
+        }
+
+        //startingNodeField.getEntries().addAll(currentFilter);
+    }
+
+    /**
+     * updates the filter for the searching of the end node
+     * @param text
+     */
+    private void updateFilterEnd(String text) {
+        ArrayList<String> nodeIdentification = pUtil.getNameIdNode(nodes);
+        List<ExtractedResult> fuzzyFilter =  FuzzySearch.extractSorted(text, nodeIdentification);
+
+        ArrayList<String> currentFilter = new ArrayList<String>();
+        for(int i = 0; i < fuzzyFilter.size(); i++){
+            ExtractedResult current = fuzzyFilter.get(i);
+            //System.out.println(current.getString() + " - " + current.getScore() + " for " +text);
+
+            currentFilter.add(current.getString());
+        }
+
+        //endingNodeField.getEntries().addAll(currentFilter);
+    }
+
 
     /**
      * Function to exchange the text between
@@ -1324,6 +1399,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                 transition.setOnFinished((e) -> {
                     getSnap();
                     updateFloorMap(nextData.getFloor());
+                    //zoom.centerScrollToPath(nextData.getNodeShells(),nextData.getFloor(),floorMaps.getIs2D());
                 }
                 );
             }
@@ -1339,6 +1415,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             allTransitions.getChildren().add(transition);
 
         }
+
         allTransitions.play();
         System.out.println("Play has been run");
 
