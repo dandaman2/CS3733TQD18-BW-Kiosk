@@ -14,19 +14,27 @@ import javafx.animation.PathTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -139,6 +147,15 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     @FXML
     private Button playButton;
 
+    //Scrolling and zooming functionality
+    @FXML
+    private ScrollPane imageScroller;
+    final DoubleProperty zoomProperty = new SimpleDoubleProperty(1);
+    @FXML
+    private AnchorPane outerAnchor;
+    final double SCALE_DELTA = 1.1;
+    public double SCALE_TOTAL = 1;
+
 
     //animation variables
     public ArrayList<TransitionData> transitions = new ArrayList<>();
@@ -184,9 +201,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     String sTempEnd = "";
 
 
-    //the zoompane for the pathfinding
-    ZoomPane zoom;
-
     //timeline for idle
     Timeline timeline = null;
 
@@ -214,7 +228,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         initializeButtons();
         initializeTF();
         initAutoComp(nodes);
-        initZoom();
+
+        initScroll();
+
         initEmailDrawer();
         initStar();
         initializeTopBar();
@@ -242,6 +258,39 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      * Initializers
      *
      ******************************************************/
+    public void initScroll(){
+
+        imageScroller.addEventFilter(ScrollEvent.ANY, new EventHandler<ScrollEvent>() {
+            @Override
+            public void handle(ScrollEvent event) {
+                if (event.getDeltaY() == 0) {
+                    return;
+                }
+                double scaleFactor
+                        = (event.getDeltaY() > 0)
+                        ? SCALE_DELTA
+                        : 1 / SCALE_DELTA;
+                if (scaleFactor * SCALE_TOTAL >= 1) {
+                    Bounds viewPort = imageScroller.getViewportBounds();
+                    Bounds contentSize = backImagePane.getBoundsInParent();
+
+                    double centerPosX = (contentSize.getWidth() - viewPort.getWidth()) * imageScroller.getHvalue() + viewPort.getWidth() / 2;
+                    double centerPosY = (contentSize.getHeight() - viewPort.getHeight()) * imageScroller.getVvalue() + viewPort.getHeight() / 2;
+
+                    backImagePane.setScaleX(backImagePane.getScaleX() * scaleFactor);
+                    backImagePane.setScaleY(backImagePane.getScaleY() * scaleFactor);
+                    SCALE_TOTAL *= scaleFactor;
+
+                    double newCenterX = centerPosX * scaleFactor;
+                    double newCenterY = centerPosY * scaleFactor;
+
+                    imageScroller.setHvalue((newCenterX - viewPort.getWidth()/2) / (contentSize.getWidth() * scaleFactor - viewPort.getWidth()));
+                    imageScroller.setVvalue((newCenterY - viewPort.getHeight()/2) / (contentSize.getHeight() * scaleFactor  -viewPort.getHeight()));
+                }
+
+            }
+        });
+    }
 
     private void initializeTF(){
         startingNodeField = new JFXTextField();//AutoCompleteTextField();
@@ -333,19 +382,12 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     }
 
     /**
-     * Initializes the zoom and scroll features on the map
+     * binds the image to its pane if needed
      */
-    public void initZoom() {
-        zoom = new ZoomPane(this);
-        Parent zoomPane = zoom.createZoomPane(backImage);
-        vbox.getChildren().setAll(zoomPane);
-        VBox.setVgrow(zoomPane, Priority.ALWAYS);
-
+    public void jankBind(){
         backImage.fitWidthProperty().bind(backImagePane.widthProperty());
         backImage.fitHeightProperty().bind(backImagePane.heightProperty());
     }
-
-
     /**
      * initializes the email drawer
      */
@@ -507,7 +549,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     public void setToStart(ArrayList<Node> path){
         int floor = path.get(0).getFloor();
         updateFloorMap(floor);
-        zoom.centerScrollToPath(path,floor,floorMaps.getIs2D());
+//        zoom.centerScrollToPath(path,floor,floorMaps.getIs2D());
     }
 
     /**
@@ -1353,15 +1395,11 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             return;
         }
 
-
         if(!emailDrawer.isHidden()){
             openEmailDrawer();
         }
-        //locking zoom
-//        initZoom();
-        backImage.setScaleX(1.4);
-        backImage.setScaleY(1.4);
-        zoom.centerScroll();
+       // backImage.setScaleX(1.4);
+       // backImage.setScaleY(1.4);
         updateDrawings();
 
         System.out.println("starting animation");
@@ -1399,7 +1437,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                 transition.setOnFinished((e) -> {
                     getSnap();
                     updateFloorMap(nextData.getFloor());
-                    //zoom.centerScrollToPath(nextData.getNodeShells(),nextData.getFloor(),floorMaps.getIs2D());
+                    centerScrollToPath(nextData.getNodeShells(),nextData.getFloor(),floorMaps.getIs2D());
                 }
                 );
             }
@@ -1452,7 +1490,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
     //gets the snapshot of the floor
     public void getSnap(){
-        SnapData file = captureAndSaveDisplay(backImagePane, vbox.getWidth(), vbox.getHeight(), imageNumber);
+        SnapData file = captureAndSaveDisplay(backImagePane, backImagePane.getWidth(), backImagePane.getHeight(), imageNumber);
         allFiles.add(file);
         imageNumber++;
     }
@@ -1465,16 +1503,54 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         floor11.setDisable(b);
         floor21.setDisable(b);
         floor31.setDisable(b);
-        zoom.setLocked(b);
         startingNodeField.setDisable(b);
         exchange.setDisable(b);
         endingNodeField.setDisable(b);
-        if(b){
-            zoom.disableScroll();
+//        if(b){
+//            zoom.disableScroll();
+//        }
+//        else{
+//            zoom.enableScroll();
+//        }
+    }
+
+
+    //centers the scroller to the average path location
+    public void centerScrollToPath(ArrayList<Node> path, int floor, boolean is2D){
+        double avgXCoord=0;
+        double avgYCoord=0;
+        double numNodes=0;
+        for(Node n : path){
+            if(n.getFloor() == floor){
+                numNodes++;
+                if(is2D){
+                    avgXCoord+=n.getxPos();
+                    avgYCoord+=n.getyPos();
+                }
+                else{
+                    avgXCoord+=n.getxPos3D();
+                    avgYCoord+=n.getyPos3D();
+                }
+            }
         }
-        else{
-            zoom.enableScroll();
+        if(avgXCoord+avgYCoord+numNodes>0){
+            double imgWidth = 5000;
+            double imgHeight;
+            if(is2D){
+                imgHeight=3400;
+            }
+            else{
+                imgHeight = 2774;
+            }
+            imageScroller.setVvalue(avgYCoord/numNodes/imgHeight);
+            imageScroller.setHvalue(avgXCoord/numNodes/imgWidth);
+            System.out.println("x pos: " + avgXCoord);
+            System.out.println("y pos: " + avgYCoord);
+            System.out.println("H middle: " + (imageScroller.getHmax() - imageScroller.getHmin())/2);
+            System.out.println("V middle: " + (imageScroller.getVmax() - imageScroller.getVmin())/2);
+            System.out.println("Nodes: " + numNodes);
         }
+
     }
 
     /**
