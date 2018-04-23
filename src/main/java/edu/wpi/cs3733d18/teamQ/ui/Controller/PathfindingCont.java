@@ -258,6 +258,10 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      * Initializers
      *
      ******************************************************/
+
+    /**
+     * initializes the scrolling and panning of the pathfinding map
+     */
     public void initScroll(){
 
         imageScroller.addEventFilter(ScrollEvent.ANY, new EventHandler<ScrollEvent>() {
@@ -291,6 +295,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             }
         });
     }
+
 
     private void initializeTF(){
         startingNodeField = new JFXTextField();//AutoCompleteTextField();
@@ -1417,6 +1422,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
 
         transitions.add(null);
+        //centerScrollToPath(transitions.get(0).getNodeShells(),transitions.get(0).getFloor(),floorMaps.getIs2D(), false);
         for (int i = 0; i < transitions.size()-1; i++) {
             TransitionData curTrans = transitions.get(i);
             System.out.println("Transitions Count: " + transitions.size());
@@ -1431,13 +1437,14 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             transition.setNode(movingPart);
             transition.setPath(path);
             transition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+
             if(transitions.get(i+1)  != null ) {
                 System.out.println("Grabbing next transition floor selection");
                 TransitionData nextData = transitions.get(i+1);
                 transition.setOnFinished((e) -> {
                     getSnap();
                     updateFloorMap(nextData.getFloor());
-                    centerScrollToPath(nextData.getNodeShells(),nextData.getFloor(),floorMaps.getIs2D());
+                    //centerScrollToPath(nextData.getNodeShells(),nextData.getFloor(),floorMaps.getIs2D(), true);
                 }
                 );
             }
@@ -1516,7 +1523,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
 
     //centers the scroller to the average path location
-    public void centerScrollToPath(ArrayList<Node> path, int floor, boolean is2D){
+    public void centerScrollToPath(ArrayList<Node> path, int floor, boolean is2D, boolean isZoomed){
+
+       double zoomOffset = (isZoomed) ? 0 : 100;
         double avgXCoord=0;
         double avgYCoord=0;
         double numNodes=0;
@@ -1542,8 +1551,13 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             else{
                 imgHeight = 2774;
             }
-            imageScroller.setVvalue(avgYCoord/numNodes/imgHeight);
+
+            imageScroller.setVvalue((avgYCoord/numNodes/imgHeight)+zoomOffset);
             imageScroller.setHvalue(avgXCoord/numNodes/imgWidth);
+            if(!isZoomed) {
+                zoomTo(2.0);
+            }
+
             System.out.println("x pos: " + avgXCoord);
             System.out.println("y pos: " + avgYCoord);
             System.out.println("H middle: " + (imageScroller.getHmax() - imageScroller.getHmin())/2);
@@ -1552,6 +1566,50 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         }
 
     }
+
+    /**
+     * centers the scroll to follow the movign part
+     */
+    public void moveToPart(ImageView imgv){
+        double imgWidth = 5000;
+        double imgHeight;
+        if(floorMaps.getIs2D()){
+            imgHeight=3400;
+        }
+        else{
+            imgHeight = 2774;
+        }
+        imageScroller.setVvalue((imgv.getX())/imgWidth);
+        imageScroller.setHvalue((imgv.getY())/imgHeight);
+    }
+
+    /**
+     * sets the zoom to the desired scale value
+     */
+    public void zoomTo(double scale){
+        double scaleFactor
+                = (scale>0)
+                ? scale
+                : 1 / scale;
+        if (scaleFactor * SCALE_TOTAL >= 1) {
+            Bounds viewPort = imageScroller.getViewportBounds();
+            Bounds contentSize = backImagePane.getBoundsInParent();
+
+            double centerPosX = (contentSize.getWidth() - viewPort.getWidth()) * imageScroller.getHvalue() + viewPort.getWidth() / 2;
+            double centerPosY = (contentSize.getHeight() - viewPort.getHeight()) * imageScroller.getVvalue() + viewPort.getHeight() / 2;
+
+            backImagePane.setScaleX(backImagePane.getScaleX() * scaleFactor);
+            backImagePane.setScaleY(backImagePane.getScaleY() * scaleFactor);
+            SCALE_TOTAL *= scaleFactor;
+
+            double newCenterX = centerPosX * scaleFactor;
+            double newCenterY = centerPosY * scaleFactor;
+
+            imageScroller.setHvalue((newCenterX - viewPort.getWidth()/2) / (contentSize.getWidth() * scaleFactor - viewPort.getWidth()));
+            imageScroller.setVvalue((newCenterY - viewPort.getHeight()/2) / (contentSize.getHeight() * scaleFactor  -viewPort.getHeight()));
+        }
+    }
+
 
     /**
      * Returns the current floor
