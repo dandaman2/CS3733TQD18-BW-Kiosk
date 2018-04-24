@@ -141,7 +141,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     private ImageView movingPart;
 
     @FXML
-    private Button playButton;
+    private ToggleButton playButton;
 
     @FXML
     private Label floorLabel;
@@ -158,9 +158,10 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     final double SCALE_DELTA = 1.1;
     public double SCALE_TOTAL = 1;
 
-    //the animated path ant variables
+    //the animated path and ant variables
     ArrayList<Timeline> antTimeLines = new ArrayList<>();
     ArrayList<Polyline> antPaths = new ArrayList<>();
+    SequentialTransition allTransitions;
 
     //animation variables
     public ArrayList<TransitionData> transitions = new ArrayList<>();
@@ -1590,6 +1591,32 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     }
 
 
+    /**
+     * The toggling action for the play button
+     */
+    public void toggleRunAnimation(){
+        if(playButton.isSelected()){
+            runTransitions();
+            playButton.setGraphic(null);
+            playButton.setText("STOP");
+        }
+        else{
+            playButton.setText(null);
+            Image play;
+            if(runningFromIntelliJ()) {
+                play = new Image("/ButtonImages/video-play-icon.png");
+            } else{
+                play = new Image("ButtonImages/video-play-icon.png");
+            }
+            ImageView playView = new ImageView(play);
+            playButton.setGraphic(playView);
+            allTransitions.stop();
+            backImagePane.getChildren().remove(movingPart);
+            isUIDisabled(false);
+
+        }
+    }
+
 
     //Runs all the transitions queued up in the transitions Arraylist
     public void runTransitions() {
@@ -1610,7 +1637,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             updateFloorMap(transitions.get(0).getFloor());
         }
 
-        SequentialTransition allTransitions = new SequentialTransition();
+        allTransitions = new SequentialTransition();
         SequentialTransition allTimelines = new SequentialTransition();
 
         backImagePane.getChildren().remove(movingPart);
@@ -1650,6 +1677,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                     //for emailing
                     getSnap();
                     backImagePane.getChildren().remove(movingPart);
+                    playButton.setSelected(false);
                     openEmailDrawer();
                 });
 
@@ -1826,10 +1854,13 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      * @param floor
      */
    public void updateFloorMap(int floor){
+        boolean showLabel = (floor != floorMaps.getCurrFloor());
         floorMaps.updateFloorMap(floor);
         updateDrawings();
         highlightButton(floor);
-        floorTransition();
+        if(showLabel) {
+            floorTransition();
+        }
    }
 
     /**
