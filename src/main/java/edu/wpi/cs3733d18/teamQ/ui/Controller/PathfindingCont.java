@@ -337,27 +337,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         infoView.setFitWidth(42);
         infoView.setFitHeight(40);
         homeButton.setGraphic(infoView);
-
-
-        floorL21.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        floorL21.setStyle("-fx-text-fill: #FFFFFF;");
-        floorL21.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        floorL11.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        floorL11.setStyle("-fx-text-fill: #FFFFFF;");
-        floorL11.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        floor11.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        floor11.setStyle("-fx-text-fill: #FFFFFF;");
-        floor11.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        floor21.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        floor21.setStyle("-fx-text-fill: #FFFFFF;");
-        floor21.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        floor31.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        floor31.setStyle("-fx-text-fill: #FFFFFF;");
-        floor31.setRipplerFill(Paint.valueOf("#FFFFFF"));
     }
 
     /**
@@ -387,7 +366,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                 }
             }
         });
-
     }
 
     /**
