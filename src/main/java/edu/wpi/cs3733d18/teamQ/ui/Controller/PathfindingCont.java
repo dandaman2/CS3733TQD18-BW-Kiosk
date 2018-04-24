@@ -19,6 +19,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -148,6 +149,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     @FXML
     private Button playButton;
 
+    @FXML
+    private Label floorLabel;
+
     //Scrolling and zooming functionality
     @FXML
     private ScrollPane imageScroller;
@@ -252,6 +256,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         initYouAreHere();
 
         breadCrumb = new BreadCrumber(floorMaps, hboxProgress, this);
+        initFloorLabel();
         //new TimeoutData().initTimer(screenBinding);
         //initTimer();
     }
@@ -300,6 +305,25 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         });
     }
 
+
+    private FadeTransition fadeIn = new FadeTransition( Duration.millis(1500));
+
+    public void initFloorLabel() {
+        floorLabel.setVisible(false);
+        floorLabel.setStyle("-fx-text-fill: #818181;" + "-fx-font-size: 500;" + "-fx-font-weight: 700;");
+
+        fadeIn.setNode(floorLabel);
+        fadeIn.setFromValue(0.75);
+        fadeIn.setToValue(0.0);
+        fadeIn.setCycleCount(1);
+        fadeIn.setAutoReverse(false);
+    }
+
+    private void floorTransition() {
+        floorLabel.setText(floorMaps.currFloorString());
+        floorLabel.setVisible(true);
+        fadeIn.playFromStart();
+    }
 
     private void initializeTF(){
         startingNodeField = new AutoCompleteTextField();
@@ -1308,6 +1332,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void buttonFloor3(){
         updateFloorMap(3);
+        floorTransition();
     }
 
     /**
@@ -1315,6 +1340,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void buttonFloor2(){
         updateFloorMap(2);
+        floorTransition();
     }
 
     /**
@@ -1322,6 +1348,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void buttonFloor1(){
         updateFloorMap(1);
+        floorTransition();
     }
 
     /**
@@ -1329,6 +1356,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void buttonFloorL1(){
         updateFloorMap(-1);
+        floorTransition();
     }
 
     /**
@@ -1336,6 +1364,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void buttonFloorL2(){
         updateFloorMap(-2);
+        floorTransition();
     }
 
     /**
