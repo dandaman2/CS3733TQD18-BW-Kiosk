@@ -162,7 +162,7 @@
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <ScrollPane fx:id="twoDScroll" prefHeight="321.0" prefWidth="819.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="0.0">
+                              <ScrollPane fx:id="twoDScroll" pannable="true" prefHeight="321.0" prefWidth="819.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="0.0">
                                  <content>
                                     <AnchorPane fx:id="mapFrame2D">
                                        <children>
@@ -175,7 +175,7 @@
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <ScrollPane fx:id="threeDScroll" layoutX="171.0" layoutY="121.0" prefHeight="321.0" prefWidth="986.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <ScrollPane fx:id="threeDScroll" layoutX="171.0" layoutY="121.0" pannable="true" prefHeight="321.0" prefWidth="986.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <content>
                                     <AnchorPane fx:id="mapFrame3D">
                                        <children>

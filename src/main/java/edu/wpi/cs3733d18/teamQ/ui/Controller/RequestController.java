@@ -2,6 +2,7 @@ package edu.wpi.cs3733d18.teamQ.ui.Controller;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import edu.wpi.cs3733d18.teamOapi.giftShop.GiftShop;
 import edu.wpi.cs3733d18.teamQ.pathfinding.Node;
 import edu.wpi.cs3733d18.teamQ.ui.Email;
 import edu.wpi.cs3733d18.teamQ.ui.Requests.InterpreterRequest;
@@ -27,6 +28,9 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import me.xdrop.fuzzywuzzy.FuzzySearch;
+import me.xdrop.fuzzywuzzy.model.ExtractedResult;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
 import javax.naming.ServiceUnavailableException;
@@ -36,6 +40,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.*;
@@ -58,8 +63,8 @@ public class  RequestController implements Initializable{
     private JFXTextField firstNameTF;
     @FXML
     private JFXTextField lastNameTF;
-    @FXML
-    private JFXTextField roomLocationTF;
+
+    AutoCompleteTextField roomLocationTF;
     @FXML
     private JFXTextField emailTF;
     @FXML
@@ -184,6 +189,7 @@ public class  RequestController implements Initializable{
     // screenUtil object for request room searching
     ScreenUtil pUtil = new ScreenUtil();
     public ArrayList<Node> nodes;
+    public ArrayList<String> currentFilter;
 
 
     //Initializes the scene
@@ -249,8 +255,14 @@ public class  RequestController implements Initializable{
         lastNameTF.setPromptText("Requester's Last Name");
         lastNameTF.setText(null);
 
+        roomLocationTF = new AutoCompleteTextField();
         roomLocationTF.setPromptText("Room Location");
-        roomLocationTF.setText(null);
+        roomLocationTF.setText("");
+        grid1_1_1.add(roomLocationTF,0,3);
+        //roomLocationTF.setOnInputMethodTextChanged(event -> updateFilter(roomLocationTF.getText()));
+        //roomLocationTF.setOnKeyPressed(event -> updateFilter(roomLocationTF.getText()));
+        roomLocationTF.setOnKeyReleased(event -> updateFilter(roomLocationTF.getText()));
+        //roomLocationTF.setOnKeyTyped(event -> updateFilter(roomLocationTF.getText()));
 
         emailTF.setPromptText("Email");
         emailTF.setText(null);
@@ -884,6 +896,7 @@ public class  RequestController implements Initializable{
         treeTableViewPending.getColumns().setAll(priorityColumn, idColumn, typeColumn, roomColumn, lastNameColumn);
         treeTableViewPending.setRoot(pendingRoot);
         treeTableViewPending.setShowRoot(false);
+        treeTableViewPending.setColumnResizePolicy(TreeTableView.CONSTRAINED_RESIZE_POLICY);
     }
 
 
@@ -937,6 +950,7 @@ public class  RequestController implements Initializable{
         treeTableViewFulfilled.getColumns().setAll(priorityColumn, idColumn, typeColumn, roomColumn, lastNameColumn);
         treeTableViewFulfilled.setRoot(pendingRoot);
         treeTableViewFulfilled.setShowRoot(false);
+        treeTableViewFulfilled.setColumnResizePolicy(TreeTableView.CONSTRAINED_RESIZE_POLICY);
     }
 
 
@@ -947,7 +961,27 @@ public class  RequestController implements Initializable{
     private void initAutoComp(ArrayList<Node> nodeList) {
         ArrayList<String> nodeIdentification = pUtil.getNameIdNode(nodeList);
 
-        TextFields.bindAutoCompletion(roomLocationTF, nodeIdentification);
+        //TextFields.bindAutoCompletion(roomLocationTF, nodeIdentification);
+    }
+
+
+    /**
+     * updates the filter for the searching
+     * @param text
+     */
+    private void updateFilter(String text) {
+        ArrayList<String> nodeIdentification = pUtil.getNameIdNode(nodes);
+        List<ExtractedResult> fuzzyFilter =  FuzzySearch.extractSorted(text, nodeIdentification);
+
+        currentFilter = new ArrayList<String>();
+        for(int i = 0; i < fuzzyFilter.size(); i++){
+            ExtractedResult current = fuzzyFilter.get(i);
+            //System.out.println(current.getString() + " - " + current.getScore() + " for " +text);
+
+            currentFilter.add(current.getString());
+        }
+
+        roomLocationTF.getEntries().addAll(currentFilter);
     }
 
     //Helper Methods-----------------------------------------------------------------------------------------------
@@ -1103,6 +1137,7 @@ public class  RequestController implements Initializable{
                 resetDefault();
                 requestType = "Gift";
                 highlightButton();
+                runAPI();
                 break;
 
             default:
@@ -1266,7 +1301,7 @@ public class  RequestController implements Initializable{
     private void resetTextFields(){
         firstNameTF.setText(null);
         lastNameTF.setText(null);
-        roomLocationTF.setText(null);
+        roomLocationTF.setText("");
         emailTF.setText(null);
         phoneNumberTF.setText(null);
         sanitationDescription.setText(null);
@@ -1329,6 +1364,12 @@ public class  RequestController implements Initializable{
     }
 
 
+    //runAPI
+    public void runAPI() {
+        GiftShop giftShop = new GiftShop();
+        giftShop.run(0, 0, 1900, 1000, (String)null, "Path A", (String)null);
+    }
+
 //    //runAPI
 //    public void runAPI() throws IOException {
 //        RequestController2 requestController2 = new RequestController2();
@@ -1340,6 +1381,6 @@ public class  RequestController implements Initializable{
 //            e.printStackTrace();
 //        }
 //    }
-//
+
 }
 

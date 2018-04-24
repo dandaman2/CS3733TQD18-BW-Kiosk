@@ -9,6 +9,9 @@ mainClassName = 'Main_ui'
 
 repositories {
 	mavenCentral()
+	maven {
+		url "https://ravana.dyn.wpi.edu/maven"
+	}
 }
 
 dependencies {
@@ -26,7 +29,9 @@ dependencies {
 		[group: 'org.testfx', name: 'testfx-core', version: '4.0.12-alpha'],
 		[group: 'org.testfx', name: "testfx-junit", version: '4.0.12-alpha'],
 		[group: 'org.testfx', name: "openjfx-monocle", version: '8u76-b04'],
-			fileTree (dir: "libs", include: "*.jar")
+			fileTree (dir: "libs", include: "*.jar"),
+
+			[group: 'd18.teamO', name: 'GiftShop', version: '1.0.1']
 
 	)
 	compile(
@@ -43,11 +48,14 @@ dependencies {
 		[group: 'org.testfx', name: 'testfx-core', version: '4.0.12-alpha'],
 		[group: 'org.testfx', name: "testfx-junit", version: '4.0.12-alpha'],
 		[group: 'org.testfx', name: "openjfx-monocle", version: '8u76-b04'],
+			[group: 'd18.teamO', name: 'GiftShop', version: '1.0.1'],
+
 			fileTree (dir: "libs", include: "*.jar")
 
 	)
     compile 'junit:junit:4.12'
     compile 'junit:junit:4.12'
+	compile 'me.xdrop:fuzzywuzzy:1.1.10'
 	//compile 'javax/mail/javax.mail-api/:1.6.1'
 	//maven2/javax/mail/javax.mail-api/
 }

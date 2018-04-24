@@ -1,8 +1,9 @@
 package edu.wpi.cs3733d18.teamQ.ui.Controller;
 
+import edu.wpi.cs3733d18.teamQ.ui.LineEdge;
 import edu.wpi.cs3733d18.teamQ.ui.CircleNode;
-import edu.wpi.cs3733d18.teamQ.ui.Controller.EditMapController;
 import edu.wpi.cs3733d18.teamQ.ui.User;
+import javafx.scene.Cursor;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -13,16 +14,20 @@ import edu.wpi.cs3733d18.teamQ.pathfinding.Node;
 
 import java.util.ArrayList;
 
-import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.*;
-
 
 public class MapEditUtil {
-    private Rectangle cr = new Rectangle();
     EditMapController controller;
+    private LineEdge curSel = new LineEdge();
+    private LineEdge oppSel = new LineEdge();
+    private Color edgeColor;
+    private Color selectedColor = Color.GREEN;
+
+    public MapEditUtil(EditMapController controller) {
+        this.controller = controller;
+    }
 
     public void initClick(ImageView curfloor, TextField xdField, TextField ydField){
         curfloor.setOnMouseClicked(e -> {
-            //controller.resetTextFields();
             System.out.println("[" + e.getX() + ", " + e.getY() + "]");
             if(controller.mode.equals("en")){
                     String x3cor = ""+e.getX()+"";
@@ -35,40 +40,78 @@ public class MapEditUtil {
 
     }
 
-    public ArrayList<Line> SetEdges(ArrayList<Line> de, int floor, int dim, boolean heat){
-
-        Color edgeColor = Color.BLUE;
-        if(heat) {
+    public ArrayList<LineEdge> SetEdges(int floor, int dim, boolean heat){
+        Color edgeColor;
+        if(heat)
             edgeColor = Color.BLACK;
-        }
+        else
+            edgeColor = Color.BLUE;
 
         User user = User.getUser();
         user.saveToDB();
 
-        ArrayList<Node> nodesOnFloor = user.getFloorNodes(floor);//getNodesByFloor(floor);
         ArrayList<Edge> edgesOnFloor = user.getFloorEdges(floor);//getEdgesByFloor(floor);
 
-        de = new ArrayList<>();
+        ArrayList<LineEdge> de = new ArrayList<>();
 
-        for (Edge e : edgesOnFloor) {
+        for(Edge e: edgesOnFloor){
+            de.add(new LineEdge(e, dim));
+        }
 
-            Line line = new Line();
+        for (LineEdge le : de) {
             try {
-                line.startXProperty().bind(getCircleFor(e.getStartNode(),dim).centerXProperty());
-                line.startYProperty().bind(getCircleFor(e.getStartNode(),dim).centerYProperty());
-
-                line.endXProperty().bind(getCircleFor(e.getEndNode(),dim).centerXProperty());
-                line.endYProperty().bind(getCircleFor(e.getEndNode(),dim).centerYProperty());
 
 
-                line.setStrokeWidth(3);
-                line.setStroke(edgeColor);
-                de.add(line);
+                // binds line to corresponding circleNodes
+                le.startXProperty().bind(getCircleFor(le.getEdge().getStartNode(),dim).centerXProperty());
+                le.startYProperty().bind(getCircleFor(le.getEdge().getStartNode(),dim).centerYProperty());
+
+                le.endXProperty().bind(getCircleFor(le.getEdge().getEndNode(),dim).centerXProperty());
+                le.endYProperty().bind(getCircleFor(le.getEdge().getEndNode(),dim).centerYProperty());
+
+                le.setStrokeWidth(3);
+                le.setStroke(edgeColor);
+                le.setCursor(Cursor.HAND);
+
+                le.setOnMousePressed((event) -> {
+                    // resets originally selected line color
+                    curSel.setStroke(edgeColor);
+                    oppSel.setStroke(edgeColor);
+
+                    curSel = le;      // switches which line is selected
+                    curSel.setStroke(selectedColor);    // recolors newly selected line
+
+                    hlOther(curSel, dim);   // hightlights edge on opposite map
+
+                    // sets text fields to edge properties
+                    if(controller.mode == "ee") {
+                        controller.y2dNode_fromEdgeField.setText(le.getEdge().getStartNode().getNameLong());
+                        controller.x2dNode_toEdgeField.setText(le.getEdge().getEndNode().getNameLong());
+                    }
+                });
+
             } catch (NullPointerException err) {
                 System.out.println("floor edge prob");
             }
         }
         return de;
+    }
+
+    //highlights the selected edge in the opposite dimensional region
+    public void hlOther(LineEdge lineEdge, int dim){
+        System.out.println("Highlighting Other...");
+        ArrayList<LineEdge> oppEdgeList;
+        if(dim == 2)
+            oppEdgeList = controller.drawn3DEdges;
+        else
+            oppEdgeList = controller.drawn2DEdges;
+
+        for (LineEdge le2 : oppEdgeList){
+            if(lineEdge.getEdge().getEdgeID().equals(le2.getEdge().getEdgeID())){
+                oppSel = le2;
+                oppSel.setStroke(selectedColor);
+            }
+        }
 
     }
 
@@ -90,8 +133,7 @@ public class MapEditUtil {
         return new CircleNode();
     }
 
-
-    public MapEditUtil(EditMapController controller) {
-        this.controller = controller;
+    public LineEdge getCurSel() {
+        return curSel;
     }
 }
