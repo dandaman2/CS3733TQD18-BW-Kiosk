@@ -306,14 +306,14 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     }
 
 
-    private FadeTransition fadeIn = new FadeTransition( Duration.millis(1000));
+    private FadeTransition fadeIn = new FadeTransition( Duration.millis(1500));
 
     public void initFloorLabel() {
         floorLabel.setVisible(false);
         floorLabel.setStyle("-fx-text-fill: #818181;" + "-fx-font-size: 500;" + "-fx-font-weight: 700;");
 
         fadeIn.setNode(floorLabel);
-        fadeIn.setFromValue(0.5);
+        fadeIn.setFromValue(0.75);
         fadeIn.setToValue(0.0);
         fadeIn.setCycleCount(1);
         fadeIn.setAutoReverse(false);
