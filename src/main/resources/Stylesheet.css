@@ -14,3 +14,7 @@ JFXButton:pressed {
 #EmergencyBtn {
     -fx-background-color: #FF0000;
 }
+#selector {
+    -fx-background-color: rgba(1,64,120,.9);
+    -fx-text-fill: white;
+}
