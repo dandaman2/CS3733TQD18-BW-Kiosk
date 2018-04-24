@@ -337,6 +337,16 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         infoView.setFitWidth(42);
         infoView.setFitHeight(40);
         homeButton.setGraphic(infoView);
+        Image play;
+        if(runningFromIntelliJ()) {
+            play = new Image("/ButtonImages/video-play-icon.png");
+        } else{
+            play = new Image("ButtonImages/video-play-icon.png");
+        }
+        ImageView playView = new ImageView(play);
+        infoView.setFitWidth(42);
+        infoView.setFitHeight(40);
+        playButton.setGraphic(playView);
     }
 
     /**
