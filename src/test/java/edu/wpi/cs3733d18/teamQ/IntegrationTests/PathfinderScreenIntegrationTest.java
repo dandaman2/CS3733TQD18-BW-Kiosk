@@ -75,7 +75,9 @@ public class PathfinderScreenIntegrationTest extends ApplicationTest {
 
         FXMLLoader pathfinderLoader = new FXMLLoader(getClass().getResource(PATH_TO_PATHFINDERFXML));
         Parent pathfinderParent = pathfinderLoader.load();
-        stage.setScene(new Scene(pathfinderParent));
+        FxToolkit.setupStage(thisStage -> stage.setScene(new Scene(pathfinderParent)));
+
+        //stage.setScene(new Scene(pathfinderParent));
         //Scene pathfindingScene = sdUtil.prodAndBindScene(pathfinderParent, stage);
         pathCont = pathfinderLoader.getController();
         //pathCont.setListen(stage);
@@ -100,10 +102,15 @@ public class PathfinderScreenIntegrationTest extends ApplicationTest {
     public static void initialize(){
         user = User.getUser();
         initializeDb();
-        System.setProperty("testfx.robot", "glass");
+        /*System.setProperty("testfx.robot", "glass");
         System.setProperty("testfx.headless", "true");
         System.setProperty("prism.order", "sw");
-        System.setProperty("prism.text", "t2k");
+        System.setProperty("prism.text", "t2k");*/
+    }
+
+    @Override
+    public void stop() throws Exception{
+        FxToolkit.cleanupStages();
     }
 
     /**

@@ -13,6 +13,7 @@ import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
+import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 
 import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.*;
@@ -39,16 +40,17 @@ public class EmployeeScreenIntegrationTest extends ApplicationTest {
         user.setPrimaryStage(primaryStage);
         FXMLLoader employeeEditLoader = new FXMLLoader(getClass().getResource(PATH_TO_EMPLOYEEFXML));
         Parent employeeParent = employeeEditLoader.load();
-        primaryStage.setScene(new Scene(employeeParent));
+        FxToolkit.setupStage(thisStage -> stage.setScene(new Scene(employeeParent)));
+
+        //primaryStage.setScene(new Scene(employeeParent));
         // Scene pathfindingScene = sdUtil.prodAndBindScene(pathfinderParent, stage);
-        empEditCont = employeeEditLoader.getController();
+        EmployeeEditController empEditCont = employeeEditLoader.getController();
         //empEditCont.setListen(stage);
 
         primaryStage.setMinWidth(735);
         primaryStage.setMinHeight(645);
         //stage.setScene(pathfindingScene);
-        primaryStage.show();
-        primaryStage.toFront();
+        FxToolkit.showStage();
     }
 
     /**
@@ -58,10 +60,15 @@ public class EmployeeScreenIntegrationTest extends ApplicationTest {
     public static void initialize(){
        user = User.getUser();
        initializeDb();
-        System.setProperty("testfx.robot", "glass");
-        System.setProperty("testfx.headless", "true");
-        System.setProperty("prism.order", "sw");
-        System.setProperty("prism.text", "t2k");
+       /*System.setProperty("testfx.robot", "glass");
+       System.setProperty("testfx.headless", "true");
+       System.setProperty("prism.order", "sw");
+       System.setProperty("prism.text", "t2k");*/
+    }
+
+    @Override
+    public void stop() throws Exception{
+        FxToolkit.cleanupStages();
     }
 
     /**
@@ -128,9 +135,9 @@ public class EmployeeScreenIntegrationTest extends ApplicationTest {
      */
     @Test
     public void editEmployeeTest(){
-        //Select edit
         addEmployeeInputs();
 
+        //Select edit
         clickOn("#actionCB");
         press(KeyCode.DOWN);
         release(KeyCode.DOWN);

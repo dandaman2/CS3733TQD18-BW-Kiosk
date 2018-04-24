@@ -53,7 +53,7 @@ dependencies {
 }
 
 test{
-	maxHeapSize = "3g"
+	maxHeapSize = "4g"
 }
 
 jar {

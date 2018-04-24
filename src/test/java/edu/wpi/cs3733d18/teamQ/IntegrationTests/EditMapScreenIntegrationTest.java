@@ -12,6 +12,7 @@ import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
+import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.util.ArrayList
@@ -43,7 +44,8 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
 
         FXMLLoader editMapLoader = new FXMLLoader(getClass().getResource(PATH_TO_EDITMAPFXML));
         Parent editMapParent = editMapLoader.load();
-        stage.setScene(new Scene(editMapParent));
+        FxToolkit.setupStage(thisStage -> stage.setScene(new Scene(editMapParent)));
+        //stage.setScene(new Scene(editMapParent));
         //Scene pathfindingScene = sdUtil.prodAndBindScene(editMapParent, stage);
         editCont = editMapLoader.getController();
         //empEditCont.setListen(stage);
@@ -66,10 +68,15 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
     public static void initialize(){
         user = User.getUser();
         initializeDb();
-        System.setProperty("testfx.robot", "glass");
+        /*System.setProperty("testfx.robot", "glass");
         System.setProperty("testfx.headless", "true");
         System.setProperty("prism.order", "sw");
-        System.setProperty("prism.text", "t2k");
+        System.setProperty("prism.text", "t2k");*/
+    }
+
+    @Override
+    public void stop() throws Exception{
+        FxToolkit.cleanupStages();
     }
 
     /**

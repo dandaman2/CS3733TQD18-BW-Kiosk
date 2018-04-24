@@ -8,6 +8,7 @@ import edu.wpi.cs3733d18.teamQ.ui.Requests.InterpreterRequest;
 import edu.wpi.cs3733d18.teamQ.ui.Requests.Request;
 import edu.wpi.cs3733d18.teamQ.ui.Requests.SanitationRequest;
 import edu.wpi.cs3733d18.teamQ.ui.User;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -19,6 +20,7 @@ import javafx.stage.Stage;
 import org.junit.*;
 
 import org.junit.rules.ExpectedException;
+import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 
 import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.*;
@@ -49,9 +51,10 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
 
         FXMLLoader reqLoader = new FXMLLoader(getClass().getResource(PATH_TO_REQUESTFXML));
         Parent reqParent = reqLoader.load();
-        stage.setScene(new Scene(reqParent));
+        FxToolkit.setupStage(thisStage -> stage.setScene(new Scene(reqParent)));
+        //stage.setScene(new Scene(reqParent));
         //Scene pathfindingScene = sdUtil.prodAndBindScene(reqParent, stage);
-        reqController = reqLoader.getController();
+        RequestController reqController = reqLoader.getController();
         //reqController.setListen(stage);
 
         stage.setMinWidth(735);
@@ -69,10 +72,15 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
     public static void initialize(){
         user = User.getUser();
         initializeDb();
-        System.setProperty("testfx.robot", "glass");
+        /*System.setProperty("testfx.robot", "glass");
         System.setProperty("testfx.headless", "true");
         System.setProperty("prism.order", "sw");
-        System.setProperty("prism.text", "t2k");
+        System.setProperty("prism.text", "t2k");*/
+    }
+
+    @Override
+    public void stop() throws Exception{
+        FxToolkit.cleanupStages();
     }
 
     /**
