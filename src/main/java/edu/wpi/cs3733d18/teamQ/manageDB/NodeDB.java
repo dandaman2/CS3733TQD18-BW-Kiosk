@@ -43,7 +43,8 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.database.getTable;
                     + ",'" + values[8] + "'"
                     + "," + Double.parseDouble(values[9])
                     + "," + Double.parseDouble(values[10])
-                    + "," + 0.0 + ")";
+                    + "," + 0.0
+                    + "," + 1 + ")";
             addNodesToDb(sqlCommand);
         }
         inputStream.close();

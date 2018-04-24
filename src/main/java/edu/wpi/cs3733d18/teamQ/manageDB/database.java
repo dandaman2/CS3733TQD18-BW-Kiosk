@@ -113,12 +113,14 @@ class database {
                     " TEAMNAME VARCHAR(100),\n" +
                     " XCOORD3D DOUBLE, \n" +
                     " YCOORD3D DOUBLE,\n" +
-                    " HITS DOUBLE)";
+                    " HITS DOUBLE,\n" +
+                    " ISENABLED INT)";
             String execution2 = "CREATE TABLE EDGE\n" +
                     "(EDGEID VARCHAR(100) PRIMARY KEY,\n" +
                     " STARTNODE VARCHAR(100),\n" +
                     " ENDNODE VARCHAR(100),\n" +
-                    " DISTANCE DOUBLE)";
+                    " DISTANCE DOUBLE,\n" +
+                    " ISENABLED INT)";
             String execution3 = "CREATE TABLE REQUEST\n" +
                     "(REQUESTID VARCHAR(100) PRIMARY KEY,\n" +
                     " TYPE INT,\n" +
