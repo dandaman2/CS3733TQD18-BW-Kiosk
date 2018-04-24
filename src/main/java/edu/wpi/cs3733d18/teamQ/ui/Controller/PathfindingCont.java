@@ -9,10 +9,7 @@ import edu.wpi.cs3733d18.teamQ.ui.ArrowShapes.BreadCrumber;
 import edu.wpi.cs3733d18.teamQ.ui.*;
 import edu.wpi.cs3733d18.teamQ.ui.ProxyMaps.FloorMaps;
 import edu.wpi.cs3733d18.teamQ.ui.ProxyMaps.IMap;
-import javafx.animation.Animation;
-import javafx.animation.PathTransition;
-import javafx.animation.SequentialTransition;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -38,6 +35,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
 import javafx.scene.text.Font;
@@ -58,6 +56,7 @@ import java.util.ResourceBundle;
 
 import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.getNodes;
 import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.runningFromIntelliJ;
+import static edu.wpi.cs3733d18.teamQ.ui.PathData.*;
 import static edu.wpi.cs3733d18.teamQ.ui.PathInstructions.captureAndSaveDisplay;
 import static java.lang.Math.acos;
 import static java.lang.Math.sqrt;
@@ -144,6 +143,8 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     @FXML
     HBox topBar;
 
+    private ImageView movingPart;
+
     @FXML
     private Button playButton;
 
@@ -156,6 +157,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     final double SCALE_DELTA = 1.1;
     public double SCALE_TOTAL = 1;
 
+    //the animated path ant variables
+    ArrayList<Timeline> antTimeLines = new ArrayList<>();
+    ArrayList<Polyline> antPaths = new ArrayList<>();
 
     //animation variables
     public ArrayList<TransitionData> transitions = new ArrayList<>();
@@ -803,8 +807,8 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             // if both points are on the current floor, draws line
             if ((startpoint.getFloor() == getCurrFloor()) && (endpoint.getFloor() == getCurrFloor())) {
                 Line l = new Line(startpoint.getTx(), startpoint.getTy(), endpoint.getTx(), endpoint.getTy());
-                l.setStroke(Color.PURPLE);
-                l.setStrokeWidth(6);
+                l.setStroke(getPathColor());
+                l.setStrokeWidth(getPathStrokeWidth());
                 drawnPath.add(l);
             }
             /**This "function" runs when the path needs a button to show a tranistion to a different floor
@@ -943,9 +947,84 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         // adds path and buttons to pane
         backImagePane.getChildren().addAll(drawnPath);
+        addAntz(transitions);
         backImagePane.getChildren().addAll(labelList);
         backImagePane.getChildren().add(starLabel);
         backImagePane.getChildren().addAll(transList);
+        try {
+            movingPart.toFront();
+        }
+        catch (NullPointerException p){
+            System.out.println("MovingPart not on image yet");
+        }
+    }
+
+    /**
+     * Adds the ants animations to the path
+     * @param trans the transition data to get the polylines from
+     */
+
+    public void addAntz(ArrayList<TransitionData> trans){
+
+        backImagePane.getChildren().removeAll(antPaths);
+        antPaths = new ArrayList<>();
+
+        for(Timeline t: antTimeLines){
+            t.stop();
+        }
+        antTimeLines = new ArrayList<>();
+        for(TransitionData t : trans){
+            if(t.getFloor()==getCurrFloor()){
+                dashLine(t.getPathData());
+            }
+        }
+        backImagePane.getChildren().addAll(antPaths);
+        for(Timeline antline: antTimeLines){
+
+            System.out.println("playing ants");
+            antline.play();
+        }
+
+    }
+
+    /**
+     * sets a timeline-based moving line for the polyline
+     * @param line
+     */
+    public void dashLine(Polyline line){
+        line.getStrokeDashArray().setAll(getAntSpacing(),getAntSpacing());
+        line.setStrokeWidth(getAntStrokeWidth());
+
+        final double maxOffset =
+                line.getStrokeDashArray().stream()
+                        .reduce(
+                                0d,
+                                (a, b) -> a + b
+                        );
+
+        Timeline timeline = new Timeline(
+                new KeyFrame(
+                        Duration.ZERO,
+                        new KeyValue(
+                                line.strokeDashOffsetProperty(),
+                                maxOffset,
+                                Interpolator.LINEAR
+                        )
+                ),
+                new KeyFrame(
+                        Duration.seconds(0.5),
+                        new KeyValue(
+                                line.strokeDashOffsetProperty(),
+                               0,
+                                Interpolator.LINEAR
+                        )
+                )
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        line.setStroke(getAntColor());
+        antTimeLines.add(timeline);
+        antPaths.add(line);
+
     }
 
 
@@ -1417,7 +1496,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
 //        Circle movingPart = new Circle(10.0f);
 //        movingPart.setFill(Color.PURPLE);
-        ImageView movingPart = new ImageView(new Image("dog.gif"));
+        movingPart = new ImageView(new Image("dog.gif"));
         backImagePane.getChildren().add(movingPart);
 
 
