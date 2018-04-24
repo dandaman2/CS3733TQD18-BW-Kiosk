@@ -38,7 +38,8 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.database.getTable;
             sqlCommand1 = "(" + "'" +values[0] +"'"
                     + ",'" + values[1] + "'"
                     + ",'" + values[2] + "'"
-                    + "," + distance + ")";
+                    + "," + distance
+                    + "," + 1 + ")";
             addEdgesToDb(sqlCommand1);
         }
         inputStream1.close();
@@ -153,7 +154,7 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.database.getTable;
     }
 
     public static void editEdge(Edge edge) {
-        String databaseExecution = "UPDATE APP.EDGE SET NODETYPE=" + EdgeStringConverter.edgeToStringUpdate(edge) + " WHERE NODEID =\'" + edge.getEdgeID() + "\'";
+        String databaseExecution = "UPDATE APP.EDGE SET NODETYPE=" + EdgeStringConverter.edgeToStringUpdate(edge) +", ISENABLED="+edge.isEnabledInt() + " WHERE NODEID =\'" + edge.getEdgeID() + "\'";
         try {
             Statement stmnt = database.connection.createStatement();
             stmnt.executeUpdate(databaseExecution);

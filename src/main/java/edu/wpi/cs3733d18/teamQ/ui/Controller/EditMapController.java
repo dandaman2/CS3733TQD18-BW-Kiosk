@@ -103,6 +103,9 @@ public class EditMapController implements Initializable, IZoomableCont {
     private JFXButton addButton;
 
     @FXML
+    private JFXButton toggleBtn;
+
+    @FXML
     private JFXButton clearButton;
 
     @FXML
@@ -371,6 +374,9 @@ public class EditMapController implements Initializable, IZoomableCont {
             cn.setFill(nodeColor);
             cn.setRadius(10);
         }
+        if(!cn.getNode().isEnabled()){
+            cn.setFill(Color.GRAY);
+        }
     }
 
 //    private Color getHeatColor(CircleNode){
@@ -581,6 +587,7 @@ public class EditMapController implements Initializable, IZoomableCont {
      */
     public void initSelectionOptions() {
         selector.setStyle("-fx-font: 16px \"System\";");
+        selector.setStyle("-fx-background-color: #FFFFFF;");
         selectionOptions.removeAll(selectionOptions);
         selector.setTooltip(new Tooltip("Select an Editing Option"));
         String en = "Edit Nodes";
@@ -946,7 +953,7 @@ public class EditMapController implements Initializable, IZoomableCont {
         String longName = generateLongName(id, type);
         System.out.println(longName);
 
-        return new Node(id, xPos, yPos, floor, "Shapiro", type, longName, shortName, "Q", xPos3D, yPos3D, 0.0);
+        return new Node(id, xPos, yPos, floor, "Shapiro", type, longName, shortName, "Q", xPos3D, yPos3D, 0.0, true);
     }
 
     /**
@@ -1034,7 +1041,7 @@ public class EditMapController implements Initializable, IZoomableCont {
                         Node node1 = user.getNode(nodeID1); //getNode(nodeID1);
                         Node node2 = user.getNode(nodeID2);
                         System.out.println(nodeID1 + " " + nodeID2);
-                        Edge edge = new Edge(generateEdgeID(node1, node2), node1, node2, node1.calcDistance(node2));
+                        Edge edge = new Edge(generateEdgeID(node1, node2), node1, node2, node1.calcDistance(node2),true);
                         mapFrame3D.getChildren().removeAll(drawn3DEdges);
                         mapFrame2D.getChildren().removeAll(drawn2DEdges);
                         user.addEdgeSingleton(edge);
@@ -1505,6 +1512,26 @@ public class EditMapController implements Initializable, IZoomableCont {
 
 
 
+    }
+
+    public void toggleElement(){
+        if(mode.equals("en")) {
+            Node toBeToggled = curSel1.getNode();
+            toBeToggled.setEnabled(!toBeToggled.isEnabled());
+
+            //for 3d
+            mapFrame3D.getChildren().removeAll(drawn3DEdges);
+            mapFrame3D.getChildren().removeAll(threeDPoints);
+
+            //for 2d
+            mapFrame2D.getChildren().removeAll(drawn2DEdges);
+            mapFrame2D.getChildren().removeAll(twoDPoints);
+
+            user.editNodeSingleton(toBeToggled);
+
+            updateDrawings();
+
+        }
     }
 
     public Edge getEdgeFromNodes(Node node1, Node node2){

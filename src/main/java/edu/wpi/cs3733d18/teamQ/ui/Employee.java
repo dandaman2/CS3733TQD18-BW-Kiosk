@@ -8,14 +8,20 @@ import org.mindrot.jbcrypt.BCrypt;
 public class Employee extends RecursiveTreeObject<Employee> {
     private StringProperty username;
     private StringProperty password;
+    private SimpleStringProperty firstName;
+    private SimpleStringProperty lastName;
+    private SimpleStringProperty title;
     private StringProperty isAdmin;
     private String faceID;
 
     //constructor
-    public Employee(String  username, String password, boolean isAdmin, String faceID) {
+    public Employee(String  username, String password, String firstName, String lastName, String title, boolean isAdmin, String faceID) {
 
         this.username = new SimpleStringProperty((String) username);
         this.password = new SimpleStringProperty(BCrypt.hashpw(password, BCrypt.gensalt()));
+        this.firstName = new SimpleStringProperty(firstName);
+        this.lastName = new SimpleStringProperty(lastName);
+        this.title = new SimpleStringProperty(title);
         if(isAdmin){
             this.isAdmin = new SimpleStringProperty("2");
         }
@@ -25,8 +31,11 @@ public class Employee extends RecursiveTreeObject<Employee> {
         this.faceID = faceID;
     }
 
-    public Employee(String username, boolean isAdmin, String faceID) {
+    public Employee(String username, String firstName, String lastName, String title, boolean isAdmin, String faceID) {
         this.username = new SimpleStringProperty((String) username);
+        this.firstName = new SimpleStringProperty(firstName);
+        this.lastName = new SimpleStringProperty(lastName);
+        this.title = new SimpleStringProperty(title);
         if(isAdmin){
             this.isAdmin = new SimpleStringProperty("2");
         }
@@ -62,6 +71,45 @@ public class Employee extends RecursiveTreeObject<Employee> {
 
     public void setPassword(String password) {
         this.password = new SimpleStringProperty(BCrypt.hashpw(password, BCrypt.gensalt()));
+    }
+
+    //first name
+    public String getFirstName() {
+        return firstName.get();
+    }
+
+    public StringProperty firstNameProperty() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = new SimpleStringProperty(firstName);
+    }
+
+    //last name
+    public String getLastName() {
+        return lastName.get();
+    }
+
+    public StringProperty lastNameProperty() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = new SimpleStringProperty(lastName);
+    }
+
+    //title
+    public String getTitle() {
+        return title.get();
+    }
+
+    public StringProperty titleProperty() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = new SimpleStringProperty(title);
     }
 
 

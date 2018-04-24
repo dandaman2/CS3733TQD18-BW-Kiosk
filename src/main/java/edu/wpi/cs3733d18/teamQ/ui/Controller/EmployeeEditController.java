@@ -33,7 +33,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.*;
+import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.runningFromIntelliJ;
 
 public class EmployeeEditController implements Initializable {
 
@@ -54,6 +54,12 @@ public class EmployeeEditController implements Initializable {
     JFXTextField usernameTF;
     @FXML
     JFXTextField passwordTF;
+    @FXML
+    JFXTextField titleTF;
+    @FXML
+    JFXTextField firstTF;
+    @FXML
+    JFXTextField lastTF;
 
     //dropDowns
     @FXML
@@ -72,10 +78,11 @@ public class EmployeeEditController implements Initializable {
     private String actionType;
 
     //the user
-    User user = User.getUser();
+    User user;
 
 
     public void initialize(URL url, ResourceBundle rb) {
+        user = User.getUser();
         setUpDropBox();
         setUpButtons();
         setUpTreeTable();
@@ -151,18 +158,32 @@ public class EmployeeEditController implements Initializable {
                 return param.getValue().getValue().usernameProperty();
             }
         });
-        JFXTreeTableColumn<Employee, String> passwordColumn = new JFXTreeTableColumn<>("Password");
-        passwordColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Employee, String>, ObservableValue<String>>() {
+        JFXTreeTableColumn<Employee, String> titleColumn = new JFXTreeTableColumn<>("Title");
+        titleColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Employee, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Employee, String> param) {
-                return param.getValue().getValue().passwordProperty();
+                return param.getValue().getValue().titleProperty();
+            }
+        });
+        JFXTreeTableColumn<Employee, String> firstColumn = new JFXTreeTableColumn<>("First Name");
+        firstColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Employee, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Employee, String> param) {
+                return param.getValue().getValue().firstNameProperty();
+            }
+        });
+        JFXTreeTableColumn<Employee, String> lastColumn = new JFXTreeTableColumn<>("Last Name");
+        lastColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Employee, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Employee, String> param) {
+                return param.getValue().getValue().lastNameProperty();
             }
         });
 
 
-        ObservableList<Employee> allEmployees = FXCollections.observableArrayList(getEmployees());
+        ObservableList<Employee> allEmployees = FXCollections.observableArrayList(user.getEmployees());
         final TreeItem<Employee> pendingRoot = new RecursiveTreeItem<Employee>(allEmployees, RecursiveTreeObject::getChildren);
-        employeeTTV.getColumns().setAll(levelColumn, usernameColumn, passwordColumn);
+        employeeTTV.getColumns().setAll(levelColumn, usernameColumn, titleColumn, firstColumn, lastColumn);
         employeeTTV.setRoot(pendingRoot);
         employeeTTV.setShowRoot(false);
     }
@@ -226,6 +247,9 @@ public class EmployeeEditController implements Initializable {
     public void resetDefault(){
         usernameTF.setText("");
         passwordTF.setText("");
+        titleTF.setText("");
+        firstTF.setText("");
+        lastTF.setText("");
         adminCB.getSelectionModel().clearSelection();
     }
 
@@ -235,7 +259,10 @@ public class EmployeeEditController implements Initializable {
      */
     public void fillFields(Employee employee){
         usernameTF.setText(employee.getUsername());
-        passwordTF.setText(employee.getPassword());
+        titleTF.setText(employee.getTitle());
+        firstTF.setText(employee.getFirstName());
+        lastTF.setText(employee.getLastName());
+        //passwordTF.setText(employee.getPassword());
         adminCB.setValue(String.valueOf(Integer.parseInt(employee.getIsAdmin())));
     }
 
@@ -251,9 +278,12 @@ public class EmployeeEditController implements Initializable {
 
             String uName = usernameTF.getText();
             String pass = passwordTF.getText();
+            String title = titleTF.getText();
+            String firstName = firstTF.getText();
+            String lastName = lastTF.getText();
 
             //determines if text fields are blank
-            if(uName ==null || pass == null || uName.isEmpty() || pass.isEmpty() || adminCB == null) {
+            if(uName ==null || uName.isEmpty() || adminCB == null) {
                 System.out.println("Employee Error");
                 return;
             }
@@ -264,16 +294,21 @@ public class EmployeeEditController implements Initializable {
             if(actionType == "Add Employee"){
                 Employee employee;
 
+                if(pass==null||pass.isEmpty()){
+                    System.out.println("Employee Error - no Password");
+                    return;
+                }
+
                 if(level == "1"){
-                    employee = new Employee(uName,pass,false,null);
+                    employee = new Employee(uName,pass,firstName,lastName,title,false,null);
                 }
                 else{
-                    employee = new Employee(uName,pass,true,null);
+                    employee = new Employee(uName,pass,firstName,lastName,title,true,null);
                 }
 
-                addEmployee(employee);
+                user.addEmployeeSingleton(employee);
 
-                ObservableList<Employee> allEmployees = FXCollections.observableArrayList(getEmployees());
+                ObservableList<Employee> allEmployees = FXCollections.observableArrayList(user.getEmployees());
                 final TreeItem<Employee> pendingRoot = new RecursiveTreeItem<Employee>(allEmployees, RecursiveTreeObject::getChildren);
                 employeeTTV.setRoot(pendingRoot);
                 employeeTTV.setShowRoot(false);
@@ -282,7 +317,7 @@ public class EmployeeEditController implements Initializable {
 
             }
             if(actionType == "Modify Employee"){
-                ArrayList<Employee> allEmployee = getEmployees();
+                ArrayList<Employee> allEmployee = user.getEmployees();
                 ArrayList<String> allUsername = new ArrayList<String>();
 
                 for (Employee employee:allEmployee) {
@@ -295,16 +330,24 @@ public class EmployeeEditController implements Initializable {
                     Employee employeeNew;
 
                     if(level == "1"){
-                        employeeNew = new Employee(uName,pass,false,null);
+                        employeeNew = new Employee(uName,null,firstName,lastName,title,false,null);
                     }
                     else{
-                        employeeNew = new Employee(uName,pass,true,null);
+                        employeeNew = new Employee(uName,null,firstName,lastName,title,true,null);
                     }
 
-                    removeEmployee(employee);
-                    addEmployee(employeeNew);
+                    if(pass==null||pass.isEmpty()){
+                        System.out.println("Employee Error - no Password");
+                        employeeNew.setHashedPassword(employee.getPassword());
+                    } else{
+                        employeeNew.setPassword(pass);
+                    }
 
-                    ObservableList<Employee> allEmployees = FXCollections.observableArrayList(getEmployees());
+                    user.editEmployeeSingleton(employeeNew);
+                    //removeEmployee(employee);
+                    //addEmployee(employeeNew);
+
+                    ObservableList<Employee> allEmployees = FXCollections.observableArrayList(user.getEmployees());
                     final TreeItem<Employee> pendingRoot = new RecursiveTreeItem<Employee>(allEmployees, RecursiveTreeObject::getChildren);
                     employeeTTV.setRoot(pendingRoot);
                     employeeTTV.setShowRoot(false);
@@ -316,7 +359,7 @@ public class EmployeeEditController implements Initializable {
 
             }
             if(actionType == "Remove Employee"){
-                ArrayList<Employee> allEmployee = getEmployees();
+                ArrayList<Employee> allEmployee = user.getEmployees();
                 ArrayList<String> allUsername = new ArrayList<String>();
 
                 for (Employee employee:allEmployee) {
@@ -325,9 +368,9 @@ public class EmployeeEditController implements Initializable {
 
                 if(allUsername.contains(usernameTF.getText())){
                     Employee employee = employeeTTV.getSelectionModel().getSelectedItem().getValue();
-                    removeEmployee(employee);
+                    user.removeEmployeeSingleton(employee);
 
-                    ObservableList<Employee> allEmployees = FXCollections.observableArrayList(getEmployees());
+                    ObservableList<Employee> allEmployees = FXCollections.observableArrayList(user.getEmployees());
                     final TreeItem<Employee> pendingRoot = new RecursiveTreeItem<Employee>(allEmployees, RecursiveTreeObject::getChildren);
                     employeeTTV.setRoot(pendingRoot);
                     employeeTTV.setShowRoot(false);
