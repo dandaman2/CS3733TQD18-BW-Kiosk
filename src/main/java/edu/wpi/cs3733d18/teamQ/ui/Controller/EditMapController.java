@@ -103,6 +103,9 @@ public class EditMapController implements Initializable, IZoomableCont {
     private JFXButton addButton;
 
     @FXML
+    private JFXButton toggleBtn;
+
+    @FXML
     private JFXButton clearButton;
 
     @FXML
@@ -371,6 +374,9 @@ public class EditMapController implements Initializable, IZoomableCont {
             cn.setFill(nodeColor);
             cn.setRadius(10);
         }
+        if(!cn.getNode().isEnabled()){
+            cn.setFill(Color.GRAY);
+        }
     }
 
 //    private Color getHeatColor(CircleNode){
@@ -581,6 +587,7 @@ public class EditMapController implements Initializable, IZoomableCont {
      */
     public void initSelectionOptions() {
         selector.setStyle("-fx-font: 16px \"System\";");
+        selector.setStyle("-fx-background-color: #FFFFFF;");
         selectionOptions.removeAll(selectionOptions);
         selector.setTooltip(new Tooltip("Select an Editing Option"));
         String en = "Edit Nodes";
@@ -1505,6 +1512,26 @@ public class EditMapController implements Initializable, IZoomableCont {
 
 
 
+    }
+
+    public void toggleElement(){
+        if(mode.equals("en")) {
+            Node toBeToggled = curSel1.getNode();
+            toBeToggled.setEnabled(!toBeToggled.isEnabled());
+
+            //for 3d
+            mapFrame3D.getChildren().removeAll(drawn3DEdges);
+            mapFrame3D.getChildren().removeAll(threeDPoints);
+
+            //for 2d
+            mapFrame2D.getChildren().removeAll(drawn2DEdges);
+            mapFrame2D.getChildren().removeAll(twoDPoints);
+
+            user.editNodeSingleton(toBeToggled);
+
+            updateDrawings();
+
+        }
     }
 
     public Edge getEdgeFromNodes(Node node1, Node node2){
