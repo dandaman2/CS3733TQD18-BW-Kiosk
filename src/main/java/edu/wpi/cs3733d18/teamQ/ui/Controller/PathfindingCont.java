@@ -585,6 +585,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         queuedPath = g.findShortestPathByType(youHere,Type,RestrictedTYPES);
         drawPath(queuedPath);
         isPathDisplayed = true;
+
     }
 
 
