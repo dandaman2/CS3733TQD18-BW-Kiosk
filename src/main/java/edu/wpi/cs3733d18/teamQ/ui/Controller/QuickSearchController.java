@@ -72,7 +72,8 @@ public class QuickSearchController {
                 }
                 ScreenUtil sdUtil = new ScreenUtil();
                 Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingPane, primaryStage);
-                pathfindingScene.getStylesheets().addAll("Stylesheet.css");
+                //pathfindingScene.getStylesheets().addAll("Stylesheet.css");
+                pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
                 primaryStage.setScene(pathfindingScene);
                 pathCont = pathfindingLoader.getController();
                 pathCont.setListen(primaryStage);
@@ -106,7 +107,7 @@ public class QuickSearchController {
                 }
                 ScreenUtil sdUtil = new ScreenUtil();
                 Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingPane, primaryStage);
-                pathfindingScene.getStylesheets().addAll("Stylesheet.css");
+                pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
                 primaryStage.setScene(pathfindingScene);
                 pathCont = pathfindingLoader.getController();
                 pathCont.setListen(primaryStage);
@@ -140,7 +141,7 @@ public class QuickSearchController {
                 }
                 ScreenUtil sdUtil = new ScreenUtil();
                 Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingPane, primaryStage);
-                pathfindingScene.getStylesheets().addAll("Stylesheet.css");
+                pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
                 primaryStage.setScene(pathfindingScene);
                 pathCont = pathfindingLoader.getController();
                 pathCont.setListen(primaryStage);
@@ -174,7 +175,7 @@ public class QuickSearchController {
                 }
                 ScreenUtil sdUtil = new ScreenUtil();
                 Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingPane, primaryStage);
-                pathfindingScene.getStylesheets().addAll("Stylesheet.css");
+                pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
                 primaryStage.setScene(pathfindingScene);
                 pathCont = pathfindingLoader.getController();
                 pathCont.setListen(primaryStage);
