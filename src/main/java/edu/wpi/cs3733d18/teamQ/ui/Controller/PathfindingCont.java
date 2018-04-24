@@ -252,6 +252,13 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         breadCrumb = new BreadCrumber(floorMaps, hboxProgress, this);
         initFloorLabel();
         initGifSelector();
+        //new TimeoutData().initTimer(screenBinding);
+        //initTimer();
+        user = User.getUser();
+
+        if(user.getPathType()!=null){
+            getNearType(user.getPathType());
+        }
     }
 
 
@@ -551,7 +558,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void generatePath() {
         backImagePane.getChildren().removeAll(drawnPath);
-        
+
         ArrayList<String> RestrictedTYPES = new ArrayList<String>();
 //        if(checkElevator.isSelected() == true)
 //            RestrictedTYPES.add("ELEV");
@@ -624,9 +631,13 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         youHere = user.getNode("GELEV00N02");
         queuedPath = g.findShortestPathByType(youHere,Type,RestrictedTYPES);
-        drawPath(queuedPath);
-        isPathDisplayed = true;
 
+        curSelected = queuedPath.get(queuedPath.size()-1);
+        //drawPath(queuedPath);
+        //isPathDisplayed = true;
+
+        startingNodeField.setText(youHere.getNameLong()+ ","+youHere.getNodeID());
+        endingNodeField.setText(curSelected.getNameLong()+ ","+curSelected.getNodeID());
     }
 
 
@@ -992,6 +1003,10 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         }
         catch (NullPointerException p){
             System.out.println("MovingPart not on image yet");
+            movingPart = new ImageView(new Image("dog.gif"));
+            backImagePane.getChildren().add(movingPart);
+            movingPart.toFront();
+
         }
     }
 

@@ -56,27 +56,18 @@ public class QuickSearchController {
             @Override
             public void handle(ActionEvent e) {
                 User user = User.getUser();
+                user.setPathType("BATH");
                 Stage primaryStage = user.getPrimaryStage();
-                FXMLLoader pathfindingLoader;
-                if(runningFromIntelliJ()) {
-                    pathfindingLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
-                } else{
-                    pathfindingLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
-                }
-                Parent pathfindingPane = null;
-                try{
-                    pathfindingPane = pathfindingLoader.load();
-                }
-                catch(IOException io){
-                    io.printStackTrace();
-                }
                 ScreenUtil sdUtil = new ScreenUtil();
-                Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingPane, primaryStage);
-                pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
-                primaryStage.setScene(pathfindingScene);
-                pathCont = pathfindingLoader.getController();
-                pathCont.setListen(primaryStage);
-                pathCont.getNearType("REST");
+                try {
+                    FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
+                    Parent pathfindingParent = pathfindingload.load();
+                    Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingParent, primaryStage);
+                    pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
+                    primaryStage.setScene(pathfindingScene);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
                 window.close();
             }
         });
@@ -90,27 +81,18 @@ public class QuickSearchController {
             @Override
             public void handle(ActionEvent e) {
                 User user = User.getUser();
+                user.setPathType("EXIT");
                 Stage primaryStage = user.getPrimaryStage();
-                FXMLLoader pathfindingLoader;
-                if(runningFromIntelliJ()) {
-                    pathfindingLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
-                } else{
-                    pathfindingLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
-                }
-                Parent pathfindingPane = null;
-                try{
-                    pathfindingPane = pathfindingLoader.load();
-                }
-                catch(IOException io){
-                    io.printStackTrace();
-                }
                 ScreenUtil sdUtil = new ScreenUtil();
-                Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingPane, primaryStage);
-                pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
-                primaryStage.setScene(pathfindingScene);
-                pathCont = pathfindingLoader.getController();
-                pathCont.setListen(primaryStage);
-                pathCont.getNearType("EXIT");
+                try {
+                    FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
+                    Parent pathfindingParent = pathfindingload.load();
+                    Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingParent, primaryStage);
+                    pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
+                    primaryStage.setScene(pathfindingScene);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
                 window.close();
             }
         });
@@ -124,27 +106,18 @@ public class QuickSearchController {
             @Override
             public void handle(ActionEvent e) {
                 User user = User.getUser();
+                user.setPathType("RETL");
                 Stage primaryStage = user.getPrimaryStage();
-                FXMLLoader pathfindingLoader;
-                if(runningFromIntelliJ()) {
-                    pathfindingLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
-                } else{
-                    pathfindingLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
-                }
-                Parent pathfindingPane = null;
-                try{
-                    pathfindingPane = pathfindingLoader.load();
-                }
-                catch(IOException io){
-                    io.printStackTrace();
-                }
                 ScreenUtil sdUtil = new ScreenUtil();
-                Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingPane, primaryStage);
-                pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
-                primaryStage.setScene(pathfindingScene);
-                pathCont = pathfindingLoader.getController();
-                pathCont.setListen(primaryStage);
-                pathCont.getNearType("RETL");
+                try {
+                    FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
+                    Parent pathfindingParent = pathfindingload.load();
+                    Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingParent, primaryStage);
+                    pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
+                    primaryStage.setScene(pathfindingScene);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
                 window.close();
             }
         });
@@ -158,27 +131,18 @@ public class QuickSearchController {
             @Override
             public void handle(ActionEvent e) {
                 User user = User.getUser();
+                user.setPathType("INFO");
                 Stage primaryStage = user.getPrimaryStage();
-                FXMLLoader pathfindingLoader;
-                if(runningFromIntelliJ()) {
-                    pathfindingLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
-                } else{
-                    pathfindingLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
-                }
-                Parent pathfindingPane = null;
-                try{
-                    pathfindingPane = pathfindingLoader.load();
-                }
-                catch(IOException io){
-                    io.printStackTrace();
-                }
                 ScreenUtil sdUtil = new ScreenUtil();
-                Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingPane, primaryStage);
-                pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
-                primaryStage.setScene(pathfindingScene);
-                pathCont = pathfindingLoader.getController();
-                pathCont.setListen(primaryStage);
-                pathCont.getNearType("INFO");
+                try {
+                    FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
+                    Parent pathfindingParent = pathfindingload.load();
+                    Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingParent, primaryStage);
+                    pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
+                    primaryStage.setScene(pathfindingScene);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
                 window.close();
             }
         });
@@ -192,27 +156,18 @@ public class QuickSearchController {
             @Override
             public void handle(ActionEvent e) {
                 User user = User.getUser();
+                user.setPathType("ELEV");
                 Stage primaryStage = user.getPrimaryStage();
-                FXMLLoader pathfindingLoader;
-                if(runningFromIntelliJ()) {
-                    pathfindingLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
-                } else{
-                    pathfindingLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
-                }
-                Parent pathfindingPane = null;
-                try{
-                    pathfindingPane = pathfindingLoader.load();
-                }
-                catch(IOException io){
-                    io.printStackTrace();
-                }
                 ScreenUtil sdUtil = new ScreenUtil();
-                Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingPane, primaryStage);
-                pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
-                primaryStage.setScene(pathfindingScene);
-                pathCont = pathfindingLoader.getController();
-                pathCont.setListen(primaryStage);
-                pathCont.getNearType("ELEV");
+                try {
+                    FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
+                    Parent pathfindingParent = pathfindingload.load();
+                    Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingParent, primaryStage);
+                    pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
+                    primaryStage.setScene(pathfindingScene);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
                 window.close();
             }
         });
@@ -226,27 +181,18 @@ public class QuickSearchController {
             @Override
             public void handle(ActionEvent e) {
                 User user = User.getUser();
+                user.setPathType("STAI");
                 Stage primaryStage = user.getPrimaryStage();
-                FXMLLoader pathfindingLoader;
-                if(runningFromIntelliJ()) {
-                    pathfindingLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
-                } else{
-                    pathfindingLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
-                }
-                Parent pathfindingPane = null;
-                try{
-                    pathfindingPane = pathfindingLoader.load();
-                }
-                catch(IOException io){
-                    io.printStackTrace();
-                }
                 ScreenUtil sdUtil = new ScreenUtil();
-                Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingPane, primaryStage);
-                pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
-                primaryStage.setScene(pathfindingScene);
-                pathCont = pathfindingLoader.getController();
-                pathCont.setListen(primaryStage);
-                pathCont.getNearType("STAI");
+                try {
+                    FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
+                    Parent pathfindingParent = pathfindingload.load();
+                    Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingParent, primaryStage);
+                    pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
+                    primaryStage.setScene(pathfindingScene);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
                 window.close();
             }
         });
@@ -268,7 +214,6 @@ public class QuickSearchController {
 
         // Means the window has to be closed before the user can interact with other windows again
         window.showAndWait();
-        window.close();
     }
 
     public void goToPathfinding(ActionEvent e){
