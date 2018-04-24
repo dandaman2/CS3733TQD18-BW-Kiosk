@@ -1,14 +1,11 @@
 package edu.wpi.cs3733d18.teamQ.ui.Controller;
 
 
-import edu.wpi.cs3733d18.teamQ.ui.Employee;
 import edu.wpi.cs3733d18.teamQ.ui.User;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,11 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import java.beans.EventHandler;
 import java.io.IOException;
-
-import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.getEmployee;
-import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.runningFromIntelliJ;
 
 public class QuickSearchController {
     /**
@@ -60,7 +53,7 @@ public class QuickSearchController {
                 Stage primaryStage = user.getPrimaryStage();
                 ScreenUtil sdUtil = new ScreenUtil();
                 try {
-                    FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
+                    FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/PathfindingScreen.fxml"));
                     Parent pathfindingParent = pathfindingload.load();
                     Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingParent, primaryStage);
                     pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
@@ -85,7 +78,7 @@ public class QuickSearchController {
                 Stage primaryStage = user.getPrimaryStage();
                 ScreenUtil sdUtil = new ScreenUtil();
                 try {
-                    FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
+                    FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/PathfindingScreen.fxml"));
                     Parent pathfindingParent = pathfindingload.load();
                     Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingParent, primaryStage);
                     pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
@@ -110,7 +103,7 @@ public class QuickSearchController {
                 Stage primaryStage = user.getPrimaryStage();
                 ScreenUtil sdUtil = new ScreenUtil();
                 try {
-                    FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
+                    FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/PathfindingScreen.fxml"));
                     Parent pathfindingParent = pathfindingload.load();
                     Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingParent, primaryStage);
                     pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
@@ -135,7 +128,7 @@ public class QuickSearchController {
                 Stage primaryStage = user.getPrimaryStage();
                 ScreenUtil sdUtil = new ScreenUtil();
                 try {
-                    FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
+                    FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/PathfindingScreen.fxml"));
                     Parent pathfindingParent = pathfindingload.load();
                     Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingParent, primaryStage);
                     pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
@@ -160,7 +153,7 @@ public class QuickSearchController {
                 Stage primaryStage = user.getPrimaryStage();
                 ScreenUtil sdUtil = new ScreenUtil();
                 try {
-                    FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
+                    FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/PathfindingScreen.fxml"));
                     Parent pathfindingParent = pathfindingload.load();
                     Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingParent, primaryStage);
                     pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
@@ -185,7 +178,7 @@ public class QuickSearchController {
                 Stage primaryStage = user.getPrimaryStage();
                 ScreenUtil sdUtil = new ScreenUtil();
                 try {
-                    FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
+                    FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/PathfindingScreen.fxml"));
                     Parent pathfindingParent = pathfindingload.load();
                     Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingParent, primaryStage);
                     pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");

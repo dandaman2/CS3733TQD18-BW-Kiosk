@@ -13,8 +13,11 @@ Button:pressed {
 }*/
 #playButton {
     -fx-background-color: rgba(1,60,120,1);
-    -fx-background-radius: 50%;
+    -fx-max-width: 100px;
+    -fx-max-height: 80px;
+    -fx-min-width: 100px;
+    -fx-min-height: 80px;
     -fx-text-fill: white;
-    -fx-font-size: 25pt;
+    -fx-font-size: 21pt;
 }
 

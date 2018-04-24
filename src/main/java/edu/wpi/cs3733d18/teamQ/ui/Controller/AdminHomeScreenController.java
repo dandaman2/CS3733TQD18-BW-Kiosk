@@ -9,10 +9,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -101,9 +97,9 @@ public class AdminHomeScreenController implements Initializable {
         try{
             FXMLLoader pathfindingLoader;
             if(runningFromIntelliJ()) {
-                pathfindingLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
+                pathfindingLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/PathfindingScreen.fxml"));
             } else{
-                pathfindingLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
+                pathfindingLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/PathfindingScreen.fxml"));
             }
             Parent pathfindingPane = pathfindingLoader.load();
             Stage primaryStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
