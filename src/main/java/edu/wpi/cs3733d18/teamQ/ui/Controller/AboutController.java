@@ -1,6 +1,7 @@
 package edu.wpi.cs3733d18.teamQ.ui.Controller;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -17,10 +18,13 @@ public class AboutController {
    public static void displayAboutPage() {
        Stage window = new Stage();
 
+       Insets noPadding = new Insets(0, 0, 0, 0);
        // Format the window
        window.setTitle("About Page");
        Label label = new Label("About: Our Application");
+//       label.setPadding(noPadding);
        Label label2 = new Label("Credit");
+//       label2.setPadding(noPadding);
        label.setStyle("-fx-font-size: 27pt;");
        label2.setStyle("-fx-font-size: 27pt;");
        BorderPane layout = new BorderPane(); // Implements a Border Pane (splits screen into 5 sections)
@@ -36,11 +40,16 @@ public class AboutController {
        layout.setBottom(hb2);
 
        Label teamName = new Label("The Quenched Quinotaurs:");
+//       teamName.setPadding(noPadding);
        teamName.setStyle("-fx-font-size: 15pt;");
        Label teamMembers = new Label("Lead Software Engineer: Dan Duff");
+//       teamMembers.setPadding(noPadding);
        Label teamMembers1 = new Label("Algorithms Lead: Nugzar Chkhaidze");
+//       teamMembers1.setPadding(noPadding);
        Label teamMembers2 = new Label("Database Lead - James Kenney");
+//       teamMembers2.setPadding(noPadding);
        Label teamMembers3 = new Label("Assistant Lead Software Engineers:");
+//       teamMembers3.setPadding(noPadding);
        Label teamMembers4 = new Label("Norman Delorey, Andrew DeRusha, Jesse d'Almeida, Aleksander Ibro");
        Label teamMembers5 = new Label("Scrum Master: Maggie Goodwin");
        Label teamMembers6 = new Label("Product Owner: Andrew DeRusha");
@@ -57,14 +66,15 @@ public class AboutController {
        Label thanksTitle = new Label("Special Thanks:");
        thanksTitle.setStyle("-fx-font-size: 15pt;");
 
-       Label thanksText = new Label("Thank you to Brigham and Women’s Faulkner Hospital and Andrew\n" +
-               "Shinn for their time and input on this application.");
+       Label thanksText = new Label("Thank you to Brigham and Women’s Faulkner Hospital and Andrew Shinn for their time and input\n" +
+               "on this application.");
        thanksText.setStyle("-fx-font-size: 12pt;");
-       thanksText.setTextAlignment(TextAlignment.LEFT);
+       thanksText.setTextAlignment(TextAlignment.CENTER);
 
-       Label copyState = new Label("The Brigham & Women’s Hospital maps and data used in this application are\n" + "copyrighted and provided for the sole use of educational purposes");
+       Label copyState = new Label("The Brigham & Women’s Hospital maps and data used in this application are copyrighted and provided for the sole\n" +
+               "use of educational purposes");
        copyState.setStyle("-fx-font-size: 10pt;");
-       copyState.setTextAlignment(TextAlignment.LEFT);
+       copyState.setTextAlignment(TextAlignment.CENTER);
 
        Label apiName = new Label("Team APIs Used:");
        apiName.setStyle("-fx-font-size: 15pt;");
@@ -94,6 +104,7 @@ public class AboutController {
        grid.setHgap(20);
        grid.setVgap(12);
        grid.setAlignment(Pos.TOP_CENTER); // Centers the grid in the VBox
+//       grid.setPadding(noPadding);
        Region reg1 = new Region();
        Region reg2 = new Region();
        Region reg3 = new Region();
@@ -124,12 +135,18 @@ public class AboutController {
 
        //grid.add(reg3, 0, 15);
        //grid.add(reg4, 0, 16);
-       grid.add(thanksTitle, 0, 17);
-       grid.add(thanksText, 0, 18);
+       grid.add(thanksTitle, 0, 18);
+       grid.setColumnSpan(thanksTitle,2);
+       GridPane.setHalignment(thanksTitle, HPos.CENTER);
+       grid.add(thanksText, 0, 19);
+       grid.setColumnSpan(thanksText,2);
+       GridPane.setHalignment(thanksText, HPos.CENTER);
 
        //grid.add(reg5, 0, 19);
        //grid.add(reg6, 0, 20);
        grid.add(copyState, 0, 21);
+       grid.setColumnSpan(copyState,2);
+       GridPane.setHalignment(copyState, HPos.CENTER);
 
        // Filling a grid pane that holds the username and password fields
        grid.add(label2, 1, 0);
