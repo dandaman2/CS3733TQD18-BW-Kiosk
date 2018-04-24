@@ -134,52 +134,65 @@ public class User {
 
     public void saveToDB() {
         System.out.println("Saving to DB");
-        System.out.println("Editing nodes");
+        if(nodesToEdit.size()>0) {
+            System.out.println("Editing nodes");
+        }
         for(Node n:nodesToEdit){
             editNode(n);
             System.out.println(".");
         }
         nodesToEdit = new ArrayList<Node>();
-        System.out.println("Removing nodes");
+        if(nodesToRemove.size()>0) {
+            System.out.println("Removing nodes");
+        }
         for(Node n:nodesToRemove){
             removeNode(n);
             System.out.println(".");
         }
         nodesToRemove = new ArrayList<Node>();
-        System.out.println("Adding nodes");
+        if(nodesToAdd.size()>0) {
+            System.out.println("Adding nodes");
+        }
         for(Node n:nodesToAdd){
             addNode(n);
             System.out.println(".");
         }
         nodesToAdd = new ArrayList<Node>();
-        System.out.println("Removing edges");
+        if(edgesToRemove.size()>0) {
+            System.out.println("Removing edges");
+        }
         for (Edge e:edgesToRemove) {
             removeEdge(e);
             System.out.println(".");
         }
         edgesToRemove = new ArrayList<Edge>();
-        System.out.println("Adding edges");
+        if(edgesToAdd.size()>0) {
+            System.out.println("Adding edges");
+        }
         for (Edge e:edgesToAdd) {
             addEdge(e);
             System.out.println(".");
         }
         edgesToAdd = new ArrayList<Edge>();
-
-        System.out.println("Editing employees");
+        if(employeesToEdit.size()>0) {
+            System.out.println("Editing employees");
+        }
         for(Employee em:employeesToEdit){
             editEmployee(em);
             System.out.println(".");
         }
         employeesToEdit = new ArrayList<Employee>();
-
-        System.out.println("Removing employees");
+        if(employeesToRemove.size()>0) {
+            System.out.println("Removing employees");
+        }
         for(Employee em:employeesToRemove){
             removeEmployee(em);
             System.out.println(".");
         }
         employeesToRemove = new ArrayList<Employee>();
-
-        System.out.println("Adding employees");
+        if(employeesToAdd.size()>0) {
+            System.out.println("Adding employees");
+        }
         for(Employee em:employeesToAdd){
             addEmployee(em);
             System.out.println(".");
