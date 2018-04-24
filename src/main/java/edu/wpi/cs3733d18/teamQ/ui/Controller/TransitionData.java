@@ -10,13 +10,16 @@ public class TransitionData {
     int floor;
     Polyline pathData;
     final double PIXELSPERSECOND = 100;
+    ArrayList<Node> nodes = new ArrayList<>();
 
 
     public TransitionData(){}
 
-    public TransitionData(int floor, Polyline pathData) {
+    public TransitionData(int floor, Polyline pathData, ArrayList<Node> nodes) {
         this.floor = floor;
         this.pathData = pathData;
+        this.nodes = nodes;
+
     }
 
 
@@ -35,6 +38,13 @@ public class TransitionData {
         return length;
     }
 
+    public ArrayList<Node> getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(ArrayList<Node> nodes) {
+        this.nodes = nodes;
+    }
 
     public double getTransitionLength() {
         ArrayList<Double> path = new ArrayList<>();
