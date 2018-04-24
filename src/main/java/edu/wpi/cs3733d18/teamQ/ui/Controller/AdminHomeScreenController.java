@@ -53,21 +53,6 @@ public class AdminHomeScreenController implements Initializable {
 
     //initializes the buttons
     private void setUpButtons(){
-        directionBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        directionBtn.setStyle("-fx-text-fill: #FFFFFF;");
-        directionBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
-        requestBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        requestBtn.setStyle("-fx-text-fill: #FFFFFF;");
-        requestBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
-        editMapBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        editMapBtn.setStyle("-fx-text-fill: #FFFFFF;");
-        editMapBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
-        employeeEdit.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        employeeEdit.setStyle("-fx-text-fill: #FFFFFF;");
-        employeeEdit.setRipplerFill(Paint.valueOf("#FFFFFF"));
-        logOut.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        logOut.setStyle("-fx-text-fill: #FFFFFF;");
-        logOut.setRipplerFill(Paint.valueOf("#FFFFFF"));
         directionBtn.setDisableVisualFocus(true);
 
         directionBtn.setVisible(true);
@@ -149,6 +134,7 @@ public class AdminHomeScreenController implements Initializable {
             Parent editMapPane = editMapLoader.load();
             Stage primaryStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
             Scene editMapScene = sdUtil.prodAndBindScene(editMapPane, primaryStage);
+            editMapScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
             primaryStage.setScene(editMapScene);
         }
         catch(IOException io){

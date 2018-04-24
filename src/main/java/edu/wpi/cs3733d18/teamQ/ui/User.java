@@ -47,6 +47,8 @@ public class User {
     private ArrayList<Employee> employeesToRemove = new ArrayList<Employee>();
     private ArrayList<Employee> employeesToAdd = new ArrayList<Employee>();
 
+    private String pathType;
+
     //For utility functions
     ScreenUtil uUtil = new ScreenUtil();
 
@@ -249,6 +251,14 @@ public class User {
             }
         }
         return floorEdges;
+    }
+
+    public String getPathType() {
+        return pathType;
+    }
+
+    public void setPathType(String pathType) {
+        this.pathType = pathType;
     }
 
     private static class UserHolder{

@@ -288,41 +288,42 @@ public class EditMapController implements Initializable, IZoomableCont {
      * initializes the buttons
      */
     private void setUpButtons() {
-        addButton.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        addButton.setStyle("-fx-text-fill: #FFFFFF;");
-        addButton.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        removeButton.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        removeButton.setStyle("-fx-text-fill: #FFFFFF;");
-        removeButton.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        betweenFloorEdges.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        betweenFloorEdges.setStyle("-fx-text-fill: #FFFFFF;");
-        betweenFloorEdges.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        clearButton.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        clearButton.setStyle("-fx-text-fill: #FFFFFF;");
-        clearButton.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        backBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#ECECEC"), new CornerRadii(0), null)));
-        backBtn.setStyle("-fx-text-fill: #FFFFFF;");
-        backBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        guessBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        guessBtn.setStyle("-fx-text-fill: #FFFFFF;");
-        guessBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
+//        addButton.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
+//        addButton.setStyle("-fx-text-fill: #FFFFFF;");
+//        addButton.setRipplerFill(Paint.valueOf("#FFFFFF"));
+//
+//        removeButton.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
+//        removeButton.setStyle("-fx-text-fill: #FFFFFF;");
+//        removeButton.setRipplerFill(Paint.valueOf("#FFFFFF"));
+//
+//        betweenFloorEdges.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
+//        betweenFloorEdges.setStyle("-fx-text-fill: #FFFFFF;");
+//        betweenFloorEdges.setRipplerFill(Paint.valueOf("#FFFFFF"));
+//
+//        clearButton.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
+//        clearButton.setStyle("-fx-text-fill: #FFFFFF;");
+//        clearButton.setRipplerFill(Paint.valueOf("#FFFFFF"));
+//
+//        backBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#ECECEC"), new CornerRadii(0), null)));
+//        backBtn.setStyle("-fx-text-fill: #FFFFFF;");
+//        backBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
+//
+//        guessBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
+//        guessBtn.setStyle("-fx-text-fill: #FFFFFF;");
+//        guessBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
 
         Image info;
         if (runningFromIntelliJ()) {
-            info = new Image("/ButtonImages/home.png");
+            info = new Image("/ButtonImages/whiteHut.png");
         } else {
-            info = new Image("ButtonImages/home.png");
+            info = new Image("ButtonImages/whiteHut.png");
         }
         ImageView infoView = new ImageView(info);
         infoView.setFitWidth(42);
         infoView.setFitHeight(40);
         backBtn.setGraphic(infoView);
         backBtn.setPrefWidth(editMapSide.getPrefWidth() + 48);
+        backBtn.setDisableVisualFocus(true);
 
         backBtn.setOnAction(e -> goToAdminHome(e));
 

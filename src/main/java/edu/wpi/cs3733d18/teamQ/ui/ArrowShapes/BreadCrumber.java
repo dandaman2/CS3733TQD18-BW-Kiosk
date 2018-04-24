@@ -30,7 +30,6 @@ public class BreadCrumber {
     }
 
     public void drawCrumbs(ArrayList<Node> path){
-        System.out.println("Drawing crumbs");
         // clears current list
         removeArrows();
         buttList = new ArrayList<>();
@@ -93,7 +92,7 @@ public class BreadCrumber {
      *  Setting Styles
      */
     // set style for default arrow
-    public ArrowButton setArrowStyleSelected(ArrowButton p){
+    public ArrowButton setArrowStyleDefault(ArrowButton p){
         p.setOpacity(.8);
         p.setStyle("-fx-background-color: #0067B1;" + "-jfx-button-type: RAISED;" +
                 "-fx-font-size: 20;" + "-fx-text-fill: WHITE;" + "-fx-font-weight: 700;");
@@ -101,7 +100,7 @@ public class BreadCrumber {
     }
 
     // set style for selected arrow
-    public ArrowButton setArrowStyleDefault(ArrowButton p){
+    public ArrowButton setArrowStyleSelected(ArrowButton p){
         p.setOpacity(1);
         p.setStyle("-fx-background-color: #013C78;" + "-jfx-button-type: RAISED;" +
                 "-fx-font-size: 20;" + "-fx-text-fill: WHITE;" + "-fx-font-weight: 700;");
@@ -116,7 +115,6 @@ public class BreadCrumber {
                 floorsOfPath.add(path.get(i + 1).getFloor());
             }
         }
-        System.out.println("Floors on path " + floorsOfPath);
     }
 
     public String floorToString(int f){
@@ -137,7 +135,6 @@ public class BreadCrumber {
 
 
     public ArrayList<ArrowButton> getArrowList() {
-        System.out.println("Stack List: " + buttList);
         return buttList;
     }
 
