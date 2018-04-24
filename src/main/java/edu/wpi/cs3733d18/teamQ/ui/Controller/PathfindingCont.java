@@ -749,7 +749,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         backImagePane.getChildren().removeAll(labelList);
         backImagePane.getChildren().remove(starLabel);
 //        breadCrumb.removeArrows();
-        hboxProgress.getChildren().removeAll(breadCrumb.getStackList());
+//        hboxProgress.getChildren().removeAll(breadCrumb.getArrowList());
 
         // clears list
         transList.clear();
@@ -882,12 +882,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                 }
                 // action event to transition floor
                 transButt.setOnAction((e)-> {
-                    if(arrowView.getRotate() == 0) // arrow pointing up
-                        breadCrumb.setCurrSelected(breadCrumb.getCurrSelected() + 1);
-                    else
-
-                        breadCrumb.setCurrSelected(breadCrumb.getCurrSelected() - 1);
-
                     updateFloorMap(goToFloor);
                     drawPath(queuedPath);
                 } );

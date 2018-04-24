@@ -1,26 +1,23 @@
 package edu.wpi.cs3733d18.teamQ.ui.ArrowShapes;
 
+import com.jfoenix.controls.JFXNodesList;
 import edu.wpi.cs3733d18.teamQ.pathfinding.Node;
 import edu.wpi.cs3733d18.teamQ.ui.Controller.PathfindingCont;
 import edu.wpi.cs3733d18.teamQ.ui.ProxyMaps.IMap;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextBoundsType;
 
 import java.util.ArrayList;
 
 public class BreadCrumber {
-    private ArrayList<StackPane> stackList = new ArrayList<>();
+    private ArrayList<ArrowButton> buttList = new ArrayList<>();
+    private JFXNodesList nodeList = new JFXNodesList();
 
     private ArrayList<Integer> floorsOfPath = new ArrayList<Integer>();
     private IMap floorMaps;
     private HBox hBox;
     private PathfindingCont pf;
 
-    private final double height = 100;
+    private final double height = 80;
     private final double width = 130;
     private int currSelected = 0; // currently selected arrow is default start arrow
 
@@ -33,110 +30,83 @@ public class BreadCrumber {
     }
 
     public void drawCrumbs(ArrayList<Node> path){
+        System.out.println("Drawing crumbs");
         // clears current list
         removeArrows();
-        stackList = new ArrayList<>();
-        floorsOfPath.clear();
+        buttList = new ArrayList<>();
+        floorsOfPath = new ArrayList<>();
 
         // generates list of floors to travel
         getListofFloorChanges(path);
 
         boolean isSelected;
         for(int i = 0; i < floorsOfPath.size(); i++){
+            final int index = i;
             // creates arrow object based on if a start arrow is needed or not
             ArrowShape arrow;
             if(i == 0)
-                arrow = new StartArrow(height, width, floorsOfPath.get(0), 0,0);
+                arrow = new StartArrow(height, width, 0,0);
             else
-                arrow =  new FatArrow(height, width, floorsOfPath.get(i), 0, 0);
-
+                arrow =  new FatArrow(height, width, 0, 0);
 
             // creates text based on if it is on an end of the line or not
-            Text text;
+            String text;
             if(i == 0)
-                text = new Text(" Start\nFloor " + floorToString(floorsOfPath.get(0)));
+                text = " Start\nFloor " + floorToString(floorsOfPath.get(0));
             else if(i == floorsOfPath.size() - 1)
-                text = new Text("  End\nFloor " + floorToString(floorsOfPath.get(i)));
+                text = "  End\nFloor " + floorToString(floorsOfPath.get(i));
             else
-                text = new Text("   Floor " + floorToString(floorsOfPath.get(i)));
+                text = "   Floor " + floorToString(floorsOfPath.get(i));
 
-            if(i == currSelected)
-                isSelected = true;
+            // creates jfx button and adds proper text and styles
+            ArrowButton arrowButt = new ArrowButton(arrow, floorsOfPath.get(i), width, height);
+            arrowButt.setText(text);
+
+            if(floorsOfPath.get(i) == floorMaps.getCurrFloor())
+                setArrowStyleSelected(arrowButt);
             else
-                isSelected = false;
+                setArrowStyleDefault(arrowButt);
 
-            StackPane stack;
-            stack = createCrumb(arrow, text, isSelected, i);
-            stackList.add(stack);
+            // on click actions arrow
+            arrowButt.setOnMouseClicked((e) -> {
+                this.currSelected = index;
+                floorMaps.updateFloorMap(arrowButt.getFloor());
+                pf.updateDrawings();
+            });
+
+            buttList.add(arrowButt);
         }
 
         addArrows();
     }
 
-    /**
-     * creats a crumb with the proper shape, text and actions
-     * @param arrow
-     * @param text
-     * @return
-     */
-    public StackPane createCrumb(ArrowShape arrow, Text text, boolean isSelected, int index){
-        // if the arrow is to be selected, change its color
-        if(isSelected)
-            setArrowStyleSelected(arrow);
-        else
-            setArrowStyleDefault(arrow);
-
-        // sets texts
-        setTextDefault(text);
-        text.setLayoutX(0);
-
-        //stackpane to hold the arrowshape and text overlayed
-        StackPane stack = new StackPane();
-        stack.getChildren().addAll(arrow, text);
-
-        // on click actions arrow
-        stack.setOnMouseClicked((e) -> {
-            this.currSelected = index;
-            floorMaps.updateFloorMap(arrow.getFloor());
-            pf.updateDrawings();
-        });
-        return stack;
-    }
-
-
     // add crumbs to the screen
     public void addArrows(){
-        hBox.getChildren().addAll(stackList);
+        hBox.getChildren().addAll(buttList);
     }
 
     public void removeArrows(){
-        hBox.getChildren().removeAll(stackList);
+        hBox.getChildren().removeAll(buttList);
     }
 
     /**
      *  Setting Styles
      */
     // set style for default arrow
-    public Polygon setArrowStyleDefault(Polygon p){
+    public ArrowButton setArrowStyleSelected(ArrowButton p){
         p.setOpacity(.8);
-        p.setStyle("-fx-fill: #0067B1");
+        p.setStyle("-fx-background-color: #0067B1;" + "-jfx-button-type: RAISED;" +
+                "-fx-font-size: 20;" + "-fx-text-fill: WHITE;" + "-fx-font-weight: 700;");
         return p;
     }
 
     // set style for selected arrow
-    public Polygon setArrowStyleSelected(Polygon p){
+    public ArrowButton setArrowStyleDefault(ArrowButton p){
         p.setOpacity(1);
-        p.setStyle("-fx-fill: #013C78");
+        p.setStyle("-fx-background-color: #013C78;" + "-jfx-button-type: RAISED;" +
+                "-fx-font-size: 20;" + "-fx-text-fill: WHITE;" + "-fx-font-weight: 700;");
         return p;
     }
-
-    public Text setTextDefault(Text t){
-        t.setFill(Color.WHITE);
-        t.setStyle("-fx-alignment: CENTER-RIGHT;" + "-fx-font-size: 26;" + "-fx-font-weight: 700;");
-        t.setBoundsType(TextBoundsType.VISUAL);
-        return t;
-    }
-
 
     // helper function to get all floors needed
     public void getListofFloorChanges(ArrayList<Node> path){
@@ -146,6 +116,7 @@ public class BreadCrumber {
                 floorsOfPath.add(path.get(i + 1).getFloor());
             }
         }
+        System.out.println("Floors on path " + floorsOfPath);
     }
 
     public String floorToString(int f){
@@ -165,9 +136,9 @@ public class BreadCrumber {
     }
 
 
-    public ArrayList<StackPane> getStackList() {
-        System.out.println("Stack List: " + stackList);
-        return stackList;
+    public ArrayList<ArrowButton> getArrowList() {
+        System.out.println("Stack List: " + buttList);
+        return buttList;
     }
 
     public int getCurrSelected() {
