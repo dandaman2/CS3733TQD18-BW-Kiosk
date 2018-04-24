@@ -271,6 +271,9 @@ public class QuickSearchController {
         window.close();
     }
 
+    public void goToPathfinding(ActionEvent e){
+
+    }
 
 
 
