@@ -82,6 +82,10 @@ public class DatabaseSystem {
         EdgeDB.removeEdge(edge);
     }
 
+    public static void editEdge(Edge edge){
+        EdgeDB.editEdge(edge);
+    }
+
     /**
      * Exports the Edge table to a .csv file
      */

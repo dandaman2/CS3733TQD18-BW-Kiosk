@@ -667,12 +667,14 @@ public class EditMapController implements Initializable, IZoomableCont {
                     resetVoid();
                     mode = "en";
                     initEditNode();
+                    toggleBtn.setText("Toggle Node");
                     break;
 
                 case "Edit Edges":
                     resetVoid();
                     mode = "ee";
                     initEditEdge();
+                    toggleBtn.setText("Toggle Edge");
                     break;
             }
         }
@@ -1531,6 +1533,21 @@ public class EditMapController implements Initializable, IZoomableCont {
 
             updateDrawings();
 
+        } else if(mode.equals("ee")){
+            Edge toBeToggled = editUtil.getCurSel().getEdge();
+            toBeToggled.setEnabled(!toBeToggled.isEnabled());
+
+            //for 3d
+            mapFrame3D.getChildren().removeAll(drawn3DEdges);
+            mapFrame3D.getChildren().removeAll(threeDPoints);
+
+            //for 2d
+            mapFrame2D.getChildren().removeAll(drawn2DEdges);
+            mapFrame2D.getChildren().removeAll(twoDPoints);
+
+            user.editEdgeSingleton(toBeToggled);
+
+            updateDrawings();
         }
     }
 

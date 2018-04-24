@@ -119,6 +119,11 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.database.getTable;
         executeStatement(databaseExecution);
     }
 
+     static void editNode(Edge edge){
+         String databaseExecution = "UPDATE APP.EDGE SET " + EdgeStringConverter.edgeToStringUpdate(edge) +" WHERE EDGEID =\'"+edge.getEdgeID() +"\'";
+         executeStatement(databaseExecution);
+     }
+
     /**
      * Exports all edges in the db to a CSV
      */
@@ -154,7 +159,7 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.database.getTable;
     }
 
     public static void editEdge(Edge edge) {
-        String databaseExecution = "UPDATE APP.EDGE SET NODETYPE=" + EdgeStringConverter.edgeToStringUpdate(edge) +", ISENABLED="+edge.isEnabledInt() + " WHERE NODEID =\'" + edge.getEdgeID() + "\'";
+        String databaseExecution = "UPDATE APP.EDGE SET " + EdgeStringConverter.edgeToStringUpdate(edge) + " WHERE EDGEID =\'" + edge.getEdgeID() + "\'";
         try {
             Statement stmnt = database.connection.createStatement();
             stmnt.executeUpdate(databaseExecution);

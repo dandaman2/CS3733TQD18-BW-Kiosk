@@ -30,9 +30,10 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.NodeDB.getNode;
      */
      static String edgeToStringUpdate(Edge input){
         String edge = "EDGEID=\'" +input.getEdgeID() +"\',"
-                +"STARTNODE=\'" + input.getStartNode() +"\',"
-                +"ENDNODE=\'" + input.getEndNode() +"',"
-                +"DISTANCE="+input.getDistance();
+                +"STARTNODE=\'" + input.getStartNode().getNodeID() +"\',"
+                +"ENDNODE=\'" + input.getEndNode().getNodeID() +"',"
+                +"DISTANCE=" + input.getDistance() + ","
+                +"ISENABLED=" + input.isEnabledInt();
         return edge;
     }
 

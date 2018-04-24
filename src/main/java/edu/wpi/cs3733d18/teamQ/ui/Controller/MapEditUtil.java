@@ -42,6 +42,7 @@ public class MapEditUtil {
 
     public ArrayList<LineEdge> SetEdges(int floor, int dim, boolean heat){
         Color edgeColor;
+        Color offColor = Color.GRAY;
         if(heat)
             edgeColor = Color.BLACK;
         else
@@ -70,7 +71,11 @@ public class MapEditUtil {
                 le.endYProperty().bind(getCircleFor(le.getEdge().getEndNode(),dim).centerYProperty());
 
                 le.setStrokeWidth(3);
-                le.setStroke(edgeColor);
+                if(le.getEdge().isEnabled()) {
+                    le.setStroke(edgeColor);
+                } else {
+                    le.setStroke(offColor);
+                }
                 le.setCursor(Cursor.HAND);
 
                 le.setOnMousePressed((event) -> {

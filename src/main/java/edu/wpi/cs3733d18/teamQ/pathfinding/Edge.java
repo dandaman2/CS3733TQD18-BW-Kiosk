@@ -15,7 +15,7 @@ public class Edge {
         this.endNode = eNode;
         this.distance = dis;
         this.state = true;
-        this.isEnabled = true;
+        this.isEnabled = isEnabled;
     }
 
     public Edge(Double distance, Node startNode, Node endNode) {
