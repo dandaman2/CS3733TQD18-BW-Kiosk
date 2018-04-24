@@ -632,7 +632,19 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         youHere = user.getNode("GELEV00N02");
         queuedPath = g.findShortestPathByType(youHere,Type,RestrictedTYPES);
 
-        curSelected = queuedPath.get(queuedPath.size()-1);
+        if(Type.equals("BATH")){
+            double bathLength = pathLength(queuedPath);
+            Node bathNode = queuedPath.get(queuedPath.size()-1);
+            queuedPath = g.findShortestPathByType(youHere,"REST",RestrictedTYPES);
+            double restLength = pathLength(queuedPath);
+            if(restLength<bathLength){
+                curSelected = queuedPath.get(queuedPath.size()-1);
+            } else{
+                curSelected = bathNode;
+            }
+        } else {
+            curSelected = queuedPath.get(queuedPath.size() - 1);
+        }
         //drawPath(queuedPath);
         //isPathDisplayed = true;
 
