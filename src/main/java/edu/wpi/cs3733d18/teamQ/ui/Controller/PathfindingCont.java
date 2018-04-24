@@ -1392,7 +1392,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void buttonFloor3(){
         updateFloorMap(3);
-        floorTransition();
     }
 
     /**
@@ -1400,7 +1399,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void buttonFloor2(){
         updateFloorMap(2);
-        floorTransition();
     }
 
     /**
@@ -1408,7 +1406,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void buttonFloor1(){
         updateFloorMap(1);
-        floorTransition();
     }
 
     /**
@@ -1416,7 +1413,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void buttonFloorL1(){
         updateFloorMap(-1);
-        floorTransition();
     }
 
     /**
@@ -1424,7 +1420,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void buttonFloorL2(){
         updateFloorMap(-2);
-        floorTransition();
     }
 
     /**
@@ -1805,6 +1800,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         floorMaps.updateFloorMap(floor);
         updateDrawings();
         highlightButton(floor);
+        floorTransition();
    }
 
     /**
