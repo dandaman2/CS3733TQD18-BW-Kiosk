@@ -60,7 +60,7 @@ public class AboutController {
        Label teamMembers11 = new Label("Professor Wilson Wong");
        Label teamMembers12 = new Label("Worcester Polytechnic Institute Computer Science Department");
 
-       teamMembers.setStyle("-fx-font-size: 12pt;");
+       //teamMembers.setStyle("-fx-font-size: 12pt;");
        teamMembers.setTextAlignment(TextAlignment.LEFT);
 
        Label thanksTitle = new Label("Special Thanks:");
@@ -72,7 +72,7 @@ public class AboutController {
        thanksText.setTextAlignment(TextAlignment.CENTER);
 
        Label copyState = new Label("The Brigham & Women’s Hospital maps and data used in this application are copyrighted and provided for the sole\n" +
-               "use of educational purposes");
+               "use of educational purposes.");
        copyState.setStyle("-fx-font-size: 10pt;");
        copyState.setTextAlignment(TextAlignment.CENTER);
 
@@ -95,8 +95,8 @@ public class AboutController {
        Label apiUsed11 = new Label("Jbcrypt");
        Label apiUsed12 = new Label("Slf4j-api");
        Label apiUsed13 = new Label("Slf4j-simple");
-       apiUsed.setStyle("-fx-font-size: 12pt;");
-       teamApiUsed.setStyle("-fx-font-size: 12pt;");
+       //apiUsed.setStyle("-fx-font-size: 12pt;");
+       //teamApiUsed.setStyle("-fx-font-size: 12pt;");
        apiUsed.setTextAlignment(TextAlignment.LEFT);
 
        // Formatting for the admin login
