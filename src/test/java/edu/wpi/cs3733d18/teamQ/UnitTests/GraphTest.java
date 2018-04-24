@@ -123,7 +123,7 @@ public class GraphTest {
      * Tests that a path that will be correctly generated when avoiding a certain type
      * of node
      */
-    @Test @Ignore
+    @Test
     public void testNoTypePath(){
         //TODO finish this when feature is fully implemented
         ArrayList<Node> expectedPath = new ArrayList<Node>();
