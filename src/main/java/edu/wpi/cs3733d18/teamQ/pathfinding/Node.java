@@ -16,6 +16,7 @@ public class Node {
     private Double xPos3D;
     private Double yPos3D;
     private Double hits;
+    private boolean isEnabled;
 
     public Node(Double xPos, Double yPos, int floor, int index) {
         this.index = index;
@@ -23,6 +24,7 @@ public class Node {
         this.yPos = yPos;
         this.floor = floor;
         this.hits = 0.0;
+        this.isEnabled = true;
     }
 
     public Node(Double xPos, Double yPos, int floor, Double xPos3D, Double yPos3D) {
@@ -31,10 +33,11 @@ public class Node {
         this.floor = floor;
         this.xPos3D = xPos3D;
         this.yPos3D = yPos3D;
+        this.isEnabled = true;
     }
 
     public Node(String nodeID, Double xCoord, Double yCoord, int floorNum, String building,
-                String nodeType, String longName, String shortName, String team, Double xCoord3D, Double yCoord3D, Double hits){
+                String nodeType, String longName, String shortName, String team, Double xCoord3D, Double yCoord3D, Double hits, boolean isEnabled){
         this.nodeID = nodeID;
         this.xPos = xCoord;
         this.yPos = yCoord;
@@ -48,6 +51,7 @@ public class Node {
         this.yPos3D = yCoord3D;
         this.index = 0;
         this.hits = hits;
+        this.isEnabled = isEnabled;
     }
 
     public int getIndex() { return this.index; }
@@ -163,5 +167,21 @@ public class Node {
 
     public void incrementHit() {
         this.hits++;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public int isEnabledInt(){
+        if(isEnabled){
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 }

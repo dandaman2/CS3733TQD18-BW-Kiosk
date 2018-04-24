@@ -945,7 +945,7 @@ public class EditMapController implements Initializable, IZoomableCont {
         String longName = generateLongName(id, type);
         System.out.println(longName);
 
-        return new Node(id, xPos, yPos, floor, "Shapiro", type, longName, shortName, "Q", xPos3D, yPos3D, 0.0);
+        return new Node(id, xPos, yPos, floor, "Shapiro", type, longName, shortName, "Q", xPos3D, yPos3D, 0.0, true);
     }
 
     /**

@@ -7,6 +7,7 @@ public class Edge {
     private Node endNode;
     private double distance;
     private boolean state;
+    private boolean isEnabled;
 
     public Edge(String edgeID, Node sNode, Node eNode, double dis){
         this.edgeID = edgeID;
@@ -65,5 +66,11 @@ public class Edge {
     }
 
 
+    public boolean isEnabled() {
+        return startNode.isEnabled()&&endNode.isEnabled();
+    }
 
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
 }
