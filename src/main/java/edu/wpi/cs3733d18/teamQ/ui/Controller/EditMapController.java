@@ -1033,7 +1033,7 @@ public class EditMapController implements Initializable, IZoomableCont {
                         Node node1 = user.getNode(nodeID1); //getNode(nodeID1);
                         Node node2 = user.getNode(nodeID2);
                         System.out.println(nodeID1 + " " + nodeID2);
-                        Edge edge = new Edge(generateEdgeID(node1, node2), node1, node2, node1.calcDistance(node2));
+                        Edge edge = new Edge(generateEdgeID(node1, node2), node1, node2, node1.calcDistance(node2),true);
                         mapFrame3D.getChildren().removeAll(drawn3DEdges);
                         mapFrame2D.getChildren().removeAll(drawn2DEdges);
                         user.addEdgeSingleton(edge);

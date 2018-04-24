@@ -9,18 +9,20 @@ public class Edge {
     private boolean state;
     private boolean isEnabled;
 
-    public Edge(String edgeID, Node sNode, Node eNode, double dis){
+    public Edge(String edgeID, Node sNode, Node eNode, double dis, boolean isEnabled){
         this.edgeID = edgeID;
         this.startNode = sNode;
         this.endNode = eNode;
         this.distance = dis;
         this.state = true;
+        this.isEnabled = true;
     }
 
     public Edge(Double distance, Node startNode, Node endNode) {
         this.distance = distance;
         this.startNode = startNode;
         this.endNode = endNode;
+        this.isEnabled = true;
     }
 
 
@@ -67,7 +69,15 @@ public class Edge {
 
 
     public boolean isEnabled() {
-        return startNode.isEnabled()&&endNode.isEnabled();
+        return isEnabled;
+    }
+
+    public int isEnabledInt(){
+        if(isEnabled){
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     public void setEnabled(boolean enabled) {

@@ -119,7 +119,8 @@ class database {
                     "(EDGEID VARCHAR(100) PRIMARY KEY,\n" +
                     " STARTNODE VARCHAR(100),\n" +
                     " ENDNODE VARCHAR(100),\n" +
-                    " DISTANCE DOUBLE)";
+                    " DISTANCE DOUBLE,\n" +
+                    " ISENABLED INT)";
             String execution3 = "CREATE TABLE REQUEST\n" +
                     "(REQUESTID VARCHAR(100) PRIMARY KEY,\n" +
                     " TYPE INT,\n" +
