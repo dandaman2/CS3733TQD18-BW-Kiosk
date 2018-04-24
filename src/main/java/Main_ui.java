@@ -22,6 +22,7 @@ public class Main_ui extends Application {
         user.initLoadMaps();
         user.setNodes(getNodes());
         user.setEdges(getEdges());
+        user.setEmployees(getEmployees());
         //user.startTimer();
 
         //Loader broken-down to allow static controller distribution
