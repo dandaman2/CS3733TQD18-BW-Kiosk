@@ -37,20 +37,20 @@ public class AboutController {
 
        Label teamName = new Label("The Quenched Quinotaurs:");
        teamName.setStyle("-fx-font-size: 15pt;");
-       Label teamMembers = new Label("Lead Software Engineer: Dan Duff\n" +
-               "Algorithms Lead: Nugzar Chkhaidze\n" +
-               "Database Lead - James Kenney\n" +
-               "Assistant Lead Software Engineers:\n" +
-               "Norman Delorey, Andrew DeRusha, Jesse d'Almeida, Aleksander Ibro\n" +
-               "Project Manager: Aleksander Ibro\n" +
-               "Scrum Master: Maggie Goodwin\n" +
-               "Product Owner: Andrew DeRusha\n" +
-               "Test Engineer: Norman Delorey\n" +
-               "Documentation Analyst: Sarah Armstrong\n" +
-               "Software Engineers: Krysta Murdy\n" +
-               "Team Coach: Andrew Rottier\n" +
-               "Professor Wilson Wong\n" +
-               "Worcester Polytechnic Institute Computer Science Department");
+       Label teamMembers = new Label("Lead Software Engineer: Dan Duff");
+       Label teamMembers1 = new Label("Algorithms Lead: Nugzar Chkhaidze");
+       Label teamMembers2 = new Label("Database Lead - James Kenney");
+       Label teamMembers3 = new Label("Assistant Lead Software Engineers:");
+       Label teamMembers4 = new Label("Norman Delorey, Andrew DeRusha, Jesse d'Almeida, Aleksander Ibro");
+       Label teamMembers5 = new Label("Scrum Master: Maggie Goodwin");
+       Label teamMembers6 = new Label("Product Owner: Andrew DeRusha");
+       Label teamMembers7 = new Label("Test Engineer: Norman Delorey");
+       Label teamMembers8 = new Label("Documentation Analyst: Sarah Armstrong");
+       Label teamMembers9 = new Label("Software Engineers: Krysta Murdy");
+       Label teamMembers10 = new Label("Team Coach: Andrew Rottier");
+       Label teamMembers11 = new Label("Professor Wilson Wong");
+       Label teamMembers12 = new Label("Worcester Polytechnic Institute Computer Science Department");
+
        teamMembers.setStyle("-fx-font-size: 12pt;");
        teamMembers.setTextAlignment(TextAlignment.LEFT);
 
@@ -66,12 +66,28 @@ public class AboutController {
        copyState.setStyle("-fx-font-size: 10pt;");
        copyState.setTextAlignment(TextAlignment.LEFT);
 
-       Label apiName = new Label("APIs Used:");
+       Label apiName = new Label("Team APIs Used:");
        apiName.setStyle("-fx-font-size: 15pt;");
-       Label apiUsed = new Label("Team O's Gift service request API\n" +
-               "Face recognition API\n" );
+       Label apiExName = new Label("External APIs Used:");
+       apiExName.setStyle("-fx-font-size: 15pt;");
+       Label teamApiUsed = new Label("Team O's Gift service request API");
+       Label apiUsed = new Label("Yahoo Weather Java API");
+       Label apiUsed1 = new Label("Jfoenix");
+       Label apiUsed2 = new Label("Javax Mail");
+       Label apiUsed3 = new Label("Activation");
+       Label apiUsed4 = new Label("Junit");
+       Label apiUsed5 = new Label("Fuzzywuzzy");
+       Label apiUsed6 = new Label("Derby");
+       Label apiUsed7 = new Label("Derbyclient");
+       Label apiUsed8 = new Label("Derbytools");
+       Label apiUsed9 = new Label("Controlsfx");
+       Label apiUsed10 = new Label("Hamcrest-core");
+       Label apiUsed11 = new Label("Jbcrypt");
+       Label apiUsed12 = new Label("Slf4j-api");
+       Label apiUsed13 = new Label("Slf4j-simple");
        apiUsed.setStyle("-fx-font-size: 12pt;");
-       apiUsed.setTextAlignment(TextAlignment.CENTER);
+       teamApiUsed.setStyle("-fx-font-size: 12pt;");
+       apiUsed.setTextAlignment(TextAlignment.LEFT);
 
        // Formatting for the admin login
        GridPane grid = new GridPane();
@@ -93,22 +109,47 @@ public class AboutController {
        grid.add(label, 0,0);
        grid.add(teamName, 0, 1);
        grid.add(teamMembers, 0, 2);
+       grid.add(teamMembers1, 0, 3);
+       grid.add(teamMembers2, 0, 4);
+       grid.add(teamMembers3, 0, 5);
+       grid.add(teamMembers4, 0, 6);
+       grid.add(teamMembers5, 0, 7);
+       grid.add(teamMembers6, 0, 8);
+       grid.add(teamMembers7, 0, 9);
+       grid.add(teamMembers8, 0, 10);
+       grid.add(teamMembers9, 0, 11);
+       grid.add(teamMembers10, 0, 12);
+       grid.add(teamMembers11, 0, 13);
+       grid.add(teamMembers12, 0, 14);
 
-       grid.add(reg3, 0, 2);
-       grid.add(reg4, 0, 3);
-       grid.add(thanksTitle, 0, 4);
-       grid.add(thanksText, 0, 5);
+       //grid.add(reg3, 0, 15);
+       //grid.add(reg4, 0, 16);
+       grid.add(thanksTitle, 0, 17);
+       grid.add(thanksText, 0, 18);
 
-       grid.add(reg5, 0, 6);
-       grid.add(reg6, 0, 7);
-       grid.add(copyState, 0, 8);
+       //grid.add(reg5, 0, 19);
+       //grid.add(reg6, 0, 20);
+       grid.add(copyState, 0, 21);
 
        // Filling a grid pane that holds the username and password fields
-       grid.add(reg7, 1, 0);
-       grid.add(reg8, 1, 0);
        grid.add(label2, 1, 0);
        grid.add(apiName, 1, 1);
-       grid.add(apiUsed, 1, 2);
+       grid.add(teamApiUsed, 1, 2);
+       grid.add(apiExName, 1, 3);
+       grid.add(apiUsed, 1, 4);
+       grid.add(apiUsed1, 1, 5);
+       grid.add(apiUsed2, 1, 6);
+       grid.add(apiUsed3, 1, 7);
+       grid.add(apiUsed4, 1, 8);
+       grid.add(apiUsed5, 1, 9);
+       grid.add(apiUsed6, 1, 10);
+       grid.add(apiUsed7, 1, 11);
+       grid.add(apiUsed8, 1, 12);
+       grid.add(apiUsed9, 1, 13);
+       grid.add(apiUsed10, 1, 14);
+       grid.add(apiUsed11, 1, 15);
+       grid.add(apiUsed12, 1, 16);
+       grid.add(apiUsed13, 1, 17);
 
        // Filling a Vbox that holds the main message the grid and the submit button
        vb.getChildren().addAll(grid, aPane);
