@@ -12,6 +12,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -279,4 +280,172 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
         clickOn("Add Request");
 //        selectRequest();
     }
+
+    /**
+     * Tests to make sure that the program will alert the user if they attempt
+     * to fulfill a request without inputing a name
+     * @throws Exception
+     */
+    /*@Test
+    public void invalidNameFulfillTest() throws Exception{
+        clickOn("#interpreterBtn");
+        fillInRequestFieldsWithTestValues();
+        clickOn("#submitRequest");
+
+        clickOn("Pending Requests");
+        selectRequest();
+        clickOn("#whoFulfilled");
+        clickOn("#calendar");
+        write("4/16/2018");
+        clickOn("#submit");
+
+        String errLabelText = lookup("#errorLabel").queryAs(Label.class).getText();
+
+        assertEquals(errLabelText, "[Employee Name not Entered]");
+    }*/
+
+
+    /**
+     * Tests to make sure that if a user tries to fulfill a request without selecting one
+     * the program will inform the user that they have not selected a request.
+     */
+    /*@Test
+    public void unselectedRequestFulfillTest(){
+        clickOn("Pending Requests");
+        clickOn("#whoFulfilled");
+        clickOn("#calendar");
+        write("4/16/2018");
+        clickOn("#submit");
+
+        String errLabelText = lookup("#errorLabel").queryAs(Label.class).getText();
+
+        assertEquals(errLabelText, "[No Request Selected]");
+    }*/
+
+    /*@Test @Ignore
+    public void addRequestWithoutFieldFilledTest() throws  Exception{
+        clickOn("#interpreterBtn");
+
+        //Fill In Fields but not first name
+
+        clickOn("#lastNameTF");
+        write("Test Last");
+        //clickOn("#roomLocationTF");
+        moveBy(0,50);
+        press(MouseButton.PRIMARY);
+        release(MouseButton.PRIMARY);
+        write("GELEV00N02");
+        Thread.sleep(200);
+        press(KeyCode.DOWN);
+        release(KeyCode.DOWN);
+        press(KeyCode.ENTER);
+        Thread.sleep(200);
+        press(KeyCode.TAB);
+        clickOn("#emailTF");
+        write("test@test.com");
+        clickOn("#phoneNumberTF");
+        write("1111111111");
+        clickOn("#submitRequest");
+
+        String errLabelText = lookup("#errorLabel").queryAs(Label.class).getText();
+
+        assertEquals(errLabelText, "[Please fill in all sections before Submitting Request]");
+
+        clickOn("#clear");
+
+        //Fill In Fields but not last name
+        clickOn("#firstNameTF");
+        write("Test First");
+
+        //clickOn("#roomLocationTF");
+        moveBy(0,50);
+        press(MouseButton.PRIMARY);
+        release(MouseButton.PRIMARY);
+        write("GELEV00N02");
+        Thread.sleep(200);
+        press(KeyCode.DOWN);
+        release(KeyCode.DOWN);
+        press(KeyCode.ENTER);
+        Thread.sleep(200);
+        press(KeyCode.TAB);
+        clickOn("#emailTF");
+        write("test@test.com");
+        clickOn("#phoneNumberTF");
+        write("1111111111");
+        clickOn("#submitRequest");
+
+        errLabelText = lookup("#errorLabel").queryAs(Label.class).getText();
+
+        assertEquals(errLabelText, "[Please fill in all sections before Submitting Request]");
+
+        clickOn("#clear");
+
+        //Fill In Fields but not room
+        clickOn("#firstNameTF");
+        write("Test First");
+        clickOn("#lastNameTF");
+        write("Test Last");
+
+        clickOn("#emailTF");
+        write("test@test.com");
+        clickOn("#phoneNumberTF");
+        write("1111111111");
+        clickOn("#submitRequest");
+
+        errLabelText = lookup("#errorLabel").queryAs(Label.class).getText();
+
+        assertEquals(errLabelText, "[Please fill in all sections before Submitting Request]");
+
+        clickOn("#clear");
+
+        //Fill In Fields but not email
+        clickOn("#firstNameTF");
+        write("Test First");
+        clickOn("#lastNameTF");
+        write("Test Last");
+        //clickOn("#roomLocationTF");
+        moveBy(0,50);
+        press(MouseButton.PRIMARY);
+        release(MouseButton.PRIMARY);
+        write("GELEV00N02");
+        Thread.sleep(200);
+        press(KeyCode.DOWN);
+        release(KeyCode.DOWN);
+        press(KeyCode.ENTER);
+        Thread.sleep(200);
+        press(KeyCode.TAB);
+        clickOn("#phoneNumberTF");
+        write("1111111111");
+        clickOn("#submitRequest");
+
+        errLabelText = lookup("#errorLabel").queryAs(Label.class).getText();
+
+        assertEquals(errLabelText, "[Please fill in all sections before Submitting Request]");
+
+        clickOn("#clear");
+
+        //Fill In Fields but not phone number
+        clickOn("#firstNameTF");
+        write("Test First");
+        clickOn("#lastNameTF");
+        write("Test Last");
+        //clickOn("#roomLocationTF");
+        moveBy(0,50);
+        press(MouseButton.PRIMARY);
+        release(MouseButton.PRIMARY);
+        write("GELEV00N02");
+        Thread.sleep(200);
+        press(KeyCode.DOWN);
+        release(KeyCode.DOWN);
+        press(KeyCode.ENTER);
+        Thread.sleep(200);
+        press(KeyCode.TAB);
+        clickOn("#emailTF");
+        write("test@test.com");
+        clickOn("#phoneNumberTF");
+
+        errLabelText = lookup("#errorLabel").queryAs(Label.class).getText();
+
+        assertEquals(errLabelText, "[Please fill in all sections before Submitting Request]");
+    }*/
 }
