@@ -30,7 +30,6 @@ public class BreadCrumber {
     }
 
     public void drawCrumbs(ArrayList<Node> path){
-        System.out.println("Drawing crumbs");
         // clears current list
         removeArrows();
         buttList = new ArrayList<>();
@@ -116,7 +115,6 @@ public class BreadCrumber {
                 floorsOfPath.add(path.get(i + 1).getFloor());
             }
         }
-        System.out.println("Floors on path " + floorsOfPath);
     }
 
     public String floorToString(int f){
@@ -137,7 +135,6 @@ public class BreadCrumber {
 
 
     public ArrayList<ArrowButton> getArrowList() {
-        System.out.println("Stack List: " + buttList);
         return buttList;
     }
 

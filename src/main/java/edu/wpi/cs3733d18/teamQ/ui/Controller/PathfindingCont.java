@@ -2,8 +2,8 @@ package edu.wpi.cs3733d18.teamQ.ui.Controller;
 
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733d18.teamQ.pathfinding.*;
 import edu.wpi.cs3733d18.teamQ.ui.ArrowShapes.BreadCrumber;
 import edu.wpi.cs3733d18.teamQ.ui.*;
@@ -11,32 +11,26 @@ import edu.wpi.cs3733d18.teamQ.ui.ProxyMaps.FloorMaps;
 import edu.wpi.cs3733d18.teamQ.ui.ProxyMaps.IMap;
 import javafx.animation.*;
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
 import javafx.scene.text.Font;
@@ -44,7 +38,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import me.xdrop.fuzzywuzzy.model.ExtractedResult;
-import org.controlsfx.control.textfield.TextFields;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -152,6 +145,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     @FXML
     private Label floorLabel;
 
+    @FXML
+    private JFXComboBox<String> gifSelector;
+
     //Scrolling and zooming functionality
     @FXML
     private ScrollPane imageScroller;
@@ -238,11 +234,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         initAutoComp(nodes);
 
         initScroll();
-
         initEmailDrawer();
         initStar();
         initializeTopBar();
-
 
         floorMaps = new FloorMaps(user.getMaps3D(), user.getMaps2D(), backImage, startingFloor, false);
         noder = new MapNoder(backImagePane, backImage, floorMaps.getIs2D(), endingNodeField);
@@ -257,8 +251,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         breadCrumb = new BreadCrumber(floorMaps, hboxProgress, this);
         initFloorLabel();
-        //new TimeoutData().initTimer(screenBinding);
-        //initTimer();
+        initGifSelector();
     }
 
 
@@ -305,6 +298,43 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         });
     }
 
+    private String gifPath;
+    public void initGifSelector(){
+        ObservableList options = FXCollections.observableArrayList();
+        options.addAll("Spider-Man", "Puppy", "Zombie", "Nyan Cat");
+        gifSelector.getItems().addAll(options);
+
+        movingPart = new ImageView(new Image("Gifs/dog.gif"));
+
+        gifSelector.getSelectionModel()
+                .selectedIndexProperty()
+                .addListener(new ChangeListener<Number>() {
+                                 @Override
+                                 public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                                     switch(newValue.intValue()){
+                                         case 0:
+                                             gifPath = "Gifs/spiderman.gif";
+                                             break;
+                                         case 1:
+                                             gifPath = "Gifs/dog.gif";
+                                             break;
+                                         case 2:
+                                             gifPath = "Gifs/zombie.gif";
+                                             break;
+                                         case 3:
+                                             gifPath = "Gifs/nyan.gif";
+                                             break;
+                                     }
+
+                                     movingPart = new ImageView(new Image(gifPath));
+                                     movingPart.setPreserveRatio(true);
+                                     movingPart.setFitWidth(130);
+
+                                 }
+                             }
+                );
+        gifSelector.getSelectionModel().select(1);
+    }
 
     private FadeTransition fadeIn = new FadeTransition( Duration.millis(1500));
 
@@ -452,7 +482,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void initMap(){
         updateFloorMap(startingFloor);
-
     }
 
 
@@ -994,14 +1023,29 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         for(TransitionData t : trans){
             if(t.getFloor()==getCurrFloor()){
                 dashLine(t.getPathData());
+
+                System.out.println("XPos get0 " + t.getNodeShells().get(0).getxPos());
+                System.out.println("XPos get1 " + t.getNodeShells().get(1).getxPos());
+
+                if(t.getNodeShells().get(0).getxPos() > t.getNodeShells().get(1).getxPos()){
+                    System.out.println("Flip");
+                    movingPart.setScaleY(-1);
+                    movingPart.setScaleX(1);
+                }
+                else {
+                    System.out.println("UnFlip");
+                    movingPart.setScaleY(1);
+                    movingPart.setScaleX(1);
+                }
+
             }
         }
         backImagePane.getChildren().addAll(antPaths);
         for(Timeline antline: antTimeLines){
-
             System.out.println("playing ants");
             antline.play();
         }
+
 
     }
 
@@ -1539,9 +1583,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         SequentialTransition allTransitions = new SequentialTransition();
 
-//        Circle movingPart = new Circle(10.0f);
-//        movingPart.setFill(Color.PURPLE);
-        movingPart = new ImageView(new Image("dog.gif"));
+        backImagePane.getChildren().remove(movingPart);
         backImagePane.getChildren().add(movingPart);
 
 
@@ -1549,15 +1591,16 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         //centerScrollToPath(transitions.get(0).getNodeShells(),transitions.get(0).getFloor(),floorMaps.getIs2D(), false);
         for (int i = 0; i < transitions.size()-1; i++) {
             TransitionData curTrans = transitions.get(i);
-            System.out.println("Transitions Count: " + transitions.size());
-            System.out.println("curTrans Floor: " + curTrans.getFloor());
-            System.out.println("Points: " + curTrans.getPathData().getPoints());
+//            System.out.println("Transitions Count: " + transitions.size());
+//            System.out.println("curTrans Floor: " + curTrans.getFloor());
+//            System.out.println("Points: " + curTrans.getPathData().getPoints());
             //  System.out.println("Length: " + curTrans.getTransitionLength());
             //floorChoice.getSelectionModel().select(dbToIndex(curTrans.getFloor()));
             //drawPath(queuedPath);
             Polyline path = curTrans.getPathData();
             PathTransition transition = new PathTransition();
             transition.setDuration(Duration.seconds(curTrans.getCalcDuration()));
+
             transition.setNode(movingPart);
             transition.setPath(path);
             transition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
@@ -1637,12 +1680,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         startingNodeField.setDisable(b);
         exchange.setDisable(b);
         endingNodeField.setDisable(b);
-//        if(b){
-//            zoom.disableScroll();
-//        }
-//        else{
-//            zoom.enableScroll();
-//        }
+        gifSelector.setDisable(b);
     }
 
 
