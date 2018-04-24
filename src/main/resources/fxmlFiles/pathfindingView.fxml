@@ -39,7 +39,6 @@
                <children>
                   <HBox alignment="BOTTOM_CENTER" layoutX="219.0" layoutY="20.0" prefHeight="31.0" prefWidth="874.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
-                        <Button fx:id="playButton" mnemonicParsing="false" onAction="#runTransitions" text="Play" />
                         <Region prefHeight="31.0" prefWidth="25.0" />
                         <HBox fx:id="hboxProgress" prefHeight="100.0" prefWidth="200.0">
                            <padding>
@@ -143,6 +142,7 @@
                   </HBox>
                </children>
             </AnchorPane>
+            <Button fx:id="playButton" mnemonicParsing="false" onAction="#runTransitions"/>
             <ToggleButton fx:id="dToggle" mnemonicParsing="false" onAction="#toggle3D" prefHeight="77.0" prefWidth="76.0" style="-fx-background-radius: 50%; -fx-background-color: red;" text="2D" textFill="#fffbfb">
                <font>
                   <Font name="System Bold" size="26.0" />

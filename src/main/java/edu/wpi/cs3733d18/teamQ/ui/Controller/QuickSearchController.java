@@ -72,12 +72,11 @@ public class QuickSearchController {
                 }
                 ScreenUtil sdUtil = new ScreenUtil();
                 Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingPane, primaryStage);
-                //pathfindingScene.getStylesheets().addAll("Stylesheet.css");
                 pathfindingScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
                 primaryStage.setScene(pathfindingScene);
                 pathCont = pathfindingLoader.getController();
                 pathCont.setListen(primaryStage);
-                pathCont.getNearType("BATH");
+                pathCont.getNearType("REST");
                 window.close();
             }
         });
@@ -269,6 +268,7 @@ public class QuickSearchController {
 
         // Means the window has to be closed before the user can interact with other windows again
         window.showAndWait();
+        window.close();
     }
 
     public void goToPathfinding(ActionEvent e){
