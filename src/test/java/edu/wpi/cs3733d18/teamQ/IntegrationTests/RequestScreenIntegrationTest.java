@@ -54,7 +54,7 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
         FxToolkit.setupStage(thisStage -> stage.setScene(new Scene(reqParent)));
         //stage.setScene(new Scene(reqParent));
         //Scene pathfindingScene = sdUtil.prodAndBindScene(reqParent, stage);
-        RequestController reqController = reqLoader.getController();
+        reqController = reqLoader.getController();
         //reqController.setListen(stage);
 
         stage.setMinWidth(735);
@@ -72,10 +72,10 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
     public static void initialize(){
         user = User.getUser();
         initializeDb();
-        /*System.setProperty("testfx.robot", "glass");
+        System.setProperty("testfx.robot", "glass");
         System.setProperty("testfx.headless", "true");
         System.setProperty("prism.order", "sw");
-        System.setProperty("prism.text", "t2k");*/
+        System.setProperty("prism.text", "t2k");
     }
 
     @Override
@@ -115,7 +115,7 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
      */
     public void selectRequest(){
         clickOn("#treeTableViewPending");
-        moveBy(0,-20);
+        moveBy(0,-50);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
     }
@@ -251,6 +251,7 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
 
         clickOn("Pending Requests");
         selectRequest();
+        System.out.println("HERE");
         clickOn("#whoFulfilled");
         write("Test Person");
         clickOn("#calendar");
@@ -264,11 +265,12 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
 
         }
         clickOn("#treeTableViewFulfilled");
-        moveBy(0,-20);
+        moveBy(0,-50);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
 
         String requestAllData = lookup("#scrollPaneFulFill").queryAs(ScrollPane.class).getContent().toString();
+        System.out.println(requestAllData);
         String requestID = requestAllData.substring(15, requestAllData.indexOf("\n", 15));
         Request fetchedRequest = getRequest(requestID);
         clickOn("#removeFulFilled");
