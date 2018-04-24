@@ -265,10 +265,10 @@ public class EmployeeEditController implements Initializable {
                 Employee employee;
 
                 if(level == "1"){
-                    employee = new Employee(uName,pass,false,null);
+                    employee = new Employee(uName,pass,null,null,false,null);
                 }
                 else{
-                    employee = new Employee(uName,pass,true,null);
+                    employee = new Employee(uName,pass,null,null,true,null);
                 }
 
                 addEmployee(employee);
@@ -295,10 +295,10 @@ public class EmployeeEditController implements Initializable {
                     Employee employeeNew;
 
                     if(level == "1"){
-                        employeeNew = new Employee(uName,pass,false,null);
+                        employeeNew = new Employee(uName,pass,null,null,false,null);
                     }
                     else{
-                        employeeNew = new Employee(uName,pass,true,null);
+                        employeeNew = new Employee(uName,pass,null,null,true,null);
                     }
 
                     removeEmployee(employee);

@@ -25,8 +25,8 @@ public class EmployeeRequestAndDatabaseIntegrationTest {
 
     private final String staffName = "staff";
     private final String adminName = "admin";
-    private Employee expectedEmployee = new Employee(staffName, staffName, false, "");
-    private Employee expectedAdmin = new Employee(adminName, adminName, true, "");
+    private Employee expectedEmployee = new Employee(staffName, staffName, null, null, null, false,"");
+    private Employee expectedAdmin = new Employee(adminName, adminName, null, null, null, true, "");
 
     private final GregorianCalendar testDate = new GregorianCalendar(2018, 1, 1);
     private SanitationRequest testSanitationRequest;

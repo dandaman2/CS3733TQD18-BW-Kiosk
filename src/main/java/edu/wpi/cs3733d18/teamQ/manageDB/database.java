@@ -137,6 +137,9 @@ class database {
             String execution4 = "CREATE TABLE EMPLOYEE\n" +
                     "(USERNAME VARCHAR(100) PRIMARY KEY,\n" +
                     "PASSWORD VARCHAR(100),\n" +
+                    "FIRSTNAME VARCHAR(100),\n" +
+                    "LASTNAME VARCHAR(100),\n" +
+                    "TITLE VARCHAR(50),\n" +
                     "ISADMIN INT,\n" +
                     "FACEID VARCHAR(500))";
             String execution5 = "CREATE TABLE ABILITY " +
