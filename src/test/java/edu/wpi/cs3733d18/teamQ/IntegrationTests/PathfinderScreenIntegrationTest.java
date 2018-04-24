@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
@@ -119,7 +120,10 @@ public class PathfinderScreenIntegrationTest extends ApplicationTest {
      */
     public void getDirectionsToNode(String nodeID){
         //**Should** enter the search bar, write a node id, then search it
-        clickOn("#endingNodeField");
+        clickOn("#gridTop");
+        moveBy(150, 0);
+        press(MouseButton.PRIMARY);
+        release(MouseButton.PRIMARY);
         write(nodeID);
         try{
             Thread.sleep(200);

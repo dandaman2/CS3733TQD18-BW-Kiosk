@@ -93,9 +93,14 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
         write("Test First");
         clickOn("#lastNameTF");
         write("Test Last");
-        clickOn("#roomLocationTF");
+        //clickOn("#roomLocationTF");
+        moveBy(0,50);
+        press(MouseButton.PRIMARY);
+        release(MouseButton.PRIMARY);
         write("GELEV00N02");
         Thread.sleep(200);
+        press(KeyCode.DOWN);
+        release(KeyCode.DOWN);
         press(KeyCode.ENTER);
         Thread.sleep(200);
         press(KeyCode.TAB);
@@ -183,6 +188,11 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
         clickOn("#submitRequest");
 
         clickOn("Pending Requests");
+        try {
+            Thread.sleep(100);
+        }catch (Exception e){
+
+        }
         selectRequest();
         String requestAllData = lookup("#scrollPane").queryAs(ScrollPane.class).getContent().toString();
         //System.out.println(requestAllData);
@@ -208,6 +218,11 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
         clickOn("#submitRequest");
 
         clickOn("Pending Requests");
+        try {
+            Thread.sleep(100);
+        }catch (Exception e){
+
+        }
         selectRequest();
         String requestAllData = lookup("#scrollPane").queryAs(ScrollPane.class).getContent().toString();
         String requestID = requestAllData.substring(15, requestAllData.indexOf("\n", 15));
@@ -243,6 +258,11 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
         clickOn("#submit");
 
         clickOn("FulFilled Requests");
+        try {
+            Thread.sleep(100);
+        }catch (Exception e){
+
+        }
         clickOn("#treeTableViewFulfilled");
         moveBy(0,-20);
         press(MouseButton.PRIMARY);

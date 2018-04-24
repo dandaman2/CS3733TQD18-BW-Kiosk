@@ -258,12 +258,18 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
         for(int i = 0; i < edges.size(); i++){
             if(edges.get(i).getStartNode().getNodeID().equals(id1) || edges.get(i).getEndNode().getNodeID().equals(id1)){
                 if (edges.get(i).getStartNode().getNodeID().equals(id2) || edges.get(i).getEndNode().getNodeID().equals(id2)){
+
                     edgeFound = true;
                 }
             }
         }
         assertTrue(edgeFound);
         //TEARDOWN -- REMOVE EDGE
+        clickOn("#mapFrame2D");
+        moveBy(MOVE_BY, MOVE_BY);
+        moveBy(0,50);
+        press(MouseButton.PRIMARY);
+        release(MouseButton.PRIMARY);
         clickOn("#removeButton");
         switchToNode();
         //TEARDOWN -- REMOVE NODES
@@ -315,6 +321,11 @@ public class EditMapScreenIntegrationTest extends ApplicationTest {
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
         moveBy(0.0, 99.0);
+        press(MouseButton.PRIMARY);
+        release(MouseButton.PRIMARY);
+        clickOn("#mapFrame2D");
+        moveBy(MOVE_BY, MOVE_BY);
+        moveBy(0,50);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
         clickOn("#removeButton");
