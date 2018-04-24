@@ -2,38 +2,31 @@ package edu.wpi.cs3733d18.teamQ.ui.Controller;
 
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733d18.teamQ.pathfinding.*;
 import edu.wpi.cs3733d18.teamQ.ui.ArrowShapes.BreadCrumber;
 import edu.wpi.cs3733d18.teamQ.ui.*;
 import edu.wpi.cs3733d18.teamQ.ui.ProxyMaps.FloorMaps;
 import edu.wpi.cs3733d18.teamQ.ui.ProxyMaps.IMap;
-import javafx.animation.Animation;
-import javafx.animation.PathTransition;
-import javafx.animation.SequentialTransition;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -41,11 +34,11 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
 import javafx.scene.text.Font;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import me.xdrop.fuzzywuzzy.model.ExtractedResult;
-import org.controlsfx.control.textfield.TextFields;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -58,6 +51,7 @@ import java.util.ResourceBundle;
 
 import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.getNodes;
 import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.runningFromIntelliJ;
+import static edu.wpi.cs3733d18.teamQ.ui.PathData.*;
 import static edu.wpi.cs3733d18.teamQ.ui.PathInstructions.captureAndSaveDisplay;
 import static java.lang.Math.acos;
 import static java.lang.Math.sqrt;
@@ -144,8 +138,16 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     @FXML
     HBox topBar;
 
+    private ImageView movingPart;
+
     @FXML
-    private Button playButton;
+    private ToggleButton playButton;
+
+    @FXML
+    private Label floorLabel;
+
+    @FXML
+    private JFXComboBox<String> gifSelector;
 
     //Scrolling and zooming functionality
     @FXML
@@ -156,6 +158,10 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     final double SCALE_DELTA = 1.1;
     public double SCALE_TOTAL = 1;
 
+    //the animated path and ant variables
+    ArrayList<Timeline> antTimeLines = new ArrayList<>();
+    ArrayList<Polyline> antPaths = new ArrayList<>();
+    SequentialTransition allTransitions;
 
     //animation variables
     public ArrayList<TransitionData> transitions = new ArrayList<>();
@@ -230,11 +236,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         initAutoComp(nodes);
 
         initScroll();
-
         initEmailDrawer();
         initStar();
         initializeTopBar();
-
 
         floorMaps = new FloorMaps(user.getMaps3D(), user.getMaps2D(), backImage, startingFloor, false);
         noder = new MapNoder(backImagePane, backImage, floorMaps.getIs2D(), endingNodeField);
@@ -248,8 +252,15 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         initYouAreHere();
 
         breadCrumb = new BreadCrumber(floorMaps, hboxProgress, this);
+        initFloorLabel();
+        initGifSelector();
         //new TimeoutData().initTimer(screenBinding);
         //initTimer();
+        user = User.getUser();
+
+        if(user.getPathType()!=null){
+            getNearType(user.getPathType());
+        }
     }
 
 
@@ -296,6 +307,62 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         });
     }
 
+    private String gifPath;
+    public void initGifSelector(){
+        ObservableList options = FXCollections.observableArrayList();
+        options.addAll("Spider-Man", "Puppy", "Zombie", "Nyan Cat");
+        gifSelector.getItems().addAll(options);
+
+        movingPart = new ImageView(new Image("Gifs/dog.gif"));
+
+        gifSelector.getSelectionModel()
+                .selectedIndexProperty()
+                .addListener(new ChangeListener<Number>() {
+                                 @Override
+                                 public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                                     switch(newValue.intValue()){
+                                         case 0:
+                                             gifPath = "Gifs/spiderman.gif";
+                                             break;
+                                         case 1:
+                                             gifPath = "Gifs/dog.gif";
+                                             break;
+                                         case 2:
+                                             gifPath = "Gifs/zombie.gif";
+                                             break;
+                                         case 3:
+                                             gifPath = "Gifs/nyan.gif";
+                                             break;
+                                     }
+
+                                     movingPart = new ImageView(new Image(gifPath));
+                                     movingPart.setPreserveRatio(true);
+                                     movingPart.setFitWidth(130);
+
+                                 }
+                             }
+                );
+        gifSelector.getSelectionModel().select(1);
+    }
+
+    private FadeTransition fadeIn = new FadeTransition( Duration.millis(1500));
+
+    public void initFloorLabel() {
+        floorLabel.setVisible(false);
+        floorLabel.setStyle("-fx-text-fill: #818181;" + "-fx-font-size: 500;" + "-fx-font-weight: 700;");
+
+        fadeIn.setNode(floorLabel);
+        fadeIn.setFromValue(0.75);
+        fadeIn.setToValue(0.0);
+        fadeIn.setCycleCount(1);
+        fadeIn.setAutoReverse(false);
+    }
+
+    private void floorTransition() {
+        floorLabel.setText(floorMaps.currFloorString());
+        floorLabel.setVisible(true);
+        fadeIn.playFromStart();
+    }
 
     private void initializeTF(){
         startingNodeField = new AutoCompleteTextField();
@@ -317,7 +384,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         endingNodeField.setOnKeyPressed(event -> updateFilterStart(endingNodeField.getText()));
     }
 
-
     private void initializeTopBar(){
         topBar.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
     }
@@ -333,27 +399,16 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         infoView.setFitWidth(42);
         infoView.setFitHeight(40);
         homeButton.setGraphic(infoView);
-
-
-        floorL21.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        floorL21.setStyle("-fx-text-fill: #FFFFFF;");
-        floorL21.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        floorL11.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        floorL11.setStyle("-fx-text-fill: #FFFFFF;");
-        floorL11.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        floor11.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        floor11.setStyle("-fx-text-fill: #FFFFFF;");
-        floor11.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        floor21.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        floor21.setStyle("-fx-text-fill: #FFFFFF;");
-        floor21.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        floor31.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        floor31.setStyle("-fx-text-fill: #FFFFFF;");
-        floor31.setRipplerFill(Paint.valueOf("#FFFFFF"));
+        Image play;
+        if(runningFromIntelliJ()) {
+            play = new Image("/ButtonImages/video-play-icon.png");
+        } else{
+            play = new Image("ButtonImages/video-play-icon.png");
+        }
+        ImageView playView = new ImageView(play);
+        infoView.setFitWidth(42);
+        infoView.setFitHeight(40);
+        playButton.setGraphic(playView);
     }
 
     /**
@@ -383,7 +438,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                 }
             }
         });
-
     }
 
     /**
@@ -424,7 +478,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void initMap(){
         updateFloorMap(startingFloor);
-
     }
 
 
@@ -508,7 +561,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void generatePath() {
         backImagePane.getChildren().removeAll(drawnPath);
-        
+
         ArrayList<String> RestrictedTYPES = new ArrayList<String>();
 //        if(checkElevator.isSelected() == true)
 //            RestrictedTYPES.add("ELEV");
@@ -545,7 +598,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         setToStart(queuedPath);
         drawPath(queuedPath);
-
+        centerOnNode(queuedPath.get(0),1000);
         isPathDisplayed = true;
     }
 
@@ -581,8 +634,25 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         youHere = user.getNode("GELEV00N02");
         queuedPath = g.findShortestPathByType(youHere,Type,RestrictedTYPES);
-        drawPath(queuedPath);
-        isPathDisplayed = true;
+
+        if(Type.equals("BATH")){
+            double bathLength = pathLength(queuedPath);
+            Node bathNode = queuedPath.get(queuedPath.size()-1);
+            queuedPath = g.findShortestPathByType(youHere,"REST",RestrictedTYPES);
+            double restLength = pathLength(queuedPath);
+            if(restLength<bathLength){
+                curSelected = queuedPath.get(queuedPath.size()-1);
+            } else{
+                curSelected = bathNode;
+            }
+        } else {
+            curSelected = queuedPath.get(queuedPath.size() - 1);
+        }
+        //drawPath(queuedPath);
+        //isPathDisplayed = true;
+
+        startingNodeField.setText(youHere.getNameLong()+ ","+youHere.getNodeID());
+        endingNodeField.setText(curSelected.getNameLong()+ ","+curSelected.getNodeID());
     }
 
 
@@ -734,6 +804,8 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     }
 
 
+
+
     /**
      * Takes an array list of nodes and draws it on the map
      * @param path
@@ -744,6 +816,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         TransPoint finalPoint = null;  // tp to hold translated x and y coords,
                                     // finalPoint to hold the final point for animation polyline drawing
         ArrayList<TransPoint> pta = new ArrayList<>();  // holds coords for nodes on path
+        Node endNode=null;
 
         // removes old paths and buttons before drawing new
         backImagePane.getChildren().removeAll(drawnPath);
@@ -751,7 +824,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         backImagePane.getChildren().removeAll(labelList);
         backImagePane.getChildren().remove(starLabel);
 //        breadCrumb.removeArrows();
-        hboxProgress.getChildren().removeAll(breadCrumb.getStackList());
+//        hboxProgress.getChildren().removeAll(breadCrumb.getArrowList());
 
         // clears list
         transList.clear();
@@ -796,17 +869,21 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         transitions = new ArrayList<>();
         Polyline lineData = new Polyline();
         ArrayList<Double> lineDataPoints = new ArrayList<>();
+        ArrayList<Node> nodePath = new ArrayList<>();
 
         // goes through to determine which lines to show, in regards to the current floor
         for(int i=0; i < pta.size()-1; i++) {
             TransPoint startpoint = pta.get(i);
             TransPoint endpoint = pta.get(i + 1);
 
+            Node startingNode = path.get(i);
+            Node endingNode = path.get(i+1);
+
             // if both points are on the current floor, draws line
             if ((startpoint.getFloor() == getCurrFloor()) && (endpoint.getFloor() == getCurrFloor())) {
                 Line l = new Line(startpoint.getTx(), startpoint.getTy(), endpoint.getTx(), endpoint.getTy());
-                l.setStroke(Color.PURPLE);
-                l.setStrokeWidth(6);
+                l.setStroke(getPathColor());
+                l.setStrokeWidth(getPathStrokeWidth());
                 drawnPath.add(l);
             }
             /**This "function" runs when the path needs a button to show a tranistion to a different floor
@@ -884,12 +961,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                 }
                 // action event to transition floor
                 transButt.setOnAction((e)-> {
-                    if(arrowView.getRotate() == 0) // arrow pointing up
-                        breadCrumb.setCurrSelected(breadCrumb.getCurrSelected() + 1);
-                    else
-
-                        breadCrumb.setCurrSelected(breadCrumb.getCurrSelected() - 1);
-
                     updateFloorMap(goToFloor);
                     drawPath(queuedPath);
                 } );
@@ -905,49 +976,154 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                 //initializes button, color, and position ------------------
                 lineDataPoints.add(startpoint.getTx());
                 lineDataPoints.add(startpoint.getTy());
+                nodePath.add(startingNode);
             }else{
-                //for path animation
+
+                /**********************************************************
+                 * PATH ANIMATION
+                 ************************************************************/
                 int lineFloor = startpoint.getFloor();
 //                System.out.println("new floor found: "+lineFloor);
                 lineDataPoints.add(startpoint.getTx());
                 lineDataPoints.add(startpoint.getTy());
+                nodePath.add(startingNode);
 
                 if(lineDataPoints.size()<=2){
                     System.out.println("Size less than 2, generating in-place line");
                     lineDataPoints.add(startpoint.getTx());
                     lineDataPoints.add(startpoint.getTy());
+                    nodePath.add(startingNode);
                 }
 
                 lineData.getPoints().addAll(lineDataPoints);
-                transitions.add(new TransitionData(lineFloor, lineData));
+                transitions.add(new TransitionData(lineFloor, lineData, nodePath));
                 lineDataPoints = new ArrayList<>();
                 lineData = new Polyline();
+                nodePath = new ArrayList<>();
             }
             finalPoint = endpoint;
+            endNode = endingNode;
         }
         //tying up the end of the transitioning path
         if(finalPoint != null){
             lineDataPoints.add(finalPoint.getTx());
             lineDataPoints.add(finalPoint.getTy());
+            nodePath.add(endNode);
         }
 
         if(lineDataPoints.size()<=2){
             lineDataPoints.add(finalPoint.getTx());
             lineDataPoints.add(finalPoint.getTy());
+            nodePath.add(endNode);
         }
 
         lineData.getPoints().addAll(lineDataPoints);
        // System.out.println("pta size:" + pta.size());
-        transitions.add(new TransitionData(pta.get(pta.size()-1).getFloor(), lineData));
+        transitions.add(new TransitionData(pta.get(pta.size()-1).getFloor(), lineData,nodePath));
         lineDataPoints = new ArrayList<>();
         lineData = new Polyline();
+        nodePath = new ArrayList<>();
         TextInstructions(path);
 
         // adds path and buttons to pane
         backImagePane.getChildren().addAll(drawnPath);
+        addAntz(transitions);
         backImagePane.getChildren().addAll(labelList);
         backImagePane.getChildren().add(starLabel);
         backImagePane.getChildren().addAll(transList);
+        try {
+            movingPart.toFront();
+        }
+        catch (NullPointerException p){
+            System.out.println("MovingPart not on image yet");
+            movingPart = new ImageView(new Image("dog.gif"));
+            backImagePane.getChildren().add(movingPart);
+            movingPart.toFront();
+
+        }
+    }
+
+    /**
+     * Adds the ants animations to the path
+     * @param trans the transition data to get the polylines from
+     */
+
+    public void addAntz(ArrayList<TransitionData> trans){
+
+        backImagePane.getChildren().removeAll(antPaths);
+        antPaths = new ArrayList<>();
+
+        for(Timeline t: antTimeLines){
+            t.stop();
+        }
+        antTimeLines = new ArrayList<>();
+        for(TransitionData t : trans){
+            if(t.getFloor()==getCurrFloor()){
+                dashLine(t.getPathData());
+
+                System.out.println("XPos get0 " + t.getNodeShells().get(0).getxPos());
+                System.out.println("XPos get1 " + t.getNodeShells().get(1).getxPos());
+
+                if(t.getNodeShells().get(0).getxPos() > t.getNodeShells().get(1).getxPos()){
+                    System.out.println("Flip");
+                    movingPart.setScaleY(-1);
+                    movingPart.setScaleX(1);
+                }
+                else {
+                    System.out.println("UnFlip");
+                    movingPart.setScaleY(1);
+                    movingPart.setScaleX(1);
+                }
+
+            }
+        }
+        backImagePane.getChildren().addAll(antPaths);
+        for(Timeline antline: antTimeLines){
+            System.out.println("playing ants");
+            antline.play();
+        }
+
+
+    }
+
+    /**
+     * sets a timeline-based moving line for the polyline
+     * @param line
+     */
+    public void dashLine(Polyline line){
+        line.getStrokeDashArray().setAll(getAntSpacing(),getAntSpacing());
+        line.setStrokeWidth(getAntStrokeWidth());
+
+        final double maxOffset =
+                line.getStrokeDashArray().stream()
+                        .reduce(
+                                0d,
+                                (a, b) -> a + b
+                        );
+
+        Timeline timeline = new Timeline(
+                new KeyFrame(
+                        Duration.ZERO,
+                        new KeyValue(
+                                line.strokeDashOffsetProperty(),
+                                maxOffset,
+                                Interpolator.LINEAR
+                        )
+                ),
+                new KeyFrame(
+                        Duration.seconds(0.5),
+                        new KeyValue(
+                                line.strokeDashOffsetProperty(),
+                               0,
+                                Interpolator.LINEAR
+                        )
+                )
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        line.setStroke(getAntColor());
+        antTimeLines.add(timeline);
+        antPaths.add(line);
+
     }
 
 
@@ -1417,6 +1593,32 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     }
 
 
+    /**
+     * The toggling action for the play button
+     */
+    public void toggleRunAnimation(){
+        if(playButton.isSelected()){
+            runTransitions();
+            playButton.setGraphic(null);
+            playButton.setText("STOP");
+        }
+        else{
+            playButton.setText(null);
+            Image play;
+            if(runningFromIntelliJ()) {
+                play = new Image("/ButtonImages/video-play-icon.png");
+            } else{
+                play = new Image("ButtonImages/video-play-icon.png");
+            }
+            ImageView playView = new ImageView(play);
+            playButton.setGraphic(playView);
+            allTransitions.stop();
+            backImagePane.getChildren().remove(movingPart);
+            isUIDisabled(false);
+
+        }
+    }
+
 
     //Runs all the transitions queued up in the transitions Arraylist
     public void runTransitions() {
@@ -1437,11 +1639,10 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             updateFloorMap(transitions.get(0).getFloor());
         }
 
-        SequentialTransition allTransitions = new SequentialTransition();
+        allTransitions = new SequentialTransition();
+        SequentialTransition allTimelines = new SequentialTransition();
 
-//        Circle movingPart = new Circle(10.0f);
-//        movingPart.setFill(Color.PURPLE);
-        ImageView movingPart = new ImageView(new Image("dog.gif"));
+        backImagePane.getChildren().remove(movingPart);
         backImagePane.getChildren().add(movingPart);
 
 
@@ -1449,15 +1650,16 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         //centerScrollToPath(transitions.get(0).getNodeShells(),transitions.get(0).getFloor(),floorMaps.getIs2D(), false);
         for (int i = 0; i < transitions.size()-1; i++) {
             TransitionData curTrans = transitions.get(i);
-            System.out.println("Transitions Count: " + transitions.size());
-            System.out.println("curTrans Floor: " + curTrans.getFloor());
-            System.out.println("Points: " + curTrans.getPathData().getPoints());
+//            System.out.println("Transitions Count: " + transitions.size());
+//            System.out.println("curTrans Floor: " + curTrans.getFloor());
+//            System.out.println("Points: " + curTrans.getPathData().getPoints());
             //  System.out.println("Length: " + curTrans.getTransitionLength());
             //floorChoice.getSelectionModel().select(dbToIndex(curTrans.getFloor()));
             //drawPath(queuedPath);
             Polyline path = curTrans.getPathData();
             PathTransition transition = new PathTransition();
             transition.setDuration(Duration.seconds(curTrans.getCalcDuration()));
+
             transition.setNode(movingPart);
             transition.setPath(path);
             transition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
@@ -1477,14 +1679,24 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                     //for emailing
                     getSnap();
                     backImagePane.getChildren().remove(movingPart);
+                    playButton.setSelected(false);
                     openEmailDrawer();
                 });
 
             }
-            allTransitions.getChildren().add(transition);
+            Timeline tl;
+            if(i==0){
+                tl = followAnimation(transition,transitions.get(i));
+            }else{
+                tl = followAnimation(transition,transitions.get(i));
+            }
+            ParallelTransition par = new ParallelTransition(transition,tl);
+            allTransitions.getChildren().add(par);
+           // allTransitions.getChildren().add(transition);
 
         }
 
+        zoomTo(1.5);
         allTransitions.play();
         System.out.println("Play has been run");
 
@@ -1537,12 +1749,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         startingNodeField.setDisable(b);
         exchange.setDisable(b);
         endingNodeField.setDisable(b);
-//        if(b){
-//            zoom.disableScroll();
-//        }
-//        else{
-//            zoom.enableScroll();
-//        }
+        gifSelector.setDisable(b);
     }
 
 
@@ -1592,7 +1799,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     }
 
     /**
-     * centers the scroll to follow the movign part
+     * centers the scroll to follow the moving part
      */
     public void moveToPart(ImageView imgv){
         double imgWidth = 5000;
@@ -1622,8 +1829,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             double centerPosX = (contentSize.getWidth() - viewPort.getWidth()) * imageScroller.getHvalue() + viewPort.getWidth() / 2;
             double centerPosY = (contentSize.getHeight() - viewPort.getHeight()) * imageScroller.getVvalue() + viewPort.getHeight() / 2;
 
-            backImagePane.setScaleX(backImagePane.getScaleX() * scaleFactor);
-            backImagePane.setScaleY(backImagePane.getScaleY() * scaleFactor);
+            backImagePane.setScaleX(scale);
+            backImagePane.setScaleY(scale);
+
             SCALE_TOTAL *= scaleFactor;
 
             double newCenterX = centerPosX * scaleFactor;
@@ -1648,10 +1856,86 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      * @param floor
      */
    public void updateFloorMap(int floor){
+        boolean showLabel = (floor != floorMaps.getCurrFloor());
         floorMaps.updateFloorMap(floor);
         updateDrawings();
         highlightButton(floor);
+        if(showLabel) {
+            floorTransition();
+        }
    }
+
+    /**
+     * centers the screen to the given node
+     * @param n
+     */
+    public void centerOnNode(Node n, double millisDuration){
+        double x = floorMaps.getIs2D() ? n.getxPos() : n.getxPos3D();
+        double y = floorMaps.getIs2D() ? n.getyPos() : n.getyPos3D();
+
+        //startMarker.setCenterX(x);
+        //startMarker.setCenterY(y);
+        double newHValue = Math.max((x - Screen.getPrimary().getBounds().getWidth() / 2), 0) / (5000 - Screen.getPrimary().getBounds().getWidth());
+        double newVValue = Math.max((y - Screen.getPrimary().getBounds().getHeight() / 2), 0) / ((floorMaps.getIs2D() ? 3400 : 2776) - Screen.getPrimary().getBounds().getHeight());
+        KeyValue xValue = new KeyValue(imageScroller.hvalueProperty(), newHValue);
+        KeyValue yValue = new KeyValue(imageScroller.vvalueProperty(), newVValue);
+        Timeline timeline = new Timeline();
+        timeline.setCycleCount(1);
+        timeline.getKeyFrames().addAll(new KeyFrame(Duration.ZERO,
+                        new KeyValue(imageScroller.hvalueProperty(), imageScroller.getHvalue()),
+                        new KeyValue(imageScroller.vvalueProperty(), imageScroller.getVvalue())),
+                new KeyFrame(new Duration(millisDuration), xValue, yValue));
+        timeline.play();
+    }
+
+    /**
+     * centers the screen to follow the animation
+     * @param transition
+     * @return
+     */
+    public Timeline followAnimation(PathTransition transition, TransitionData data){
+
+        //centerOnNode(data.getNodes().get(0),1);
+
+        /**
+         * Starting Pan
+         */
+        Node s = data.getNodes().get(0);
+        double initX = floorMaps.getIs2D() ? s.getxPos() : s.getxPos3D();
+        double initY = floorMaps.getIs2D() ? s.getyPos() : s.getyPos3D();
+
+        double newInitHValue = Math.max((initX - Screen.getPrimary().getBounds().getWidth() / 2), 0) / (5000 - Screen.getPrimary().getBounds().getWidth());
+        double newInitVValue = Math.max((initY - Screen.getPrimary().getBounds().getHeight() / 2), 0) / ((floorMaps.getIs2D() ? 3400 : 2776) - Screen.getPrimary().getBounds().getHeight());
+        KeyValue xInitValue = new KeyValue(imageScroller.hvalueProperty(), newInitHValue);
+        KeyValue yInitValue = new KeyValue(imageScroller.vvalueProperty(), newInitVValue);
+
+
+        /**
+         * Ending Pan
+         */
+        Node n = data.getNodes().get(data.getNodes().size()-1);
+        double x = floorMaps.getIs2D() ? n.getxPos() : n.getxPos3D();
+        double y = floorMaps.getIs2D() ? n.getyPos() : n.getyPos3D();
+
+
+        double newHValue = Math.max((x - Screen.getPrimary().getBounds().getWidth() / 2), 0) / (5000 - Screen.getPrimary().getBounds().getWidth());
+        double newVValue = Math.max((y - Screen.getPrimary().getBounds().getHeight() / 2), 0) / ((floorMaps.getIs2D() ? 3400 : 2776) - Screen.getPrimary().getBounds().getHeight());
+        KeyValue xValue = new KeyValue(imageScroller.hvalueProperty(), newHValue);
+        KeyValue yValue = new KeyValue(imageScroller.vvalueProperty(), newVValue);
+        Timeline timeline = new Timeline();
+        timeline.setCycleCount(1);
+
+        timeline.getKeyFrames().addAll(new KeyFrame(Duration.ZERO,
+                        new KeyValue(imageScroller.hvalueProperty(), imageScroller.getHvalue()),
+                        new KeyValue(imageScroller.vvalueProperty(), imageScroller.getVvalue())),
+                new KeyFrame(new Duration(10), xInitValue, yInitValue));
+
+        timeline.getKeyFrames().addAll(new KeyFrame(Duration.ZERO,
+                        new KeyValue(imageScroller.hvalueProperty(), imageScroller.getHvalue()),
+                        new KeyValue(imageScroller.vvalueProperty(), imageScroller.getVvalue())),
+                new KeyFrame(new Duration(data.getCalcDuration()*1000), xValue, yValue));
+        return timeline;
+    }
 
     /**
      * highlights the button of the selected floor

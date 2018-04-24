@@ -103,6 +103,9 @@ public class EditMapController implements Initializable, IZoomableCont {
     private JFXButton addButton;
 
     @FXML
+    private JFXButton toggleBtn;
+
+    @FXML
     private JFXButton clearButton;
 
     @FXML
@@ -288,41 +291,42 @@ public class EditMapController implements Initializable, IZoomableCont {
      * initializes the buttons
      */
     private void setUpButtons() {
-        addButton.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        addButton.setStyle("-fx-text-fill: #FFFFFF;");
-        addButton.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        removeButton.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        removeButton.setStyle("-fx-text-fill: #FFFFFF;");
-        removeButton.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        betweenFloorEdges.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        betweenFloorEdges.setStyle("-fx-text-fill: #FFFFFF;");
-        betweenFloorEdges.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        clearButton.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        clearButton.setStyle("-fx-text-fill: #FFFFFF;");
-        clearButton.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        backBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#ECECEC"), new CornerRadii(0), null)));
-        backBtn.setStyle("-fx-text-fill: #FFFFFF;");
-        backBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        guessBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        guessBtn.setStyle("-fx-text-fill: #FFFFFF;");
-        guessBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
+//        addButton.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
+//        addButton.setStyle("-fx-text-fill: #FFFFFF;");
+//        addButton.setRipplerFill(Paint.valueOf("#FFFFFF"));
+//
+//        removeButton.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
+//        removeButton.setStyle("-fx-text-fill: #FFFFFF;");
+//        removeButton.setRipplerFill(Paint.valueOf("#FFFFFF"));
+//
+//        betweenFloorEdges.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
+//        betweenFloorEdges.setStyle("-fx-text-fill: #FFFFFF;");
+//        betweenFloorEdges.setRipplerFill(Paint.valueOf("#FFFFFF"));
+//
+//        clearButton.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
+//        clearButton.setStyle("-fx-text-fill: #FFFFFF;");
+//        clearButton.setRipplerFill(Paint.valueOf("#FFFFFF"));
+//
+//        backBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#ECECEC"), new CornerRadii(0), null)));
+//        backBtn.setStyle("-fx-text-fill: #FFFFFF;");
+//        backBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
+//
+//        guessBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
+//        guessBtn.setStyle("-fx-text-fill: #FFFFFF;");
+//        guessBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
 
         Image info;
         if (runningFromIntelliJ()) {
-            info = new Image("/ButtonImages/home.png");
+            info = new Image("/ButtonImages/whiteHut.png");
         } else {
-            info = new Image("ButtonImages/home.png");
+            info = new Image("ButtonImages/whiteHut.png");
         }
         ImageView infoView = new ImageView(info);
         infoView.setFitWidth(42);
         infoView.setFitHeight(40);
         backBtn.setGraphic(infoView);
         backBtn.setPrefWidth(editMapSide.getPrefWidth() + 48);
+        backBtn.setDisableVisualFocus(true);
 
         backBtn.setOnAction(e -> goToAdminHome(e));
 
@@ -369,6 +373,9 @@ public class EditMapController implements Initializable, IZoomableCont {
         else {
             cn.setFill(nodeColor);
             cn.setRadius(10);
+        }
+        if(!cn.getNode().isEnabled()){
+            cn.setFill(Color.GRAY);
         }
     }
 
@@ -580,6 +587,7 @@ public class EditMapController implements Initializable, IZoomableCont {
      */
     public void initSelectionOptions() {
         selector.setStyle("-fx-font: 16px \"System\";");
+        selector.setStyle("-fx-background-color: #FFFFFF;");
         selectionOptions.removeAll(selectionOptions);
         selector.setTooltip(new Tooltip("Select an Editing Option"));
         String en = "Edit Nodes";
@@ -659,12 +667,14 @@ public class EditMapController implements Initializable, IZoomableCont {
                     resetVoid();
                     mode = "en";
                     initEditNode();
+                    toggleBtn.setText("Toggle Node");
                     break;
 
                 case "Edit Edges":
                     resetVoid();
                     mode = "ee";
                     initEditEdge();
+                    toggleBtn.setText("Toggle Edge");
                     break;
             }
         }
@@ -945,7 +955,7 @@ public class EditMapController implements Initializable, IZoomableCont {
         String longName = generateLongName(id, type);
         System.out.println(longName);
 
-        return new Node(id, xPos, yPos, floor, "Shapiro", type, longName, shortName, "Q", xPos3D, yPos3D, 0.0);
+        return new Node(id, xPos, yPos, floor, "Shapiro", type, longName, shortName, "Q", xPos3D, yPos3D, 0.0, true);
     }
 
     /**
@@ -1033,7 +1043,7 @@ public class EditMapController implements Initializable, IZoomableCont {
                         Node node1 = user.getNode(nodeID1); //getNode(nodeID1);
                         Node node2 = user.getNode(nodeID2);
                         System.out.println(nodeID1 + " " + nodeID2);
-                        Edge edge = new Edge(generateEdgeID(node1, node2), node1, node2, node1.calcDistance(node2));
+                        Edge edge = new Edge(generateEdgeID(node1, node2), node1, node2, node1.calcDistance(node2),true);
                         mapFrame3D.getChildren().removeAll(drawn3DEdges);
                         mapFrame2D.getChildren().removeAll(drawn2DEdges);
                         user.addEdgeSingleton(edge);
@@ -1506,6 +1516,41 @@ public class EditMapController implements Initializable, IZoomableCont {
 
 
 
+    }
+
+    public void toggleElement(){
+        if(mode.equals("en")) {
+            Node toBeToggled = curSel1.getNode();
+            toBeToggled.setEnabled(!toBeToggled.isEnabled());
+
+            //for 3d
+            mapFrame3D.getChildren().removeAll(drawn3DEdges);
+            mapFrame3D.getChildren().removeAll(threeDPoints);
+
+            //for 2d
+            mapFrame2D.getChildren().removeAll(drawn2DEdges);
+            mapFrame2D.getChildren().removeAll(twoDPoints);
+
+            user.editNodeSingleton(toBeToggled);
+
+            updateDrawings();
+
+        } else if(mode.equals("ee")){
+            Edge toBeToggled = editUtil.getCurSel().getEdge();
+            toBeToggled.setEnabled(!toBeToggled.isEnabled());
+
+            //for 3d
+            mapFrame3D.getChildren().removeAll(drawn3DEdges);
+            mapFrame3D.getChildren().removeAll(threeDPoints);
+
+            //for 2d
+            mapFrame2D.getChildren().removeAll(drawn2DEdges);
+            mapFrame2D.getChildren().removeAll(twoDPoints);
+
+            user.editEdgeSingleton(toBeToggled);
+
+            updateDrawings();
+        }
     }
 
     public Edge getEdgeFromNodes(Node node1, Node node2){

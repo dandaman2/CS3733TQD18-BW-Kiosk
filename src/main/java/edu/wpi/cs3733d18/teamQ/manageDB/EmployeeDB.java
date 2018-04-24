@@ -13,8 +13,8 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.database.getTable;
  class EmployeeDB {
 
      static void populateEmployeeDB(){
-         addEmployee(new Employee("staff","staff",false,null));
-         addEmployee(new Employee("admin","admin",true,null));
+         addEmployee(new Employee("staff", "staff", "Staff", "Staffer", "Dr", false, null));
+         addEmployee(new Employee("admin", "admin","Admin", "McAdminson", "Lord", true, null));
      }
 
     /**
@@ -41,7 +41,7 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.database.getTable;
         try{
             while (rs.next()){
                 boolean isAdmin = 1==rs.getInt("ISADMIN");
-                Employee newEmployee = new Employee(rs.getString("USERNAME"), isAdmin, rs.getString("FACEID"));
+                Employee newEmployee = new Employee(rs.getString("USERNAME"), rs.getString("FIRSTNAME"), rs.getString("LASTNAME"), rs.getString("TITLE"), isAdmin, rs.getString("FACEID"));
                 newEmployee.setHashedPassword(rs.getString("PASSWORD"));
                 employees.add(newEmployee);
             }
@@ -66,7 +66,7 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.database.getTable;
             Statement queryStmnt = database.connection.createStatement();
             results = queryStmnt.executeQuery(query);
             while (results.next()){
-                foundEmployee = new Employee(results.getString("USERNAME"), results.getInt("ISADMIN")==1,
+                foundEmployee = new Employee(results.getString("USERNAME"), results.getString("FIRSTNAME"), results.getString("LASTNAME"), results.getString("TITLE"), results.getInt("ISADMIN")==1,
                         results.getString("FACEID"));
                 foundEmployee.setHashedPassword(results.getString("PASSWORD"));
             }
@@ -109,8 +109,10 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.database.getTable;
      * @param employee The employee to update
      */
      static void editEmployee(Employee employee){
-        String dataBaseExecution = "UPDATE APP.EMPLOYEE SET PASSWORD='" + employee.getPassword() +"', ISADMIN=" +
-                employee.isAdminInt() +", FACEID='"+ employee.getFaceID() +"' WHERE USERNAME ='" + employee.getUsername() + "'";
+        String dataBaseExecution = "UPDATE APP.EMPLOYEE SET PASSWORD='" + employee.getPassword() + "', FIRSTNAME='" +
+                employee.getFirstName() + "', LASTNAME='"+ employee.getLastName() + "', TITLE='"+ employee.getTitle() +
+                "', ISADMIN=" + employee.isAdminInt() +", FACEID='"+ employee.getFaceID() +"' WHERE USERNAME ='" +
+                employee.getUsername() + "'";
         executeStatement(dataBaseExecution);
     }
 
@@ -122,6 +124,9 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.database.getTable;
     private static String employeeToString(Employee input) {
         String employee = "('" + input.getUsername() + "',"
                 + "'" + input.getPassword() + "',"
+                + "'" + input.getFirstName() + "',"
+                + "'" + input.getLastName() + "',"
+                + "'" + input.getTitle() + "',"
                 + input.isAdminInt() + ","
                 + "'" + input.getFaceID() + "')";
         return employee;

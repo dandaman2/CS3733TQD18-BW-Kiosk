@@ -230,7 +230,7 @@ public class AlertBox {
                     if ((set1 && set2) && (!t1.getNodeID().equals(t2.getNodeID()))) {
                         System.out.println("Match 3");
                         String id = t1.getNodeID() + "_" + t2.getNodeID();
-                        Edge edge = new Edge(id, t1, t2, t1.calcDistance(t2));
+                        Edge edge = new Edge(id, t1, t2, t1.calcDistance(t2),true);
                         addEdge(edge);
                         System.out.println("Edge added with id: " + id);
                         window.close();

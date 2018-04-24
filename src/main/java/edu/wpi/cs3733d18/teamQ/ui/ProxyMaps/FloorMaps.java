@@ -134,11 +134,11 @@ public class FloorMaps implements IMap {
     @Override
     public String currFloorString(){
         switch (currFloor){
-            case -2: return "Lower Level 2";
-            case -1: return "Lower Level 1";
-            case 1: return "First Floor";
-            case 2: return "Second Floor";
-            case 3: return "Third Floor";
+            case -2: return "L2";
+            case -1: return "L1";
+            case 1: return "1";
+            case 2: return "2";
+            case 3: return "3";
             default: return "";
         }
 

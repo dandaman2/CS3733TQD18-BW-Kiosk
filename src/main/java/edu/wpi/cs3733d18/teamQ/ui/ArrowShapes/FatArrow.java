@@ -1,10 +1,14 @@
 package edu.wpi.cs3733d18.teamQ.ui.ArrowShapes;
 
+
+import javafx.scene.shape.Polygon;
+
 public class FatArrow extends ArrowShape {
     private double overHang = .33;
+    private Polygon shape;
 
-    public FatArrow(double height, double width, int floor, double x, double y) {
-        super(height, width, floor, x, y);
+    public FatArrow(double height, double width, double x, double y) {
+        super(height, width, x, y);
 
         this.getPoints().addAll(new Double[]{
                 0.0, 0.0,

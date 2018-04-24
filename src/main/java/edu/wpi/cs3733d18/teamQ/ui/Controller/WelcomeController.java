@@ -23,7 +23,6 @@ import java.util.ResourceBundle;
 
 import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.addRequest;
 import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.runningFromIntelliJ;
-import com.sun.javafx.css.Stylesheet;
 
 
 public class WelcomeController implements Initializable {
@@ -116,7 +115,7 @@ public class WelcomeController implements Initializable {
      */
     public void pathClick(javafx.event.ActionEvent e){
         try {
-            FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/pathfindingView.fxml"));
+            FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/PathfindingScreen.fxml"));
             Parent pathfindingParent = pathfindingload.load();
             Stage primaryStage = (Stage)((Node)e.getSource()).getScene().getWindow();
             Scene pathfindingScene = sdUtil.prodAndBindScene(pathfindingParent, primaryStage);
