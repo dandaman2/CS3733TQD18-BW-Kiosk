@@ -41,7 +41,14 @@ public class AdminHomeScreenController implements Initializable {
     JFXButton logOut;
 
     @FXML
+    JFXButton addFaceButton;
+
+    @FXML
+    Label addedFaceLabel;
+
+    @FXML
     private AnchorPane adminScreenPane;
+
 
     //the user
     User user = User.getUser();
