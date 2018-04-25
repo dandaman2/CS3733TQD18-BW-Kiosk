@@ -28,8 +28,8 @@ public class User {
     private String nodeLocation;
     private Scene welcomeScene;
 
-    private int time = 60;
-    private int currentTimeIndex = 1;
+    private int time = 300;
+    private int currentTimeIndex = 2;
 
 
     // Arrays to hold pre-loaded images
