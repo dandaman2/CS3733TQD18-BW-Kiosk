@@ -264,8 +264,9 @@ public class FaceRecognition {
         return userFaceToken;
     }
 
-    public void detectBody(){
+    public int detectBody(){
         String url = "https://api-us.faceplusplus.com/humanbodypp/beta/detect";
+        int numBodies = 0;
         byte[] buff = getBytesFromFile(file);
         HashMap<String, String> map = new HashMap<>();
         HashMap<String, byte[]> byteMap = new HashMap<>();
@@ -275,10 +276,12 @@ public class FaceRecognition {
         try {
             Response rsp = post(url, map, byteMap);
             JSONObject result = new JSONObject(new String(rsp.getContent()));
-            System.out.println("Detected "+result.getJSONArray("humanbodies").length()+" bodies");
+            numBodies = result.getJSONArray("humanbodies").length();
+            System.out.println("Detected "+numBodies+" bodies");
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return numBodies;
 
     }
 

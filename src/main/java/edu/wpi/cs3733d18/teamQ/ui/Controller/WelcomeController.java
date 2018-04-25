@@ -153,6 +153,10 @@ public class WelcomeController implements Initializable {
      * Makes an emergency request from the home screen
      */
     public void emergencyRequest(){
+        if(true){
+            //FaceRecognition.getInstance().detectBody()>0
+            new PathfindingCont().findExitEmergency(3);
+        }
         EmergencyRequest emergencyRequest = new EmergencyRequest("NA", "NA", "NA", "NA", User.getUser().getNodeLocation());
         emergencyRequest.setPriority("Critical");
         emergencyRequest.setType("EMERGENCY");
