@@ -1,6 +1,7 @@
 package edu.wpi.cs3733d18.teamQ.ui.Controller;
 
 import com.jfoenix.controls.JFXButton;
+import edu.wpi.cs3733d18.teamQ.ui.Admin_Login.FaceRecognition;
 import edu.wpi.cs3733d18.teamQ.ui.User;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -10,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.awt.*;
@@ -67,12 +69,14 @@ public class AdminHomeScreenController implements Initializable {
         editMapBtn.setVisible(true);
         employeeEdit.setVisible(true);
         logOut.setVisible(true);
+        addFaceButton.setVisible(true);
 
         directionBtn.setMouseTransparent(false);
         requestBtn.setMouseTransparent(false);
         editMapBtn.setMouseTransparent(false);
         employeeEdit.setMouseTransparent(false);
         logOut.setMouseTransparent(false);
+        addFaceButton.setMouseTransparent(false);
 
         //if user is not an admin, then they can't access edit map or employee screens
         if(User.getUser().getLevelAccess() < 2){
@@ -80,6 +84,7 @@ public class AdminHomeScreenController implements Initializable {
             employeeEdit.setVisible(false);
             editMapBtn.setMouseTransparent(true);
             employeeEdit.setMouseTransparent(true);
+            addFaceButton.setMouseTransparent(false);
         }
 
         directionBtn.setOnAction(e -> goToPathfinding(e));
@@ -87,6 +92,7 @@ public class AdminHomeScreenController implements Initializable {
         editMapBtn.setOnAction(e -> goToEditMap(e));
         employeeEdit.setOnAction(e -> goToEmployeeEdit(e));
         logOut.setOnAction(e -> goToWelcome(e));
+        addFaceButton.setOnAction(e ->runFace(e));
     }
 
     //initializes scrolling text
@@ -149,6 +155,17 @@ public class AdminHomeScreenController implements Initializable {
         catch(IOException io){
             System.out.println("errEdit");
             io.printStackTrace();
+        }
+    }
+
+    public void runFace(javafx.event.ActionEvent actionEvent){
+        String temp =FaceRecognition.getInstance().addFace();
+        if (temp==null){
+//            addedFaceLabel.setText("Face ID setup failed!");
+//            addedFaceLabel.setVisible(true);
+        }else {
+//            addedFaceLabel.setText("Face ID configured successfully!");
+//            addedFaceLabel.setVisible(true);
         }
     }
 

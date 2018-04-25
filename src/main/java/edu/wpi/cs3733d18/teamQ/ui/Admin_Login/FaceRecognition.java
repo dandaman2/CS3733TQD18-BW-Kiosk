@@ -3,7 +3,6 @@ package edu.wpi.cs3733d18.teamQ.ui.Admin_Login;
 
 
 import com.github.sarxos.webcam.Webcam;
-import edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem;
 import edu.wpi.cs3733d18.teamQ.ui.Employee;
 import edu.wpi.cs3733d18.teamQ.ui.User;
 import javafx.print.Collation;
@@ -36,7 +35,7 @@ public class FaceRecognition {
     File file = new File("image.jpg");
 
     User user = User.getUser();
-    ArrayList<Employee> emp = DatabaseSystem.getEmployees();
+    ArrayList<Employee> emp = user.getEmployees();
 
 
     private static String userFaceToken = "";
@@ -45,7 +44,7 @@ public class FaceRecognition {
 
 
 
-    public void detectFace(){
+    public String detectFace(){
 //
 //        webcam = Webcam.getDefault();
 //        webcam.open();
@@ -76,7 +75,8 @@ public class FaceRecognition {
         }catch (Exception e) {
             e.printStackTrace();
         }
-        webcam.close();
+//        webcam.close();
+        return userFaceToken;
     }
 
     public void createFaceSet(){
@@ -99,8 +99,8 @@ public class FaceRecognition {
 
     }
 
-    public void addFace(){
-        detectFace();//TODO: Implement capture img and save as image.jpg file
+    public String addFace(){
+        userFaceToken = detectFace();
         String url = "https://api-us.faceplusplus.com/facepp/v3/faceset/addface";
         HashMap<String, String> map = new HashMap<>();
         map.put("api_key", apikey);
@@ -108,14 +108,24 @@ public class FaceRecognition {
         map.put("faceset_token", faceSetToken);
         map.put("face_tokens", userFaceToken);
         try {
+            if (userFaceToken.equals("")){
+                return null;
+            }
             Response rsp = post(url,map,null);
             JSONObject addedFace = new JSONObject(new String(rsp.getContent()));
+            if (addedFace.getInt("face_added")==0){
+                return null;
+            }
             System.out.println(addedFace.getInt("face_added"));
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //TODO: Save userFaceToken to Database
+        Employee currentUser = user.getCurrentUser();
+        currentUser.setFaceID(userFaceToken);
+        user.editEmployeeSingleton(currentUser);
+        user.setCurrentUser(currentUser);
+        return currentUser.getFaceID();
     }
 
     public FaceRecognition() {
@@ -135,7 +145,6 @@ public class FaceRecognition {
             }
         });
         cameraThread.start();
-
     }
 
     public static byte[] getBytesFromFile(File f) {
