@@ -26,6 +26,10 @@ public class User {
     private int levelAccess;
     private Stage primaryStage;
     private String nodeLocation;
+    private Scene welcomeScene;
+
+    private int time = 60;
+    private int currentTimeIndex = 1;
 
 
     // Arrays to hold pre-loaded images
@@ -463,4 +467,47 @@ public class User {
         this.selectedAlg = selectedAlg;
     }
 
+
+    //for memento usages
+    public void setWelcomeScene(Scene welcomeScene) {
+        this.welcomeScene = welcomeScene;
+    }
+    public Scene getWelcomeScene(){
+        return welcomeScene;
+    }
+
+    public void setTime(String timeText){
+        if(timeText.equals("0")){
+            currentTimeIndex = 0;
+            this.time = 30;
+        }
+        else if(timeText.equals("1")){
+            currentTimeIndex = 1;
+            this.time = 60;
+        }
+        else if(timeText.equals("2")){
+            currentTimeIndex = 2;
+            this.time = 300;
+        }
+        else if(timeText.equals("3")){
+            currentTimeIndex = 3;
+            this.time = 3000;
+        }
+        else{
+            currentTimeIndex = 4;
+            this.time = 18000;
+        }
+    }
+
+    public int getTime(){
+        return time;
+    }
+
+    public int getCurrentTimeIndex() {
+        return currentTimeIndex;
+    }
+
+    public void setCurrentTimeIndex(int currentTimeIndex) {
+        this.currentTimeIndex = currentTimeIndex;
+    }
 }

@@ -2,6 +2,7 @@ package edu.wpi.cs3733d18.teamQ.ui.Controller;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733d18.teamQ.ui.User;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,9 +16,13 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.runningFromIntelliJ;
 
@@ -48,7 +53,6 @@ public class AdminHomeScreenController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         setUpButtons();
         setUpScrollText();
-        //new TimeoutData().initTimer(adminScreenPane);
     }
 
     //initializes the buttons
@@ -101,6 +105,8 @@ public class AdminHomeScreenController implements Initializable {
     private void setUpScrollText(){
         //JLabel label = new JLabel();
     }
+
+
 
     //Helper Functions---------------------------------
 
@@ -195,7 +201,7 @@ public class AdminHomeScreenController implements Initializable {
                 }
             };
 
-            new Thread(r).start();
+            //new Thread(r).start();
             //this line will execute immediately, not waiting for your task to complete
             FXMLLoader welcomeLoader;
             if(runningFromIntelliJ()) {
