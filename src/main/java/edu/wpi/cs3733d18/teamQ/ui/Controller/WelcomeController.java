@@ -86,6 +86,7 @@ public class WelcomeController implements Initializable {
         loginView.setFitHeight(50);
 
         adminButt.setGraphic(loginView);
+        adminButt.setDisableVisualFocus(true);
 
         aboutButton.setOnAction(e -> AboutController.displayAboutPage());
         adminButt.setOnAction(e -> AlertBox.display("Admin Login", "Please input your username and password."));
