@@ -32,12 +32,21 @@
             <Region prefHeight="78.0" prefWidth="175.0" HBox.hgrow="ALWAYS" />
             <HBox prefHeight="32.0" prefWidth="319.0">
                <children>
-                  <AnchorPane>
+                  <GridPane hgap="5.0" HBox.hgrow="ALWAYS">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
                      <children>
-                        <ChoiceBox fx:id="algChoice" layoutY="34.0" prefHeight="31.0" prefWidth="158.0" AnchorPane.topAnchor="25.0" />
-                        <ChoiceBox fx:id="floorChoice" layoutX="161.0" layoutY="34.0" prefHeight="31.0" prefWidth="158.0" AnchorPane.topAnchor="25.0" />
+                        <ChoiceBox fx:id="algChoice" prefHeight="31.0" prefWidth="158.0" />
+                        <ChoiceBox fx:id="floorChoice" prefHeight="31.0" prefWidth="158.0" GridPane.columnIndex="1" />
+                        <ChoiceBox fx:id="timerValue" prefHeight="31.0" prefWidth="150.0" GridPane.columnIndex="2" />
                      </children>
-                  </AnchorPane>
+                  </GridPane>
                </children>
             </HBox>
             <Region prefHeight="78.0" prefWidth="107.0" HBox.hgrow="NEVER" />
