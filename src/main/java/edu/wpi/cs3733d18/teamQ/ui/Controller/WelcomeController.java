@@ -45,22 +45,7 @@ public class WelcomeController implements Initializable {
     private JFXButton adminButt;
 
     @FXML
-    private JFXButton EmergencyBtn;
-
-    @FXML
-    private ImageView bwhSeal;
-
-    @FXML
-    private ImageView bwhLogo;
-
-    @FXML
-    private AnchorPane sealPane;
-
-    @FXML
-    private StackPane stackPane;
-
-    @FXML
-    private VBox buttBox;
+    JFXButton EmergencyBtn;
 
     @FXML
     private Button aboutButton;
@@ -79,10 +64,10 @@ public class WelcomeController implements Initializable {
         Image seal;
         if(runningFromIntelliJ()) {
             logo = new Image("bwhLogo.png");
-            seal = new Image("bwhCrest.png");
+            seal = new Image("BWHBuilding.jpg");
         } else{
             logo = new Image("bwhLogo.png");
-            seal = new Image("bwhCrest.png");
+            seal = new Image("BWHBuilding.jpg");
         }
 
         // info button icon
@@ -95,8 +80,6 @@ public class WelcomeController implements Initializable {
         ImageView infoView = new ImageView(info);
         infoView.setFitWidth(42);
         infoView.setFitHeight(40);
-        aboutButton.setPrefWidth(43);
-        aboutButton.setPrefHeight(41);
         aboutButton.setGraphic(infoView);
 
         // background of welcome screen
