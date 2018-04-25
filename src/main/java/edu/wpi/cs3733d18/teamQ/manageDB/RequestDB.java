@@ -1,9 +1,6 @@
 package edu.wpi.cs3733d18.teamQ.manageDB;
 
-import edu.wpi.cs3733d18.teamQ.ui.Requests.EmergencyRequest;
-import edu.wpi.cs3733d18.teamQ.ui.Requests.InterpreterRequest;
-import edu.wpi.cs3733d18.teamQ.ui.Requests.Request;
-import edu.wpi.cs3733d18.teamQ.ui.Requests.SanitationRequest;
+import edu.wpi.cs3733d18.teamQ.ui.Requests.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -133,6 +130,17 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.database.getTable;
                             rs.getString("REQUESTID"),
                             cal,
                             rs.getString("PRIORITY")));
+                } else if(requestType==4){
+                    requests.add(new GiftRequest(rs.getString("FIRSTNAME"),
+                            rs.getString("LASTNAME"),
+                            rs.getString("ROOMNAME"),
+                            rs.getInt("FULFILLED"),
+                            rs.getString("NAMEWHOFULFILLED"),
+                            rs.getString("EMAIL"),
+                            rs.getString("PHONENUMBER"),
+                            rs.getString("REQUESTID"),
+                            cal,
+                            rs.getString("PRIORITY")));
                 }
             }
         } catch (SQLException e) {
@@ -198,6 +206,17 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.database.getTable;
                             results.getString("REQUESTID"),
                             cal,
                             results.getString("PRIORITY")));
+                }else if(requestType==4){
+                    requests.add(new GiftRequest(results.getString("FIRSTNAME"),
+                            results.getString("LASTNAME"),
+                            results.getString("ROOMNAME"),
+                            results.getInt("FULFILLED"),
+                            results.getString("NAMEWHOFULFILLED"),
+                            results.getString("EMAIL"),
+                            results.getString("PHONENUMBER"),
+                            results.getString("REQUESTID"),
+                            cal,
+                            results.getString("PRIORITY")));
                 }
             }
         } catch (SQLException e) {
@@ -253,6 +272,17 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.database.getTable;
                             results.getString("PRIORITY"));
                 } else if(requestType==3){
                     foundReqeust = new EmergencyRequest(results.getString("FIRSTNAME"),
+                            results.getString("LASTNAME"),
+                            results.getString("ROOMNAME"),
+                            results.getInt("FULFILLED"),
+                            results.getString("NAMEWHOFULFILLED"),
+                            results.getString("EMAIL"),
+                            results.getString("PHONENUMBER"),
+                            results.getString("REQUESTID"),
+                            cal,
+                            results.getString("PRIORITY"));
+                } else if(requestType==4){
+                    foundReqeust = new GiftRequest(results.getString("FIRSTNAME"),
                             results.getString("LASTNAME"),
                             results.getString("ROOMNAME"),
                             results.getInt("FULFILLED"),
@@ -370,15 +400,15 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.database.getTable;
      */
      static String requestToString(Request input) {
         String requestType = input.getClass().getSimpleName();
-        int type;
+        int type = 1;
         if(requestType.equals("InterpreterRequest")){
             type = 1;
         } else if(requestType.equals("SanitationRequest")){
             type = 2;
-        }
-        //Emergency Request
-        else{
+        } else if(requestType.equals("EmergencyRequest")){
             type = 3;
+        } else if(requestType.equals("GiftRequest")){
+            type = 4;
         }
         String request = "('" + input.getRequestID() + "',"
                 + type + ","

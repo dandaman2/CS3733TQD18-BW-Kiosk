@@ -186,6 +186,9 @@ public class EditMapController implements Initializable, IZoomableCont {
     JFXButton zoomOutButt;
 
     @FXML
+    JFXButton infoButt;
+
+    @FXML
     private AnchorPane mapPane;
 
     @FXML
@@ -290,6 +293,10 @@ public class EditMapController implements Initializable, IZoomableCont {
         initTimerSelector();
 
         setUpButtons();
+
+        infoButt.setOnAction(e -> InfoController.displayEditInfoPage());
+        infoButt.setStyle("-fx-background-radius: 50%; -fx-font-size: 20;");
+        infoButt.setText("?");
     }
 
     /**
