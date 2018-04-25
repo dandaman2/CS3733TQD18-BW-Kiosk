@@ -75,7 +75,7 @@ public class BreadCrumber {
             buttList.add(arrowButt);
         }
 
-        addArrows();
+//        addArrows();
     }
 
     // add crumbs to the screen
@@ -146,5 +146,16 @@ public class BreadCrumber {
 
     public void setCurrSelected(int currSelected) {
         this.currSelected = currSelected;
+    }
+
+    public void drawSpecificCrumbs(int index){
+        if(index < buttList.size()) {
+            for (int i = 0; i <= index; i++) {
+                hBox.getChildren().add(buttList.get(i));
+            }
+        }
+        else{
+            System.out.println("DrawSpecificCrumbs Over Limit");
+        }
     }
 }
