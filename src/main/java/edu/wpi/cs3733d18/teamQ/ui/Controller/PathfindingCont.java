@@ -639,6 +639,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void generatePath() {
         backImagePane.getChildren().removeAll(drawnPath);
+        backImagePane.getChildren().removeAll(antPaths);
 
         ArrayList<String> RestrictedTYPES = new ArrayList<String>();
 //        if(checkElevator.isSelected() == true)
@@ -898,6 +899,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         // removes old paths and buttons before drawing new
         backImagePane.getChildren().removeAll(drawnPath);
+        backImagePane.getChildren().removeAll(antPaths);
         backImagePane.getChildren().removeAll(transList);
         backImagePane.getChildren().removeAll(labelList);
         backImagePane.getChildren().remove(starLabel);
@@ -1301,6 +1303,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void clearPath(){
         backImagePane.getChildren().removeAll(drawnPath);
+        backImagePane.getChildren().removeAll(antPaths);
         drawnPath = new ArrayList<>();
         textTree.setVisible(false);
         textTree.setMouseTransparent(true);
