@@ -2,12 +2,20 @@
 
 import edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem;
 import edu.wpi.cs3733d18.teamQ.ui.Admin_Login.FaceRecognition;
+import edu.wpi.cs3733d18.teamQ.ui.Controller.ScreenUtil;
 import edu.wpi.cs3733d18.teamQ.ui.User;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.awt.*;
+import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.*;
 
@@ -47,7 +55,12 @@ public class Main_ui extends Application {
 
         //primaryStage.setFullScreen(true);
         primaryStage.setMaximized(true);
+
+        user.setPrimaryStage(primaryStage);
+        user.setWelcomeScene(welcomeScene);
         primaryStage.show();
+
+        setUpTimer();
 
     }
 
@@ -74,4 +87,85 @@ public class Main_ui extends Application {
     }
 
 
+    //ScreenUtil object for resizing of loading images
+    private ScreenUtil sdUtil = new ScreenUtil();
+    /**
+     * initializes the timer
+     */
+    private void setUpTimer(){
+
+        TimerTask timerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                User user = User.getUser();
+
+                System.out.println("thread is running...");
+                double xMouse = MouseInfo.getPointerInfo().getLocation().getX();
+                double yMouse = MouseInfo.getPointerInfo().getLocation().getY();
+
+                double xMouseNew;
+                double yMouseNew;
+
+                int time = user.getTime();
+                while (time > 0) {
+                    xMouseNew = MouseInfo.getPointerInfo().getLocation().getX();
+                    yMouseNew = MouseInfo.getPointerInfo().getLocation().getY();
+
+                    if (xMouse != xMouseNew || yMouse != yMouseNew) {
+                        time = user.getTime();
+
+                        xMouse = MouseInfo.getPointerInfo().getLocation().getX();
+                        yMouse = MouseInfo.getPointerInfo().getLocation().getY();
+                        continue;
+                    }
+
+                    time--;
+                    try {
+                        TimeUnit.SECONDS.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(time);
+                }
+
+
+                Platform.runLater(new Runnable(){
+                    @Override
+                    public void run () {
+                        User user = User.getUser();
+                        user.setLevelAccess(0);
+                        Runnable r = new Runnable() {
+                            public void run() {
+                                user.saveToDB();
+                            }
+                        };
+
+                        //new Thread(r).start();
+                        //this line will execute immediately, not waiting for your task to complete
+                        FXMLLoader welcomeLoader;
+                        if(runningFromIntelliJ()) {
+                            welcomeLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/WelcomeScreen.fxml"));
+                        } else{
+                            welcomeLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/WelcomeScreen.fxml"));
+                        }
+                        Parent welcomePane = null;
+                        try {
+                            welcomePane = welcomeLoader.load();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Stage primaryStage = user.getPrimaryStage();
+                        Scene welcomeScene = sdUtil.prodAndBindScene(welcomePane, primaryStage);
+                        welcomeScene.getStylesheets().addAll("Stylesheet.css", "StyleMenus.css");
+                        primaryStage.setScene(welcomeScene);
+                    }
+                });
+            }
+        };
+
+        Timer timer = new Timer("MyTimer");//create a new Timer
+        timer.scheduleAtFixedRate(timerTask, 10, 100);
+
+    }
 }

@@ -4,6 +4,7 @@ package edu.wpi.cs3733d18.teamQ.ui.Controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXTreeView;
 import edu.wpi.cs3733d18.teamQ.pathfinding.*;
 import edu.wpi.cs3733d18.teamQ.ui.ArrowShapes.BreadCrumber;
 import edu.wpi.cs3733d18.teamQ.ui.*;
@@ -39,6 +40,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import me.xdrop.fuzzywuzzy.model.ExtractedResult;
+import sun.reflect.generics.tree.Tree;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -149,6 +151,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     @FXML
     private JFXComboBox<String> gifSelector;
 
+    @FXML
+    private JFXTreeView<String> textTree;
+
     //Scrolling and zooming functionality
     @FXML
     private ScrollPane imageScroller;
@@ -157,6 +162,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     private AnchorPane outerAnchor;
     final double SCALE_DELTA = 1.1;
     public double SCALE_TOTAL = 1;
+
 
     //the animated path and ant variables
     ArrayList<Timeline> antTimeLines = new ArrayList<>();
@@ -261,6 +267,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         if(user.getPathType()!=null){
             getNearType(user.getPathType());
         }
+
+        textTree.setVisible(false);
+        textTree.setMouseTransparent(true);
     }
 
 
@@ -370,6 +379,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         startingNodeField.setText("");
         startingNodeField.setFont(Font.font("Georgia", 15));
         startingNodeField.setStyle("-fx-text-inner-color: white;");
+        startingNodeField.setStyle("-fx-background-color: #FFFFFF;");
         gridTop.add(startingNodeField,0,0);
         startingNodeField.setOnMousePressed(event -> updatePath());
         startingNodeField.setOnKeyPressed(event -> updateFilterStart(startingNodeField.getText()));
@@ -378,6 +388,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         endingNodeField.setPromptText("End Location");
         endingNodeField.setText("");
         endingNodeField.setStyle("-fx-text-inner-color: white;");
+        endingNodeField.setStyle("-fx-background-color: #FFFFFF;");
         endingNodeField.setFont(Font.font("Georgia", 15));
         gridTop.add(endingNodeField,2,0);
         endingNodeField.setOnMousePressed(event -> updatePath());
@@ -401,14 +412,39 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         homeButton.setGraphic(infoView);
         Image play;
         if(runningFromIntelliJ()) {
-            play = new Image("/ButtonImages/video-play-icon.png");
+            play = new Image("/ButtonImages/play-icon.png");
         } else{
-            play = new Image("ButtonImages/video-play-icon.png");
+            play = new Image("ButtonImages/play-icon.png");
         }
         ImageView playView = new ImageView(play);
         infoView.setFitWidth(42);
         infoView.setFitHeight(40);
         playButton.setGraphic(playView);
+        playButton.setVisible(false);
+        playButton.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!oldValue){
+                    Image pause;
+                    if(runningFromIntelliJ()) {
+                        pause = new Image("/ButtonImages/pause-icon.png");
+                    } else{
+                        pause = new Image("ButtonImages/pause-icon.png");
+                    }
+                    ImageView pauseView = new ImageView(pause);
+                    playButton.setGraphic(pauseView);
+                } else{
+                    Image play;
+                    if(runningFromIntelliJ()) {
+                        play = new Image("/ButtonImages/play-icon.png");
+                    } else{
+                        play = new Image("ButtonImages/play-icon.png");
+                    }
+                    ImageView playView = new ImageView(play);
+                    playButton.setGraphic(playView);
+                }
+            }
+        });
     }
 
     /**
@@ -835,6 +871,8 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         // creates breadcrumbs
         breadCrumb.drawCrumbs(path);
 
+        playButton.setVisible(true);
+
         // translates all nodes to new coords for when map moves
         for(Node nodeToTranslate : path){
             tp = translateCoord(nodeToTranslate);
@@ -1039,6 +1077,62 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             movingPart.toFront();
 
         }
+        TreeItem<String> root = new TreeItem<String>("Directions");
+
+        ArrayList<String> instructions = TextInstructions(queuedPath);
+
+        int currentFloor = queuedPath.get(0).getFloor();
+        String floorString;
+        if(currentFloor==-1){
+            floorString = "L1";
+        } else if(currentFloor==-2){
+            floorString = "L2";
+        } else {
+            floorString = String.valueOf(currentFloor);
+        }
+        TreeItem<String> floorLeaf = new TreeItem<String>("Floor "+floorString);
+
+        int instructionIndex = 0;
+        for (int i = instructionIndex; i < instructions.size(); i++) {
+            TreeItem<String> itemLeaf = new TreeItem<String>(instructions.get(i));
+            floorLeaf.getChildren().add(itemLeaf);
+            instructionIndex++;
+            if(instructions.get(i).contains("floor")){
+                break;
+            }
+        }
+
+        root.getChildren().add(floorLeaf);
+        for (Node n:queuedPath) {
+            if(n.getFloor()!=currentFloor){
+                currentFloor = n.getFloor();
+                if(currentFloor==-1){
+                    floorString = "L1";
+                } else if(currentFloor==-2){
+                    floorString = "L2";
+                } else {
+                    floorString = String.valueOf(currentFloor);
+                }
+                floorLeaf = new TreeItem<String>("Floor "+floorString);
+                for (int i = instructionIndex; i < instructions.size(); i++) {
+                    TreeItem<String> itemLeaf = new TreeItem<String>(instructions.get(i));
+                    floorLeaf.getChildren().add(itemLeaf);
+                    instructionIndex++;
+                    if(instructions.get(i).contains("floor")){
+                        break;
+                    }
+                }
+                root.getChildren().add(floorLeaf);
+            }
+        }
+        /*for (String item:instructions) {
+            TreeItem<String> leaf = new TreeItem<String>(item);
+            root.getChildren().add(leaf);
+        }*/
+        root.setExpanded(true);
+        textTree.setRoot(root);
+        textTree.setVisible(true);
+        textTree.setMouseTransparent(false);
     }
 
     /**
@@ -1163,6 +1257,8 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     public void clearPath(){
         backImagePane.getChildren().removeAll(drawnPath);
         drawnPath = new ArrayList<>();
+        textTree.setVisible(false);
+        textTree.setMouseTransparent(true);
     }
 
 
@@ -1597,16 +1693,23 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     public void toggleRunAnimation(){
         if(playButton.isSelected()){
             runTransitions();
-            playButton.setGraphic(null);
-            playButton.setText("STOP");
+            Image pause;
+            if(runningFromIntelliJ()) {
+                pause = new Image("/ButtonImages/pause-icon.png");
+            } else{
+                pause = new Image("ButtonImages/pause-icon.png");
+            }
+            ImageView pauseView = new ImageView(pause);
+            playButton.setGraphic(pauseView);
+            //playButton.setText("STOP");
         }
         else{
             playButton.setText(null);
             Image play;
             if(runningFromIntelliJ()) {
-                play = new Image("/ButtonImages/video-play-icon.png");
+                play = new Image("/ButtonImages/play-icon.png");
             } else{
-                play = new Image("ButtonImages/video-play-icon.png");
+                play = new Image("ButtonImages/play-icon.png");
             }
             ImageView playView = new ImageView(play);
             playButton.setGraphic(playView);
