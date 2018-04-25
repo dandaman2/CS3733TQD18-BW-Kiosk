@@ -392,6 +392,19 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                                      movingPart = new ImageView(new Image(gifPath));
                                      movingPart.setPreserveRatio(true);
 
+                                     if(gifPath.equals("Gifs/dog.gif")){
+                                         selectedLocation = new ImageView(dogHouse);
+                                         selectedSize = 50;
+                                         selectedLocation.setFitHeight(selectedSize);
+                                         selectedLocation.setFitWidth(selectedSize);
+                                     }
+                                     else{
+                                         selectedLocation = new ImageView(star);
+                                         selectedSize = 30;
+                                         selectedLocation.setFitHeight(selectedSize);
+                                         selectedLocation.setFitWidth(selectedSize);
+                                     }
+
                                      if(gifPath.equals("Gifs/circle.png"))
                                          movingPart.setFitWidth(40);
                                      else
@@ -599,17 +612,21 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     /**
      * Initializes star icon at finishing node(Destination)
      */
+    private Image dogHouse;
+    private Image star;
+    private double selectedSize = 30;
     public void initStar(){
-        Image star;
         if (runningFromIntelliJ()) {
             star = new Image("/ButtonImages/star.png");
         }
         else{
             star = new Image("ButtonImages/star.png");
         }
+
+        dogHouse = new Image("Gifs/doghouse.png");
         selectedLocation = new ImageView(star);
-        selectedLocation.setFitHeight(30);
-        selectedLocation.setFitWidth(30);
+        selectedLocation.setFitHeight(selectedSize);
+        selectedLocation.setFitWidth(selectedSize);
     }
 
 
@@ -918,8 +935,8 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         if(n.getFloor() == getCurrFloor()) {
             TransPoint tp1;
             tp1 = translateCoord(n);
-            selectedLocation.setLayoutX(tp1.getTx() - 15);
-            selectedLocation.setLayoutY(tp1.getTy() - 15);
+            selectedLocation.setLayoutX(tp1.getTx() - selectedSize/2);
+            selectedLocation.setLayoutY(tp1.getTy() - selectedSize/2);
             backImagePane.getChildren().add(selectedLocation);
         }
     }
@@ -988,7 +1005,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         int lastIndex = pta.size() - 1;
         if(getCurrFloor() == path.get(lastIndex).getFloor()) {
            // System.out.println(pta.get(lastIndex) + " " + path.get(lastIndex) + " " + path.get(lastIndex).getNameLong());
-            starLabel.setText("    End: " + path.get(lastIndex).getNameLong() + " ");
+            starLabel.setText("      End: " + path.get(lastIndex).getNameLong() + " ");
             starLabel.setPrefHeight(20);
             starLabel.setLayoutX(pta.get(lastIndex).getTx());
             starLabel.setLayoutY(pta.get(lastIndex).getTy() - 10);
