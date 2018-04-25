@@ -69,8 +69,7 @@ public class BreadCrumber {
             // on click actions arrow
             arrowButt.setOnMouseClicked((e) -> {
                 this.currSelected = index;
-                floorMaps.updateFloorMap(arrowButt.getFloor());
-                pf.updateDrawings();
+                pf.updateFloorMap(arrowButt.getFloor());
             });
 
             buttList.add(arrowButt);
