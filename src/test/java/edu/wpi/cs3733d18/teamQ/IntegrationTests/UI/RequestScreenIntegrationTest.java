@@ -309,7 +309,7 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
      * Tests to make sure that if a user tries to fulfill a request without selecting one
      * the program will inform the user that they have not selected a request.
      */
-    /*@Test
+    @Test
     public void unselectedRequestFulfillTest(){
         clickOn("Pending Requests");
         clickOn("#whoFulfilled");
@@ -320,9 +320,9 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
         String errLabelText = lookup("#errorLabel").queryAs(Label.class).getText();
 
         assertEquals(errLabelText, "[No Request Selected]");
-    }*/
+    }
 
-    /*@Test @Ignore
+    @Test
     public void addRequestWithoutFieldFilledTest() throws  Exception{
         clickOn("#interpreterBtn");
 
@@ -447,5 +447,5 @@ public class RequestScreenIntegrationTest extends ApplicationTest {
         errLabelText = lookup("#errorLabel").queryAs(Label.class).getText();
 
         assertEquals(errLabelText, "[Please fill in all sections before Submitting Request]");
-    }*/
+    }
 }

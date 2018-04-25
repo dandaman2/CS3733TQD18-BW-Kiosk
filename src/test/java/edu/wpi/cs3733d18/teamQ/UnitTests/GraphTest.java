@@ -124,7 +124,6 @@ public class GraphTest {
      */
     @Test
     public void testNoTypePath(){
-        //TODO finish this when feature is fully implemented
         ArrayList<Node> expectedPath = new ArrayList<Node>();
         ArrayList<String> noType = new ArrayList<>();
         noType.add(node8.getType());
