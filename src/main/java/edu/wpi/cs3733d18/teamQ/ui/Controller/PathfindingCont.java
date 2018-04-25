@@ -469,9 +469,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         exchange.setMaxHeight(startingNodeField.getHeight());
         exchange.setPrefHeight(startingNodeField.getHeight());
         ImageView exchangeArrows = new ImageView(new Image("ButtonImages/exchange.png"));
-        exchangeArrows.setFitWidth(40);
+        exchangeArrows.setFitWidth(60);
         exchangeArrows.setFitHeight(40);
-        exchange.setText("⇄");
+        exchange.setGraphic(exchangeArrows);
 
         exchange.setPadding(new Insets(0,0,0,0));
     }
