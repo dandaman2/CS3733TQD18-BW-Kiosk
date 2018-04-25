@@ -101,10 +101,10 @@ public class EmployeeEditController implements Initializable {
         backBtn.setDisableVisualFocus(true);
 
         Image info;
-        if(runningFromIntelliJ()) {
-            info = new Image("/ButtonImages/home.png");
-        } else{
-            info = new Image("ButtonImages/home.png");
+        if (runningFromIntelliJ()) {
+            info = new Image("/ButtonImages/whiteHut.png");
+        } else {
+            info = new Image("ButtonImages/whiteHut.png");
         }
         ImageView infoView = new ImageView(info);
         infoView.setFitWidth(42);

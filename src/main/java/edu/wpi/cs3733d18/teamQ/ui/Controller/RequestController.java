@@ -320,10 +320,10 @@ public class  RequestController implements Initializable{
         backBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
 
         Image info;
-        if(runningFromIntelliJ()) {
-            info = new Image("/ButtonImages/home.png");
-        } else{
-            info = new Image("ButtonImages/home.png");
+        if (runningFromIntelliJ()) {
+            info = new Image("/ButtonImages/whiteHut.png");
+        } else {
+            info = new Image("ButtonImages/whiteHut.png");
         }
         ImageView infoView = new ImageView(info);
         infoView.setFitWidth(42);
