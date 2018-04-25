@@ -24,20 +24,20 @@ public class DatabaseTest {
     private static DatabaseSystem databaseSystem;
 
     private final Node testAddNode = new Node("TEST", 0.0, 0.0, 0, "Test Building",
-            "Test Node", "Test Node Long", "Test Node Short", "Team Q", 0.0, 0.0, 0.0);
-    private final String testAddNodeAsString = "(\'TEST\', 0.0, 0.0, 0, \'Test Building\', \'Test Node\', \'Test Node Long\', \'Test Node Short\', \'Team Q\', 0.0, 0.0, 0.0)";
+            "Test Node", "Test Node Long", "Test Node Short", "Team Q", 0.0, 0.0, 0.0, true);
+    private final String testAddNodeAsString = "(\'TEST\', 0.0, 0.0, 0, \'Test Building\', \'Test Node\', \'Test Node Long\', \'Test Node Short\', \'Team Q\', 0.0, 0.0, 0.0, 1)";
     private final String testAddNodeID = "TEST";
     private final Node testGetNode = new Node("GDEPT00702", 1341.0, 1778.0, 2, "Shapiro",
-            "DEPT", "Waiting room? Node 7 Floor 2", "Waiting Area Shapiro Floor 2", "Team G", 1213.00, 1627.00, 0.0);
+            "DEPT", "Waiting room? Node 7 Floor 2", "Waiting Area Shapiro Floor 2", "Team G", 1213.00, 1627.00, 0.0, true);
     private final String testGetNodeID = "GDEPT00702";
 
-    private final Edge testAddEdge = new Edge("TestEdge", testAddNode, testAddNode, 0.0);
-    private final String testAddEdgeAsString = "(\'TestEdge\', \'TEST\', \'TEST\', 0.0)";
+    private final Edge testAddEdge = new Edge("TestEdge", testAddNode, testAddNode, 0.0, true);
+    private final String testAddEdgeAsString = "(\'TestEdge\', \'TEST\', \'TEST\', 0.0, 1)";
 
     private final String edgeCSVHeaderExpected = "EDGEID, STARTNODE, ENDNODE, DISTANCE";
-    private final String getEdgeCSVFirstLineExpect = "AHALL00202_AHALL00302,AHALL00302,AHALL00202,141.0";//"WHALL002L2_GHALL001L2,WHALL002L2,GHALL001L2,0.0";
+    private final String getEdgeCSVFirstLineExpect = "AHALL00202_AHALL00302,AHALL00302,AHALL00202,141.0,1";//"WHALL002L2_GHALL001L2,WHALL002L2,GHALL001L2,0.0";
     private final String nodeCSVHeaderExpected = "nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName,teamAssigned,xcoord3d,ycoord3d";
-    private final String getNodeCSVFirstLineExpected = "ACONF00102,1580.0,2538.0,2,BTM,HALL,Hall,Hall,Team A,1106.0,2080.0,0.0";//"GDEPT00702,1341.0,1778.0,2,Shapiro,DEPT,Waiting room? Node 7 Floor 2,Waiting Area Shapiro Floor 2,Team G,1213.0,1627.0";
+    private final String getNodeCSVFirstLineExpected = "ACONF00102,1580.0,2538.0,2,BTM,HALL,Hall,Hall,Team A,1106.0,2080.0,0.0,1";//"GDEPT00702,1341.0,1778.0,2,Shapiro,DEPT,Waiting room? Node 7 Floor 2,Waiting Area Shapiro Floor 2,Team G,1213.0,1627.0";
 
     private final GregorianCalendar testDate = new GregorianCalendar(2018, 1, 1);
     private final String testRequestID = "1000";

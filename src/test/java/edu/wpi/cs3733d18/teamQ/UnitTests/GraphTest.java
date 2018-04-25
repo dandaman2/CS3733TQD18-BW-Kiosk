@@ -19,33 +19,33 @@ public class GraphTest {
     private static ArrayList<Edge> testEdges = new ArrayList<Edge>();
 
     private static Node node1 = new Node("TEST1", 1.0, 1.0, 1, "TESTBUILDING", "TEST",
-            "TEST-LONG1", "TEST1", "Team Q", 0.0, 0.0, 0.0);
+            "TEST-LONG1", "TEST1", "Team Q", 0.0, 0.0, 0.0, true);
     private static Node node2 = new Node("TEST2", 1.0, 1.0, 1, "TESTBUILDING", "TEST",
-            "TEST-LONG2", "TEST2", "Team Q", 0.0, 0.0, 0.0);
+            "TEST-LONG2", "TEST2", "Team Q", 0.0, 0.0, 0.0, true);
     private static Node node3 = new Node("TEST3", 1.0, 100.0, 1, "TESTBUILDING", "TEST",
-            "TEST-LONG3", "TEST3", "Team Q", 0.0, 0.0, 0.0);
+            "TEST-LONG3", "TEST3", "Team Q", 0.0, 0.0, 0.0, true);
     private static Node node4 = new Node("TEST4", 1.0, 1.0, 1, "TESTBUILDING", "TEST",
-            "TEST-LONG4", "TEST4", "Team Q", 0.0, 0.0, 0.0);
+            "TEST-LONG4", "TEST4", "Team Q", 0.0, 0.0, 0.0, true);
     private static Node node5 = new Node("TEST5", 1.0, 1.0, 1, "TESTBUILDING", "TEST",
-            "TEST-LONG5", "TEST5", "Team Q", 0.0, 0.0, 0.0);
+            "TEST-LONG5", "TEST5", "Team Q", 0.0, 0.0, 0.0, true);
     private static Node node6 = new Node("TEST6", 1.0, 1.0, 1, "TESTBUILDING", "TEST",
-            "TEST-LONG6", "TEST6", "Team Q", 0.0, 0.0, 0.0);
+            "TEST-LONG6", "TEST6", "Team Q", 0.0, 0.0, 0.0, true);
     private static Node node7 = new Node("TEST7", 1.0, 1.0, 1, "TESTBUILDING", "TEST",
-            "TEST-LONG7", "TEST7", "Team Q", 0.0, 0.0, 0.0);
+            "TEST-LONG7", "TEST7", "Team Q", 0.0, 0.0, 0.0, true);
     private static Node node8 = new Node("TEST8", 1.0, 1.0, 1, "TESTBUILDING", "EXCLUDED",
-            "TEST-LONG8", "TEST8", "Team Q", 0.0, 0.0, 0.0);
+            "TEST-LONG8", "TEST8", "Team Q", 0.0, 0.0, 0.0, true);
     private static Node node9 = new Node("TEST9", 1.0, 1.0, 1, "TESTBUILDING", "TEST",
-            "TEST-LONG9", "TEST9", "Team Q", 0.0, 0.0, 0.0);
+            "TEST-LONG9", "TEST9", "Team Q", 0.0, 0.0, 0.0, true);
 
-    private static Edge edge1to2 = new Edge("TEST1-2", node1, node2, 1.0);
-    private static Edge edge1to8 = new Edge("TEST1-8", node1, node8, 1.0);
-    private static Edge edge1to3 = new Edge("TEST1-3", node1, node3, 100.0);
-    private static Edge edge2to4 = new Edge("TEST2-4", node2, node4, 1.0);
-    private static Edge edge2to9 = new Edge("TEST2-7", node2, node9, 10.0);
-    private static Edge edge2to5 = new Edge("TEST2-5", node2, node5, 2.0);
-    private static Edge edge3to4 = new Edge("TEST3-4", node3, node4, 1.0);
-    private static Edge edge3to5 = new Edge("TEST3-5", node3, node5, 4.0);
-    private static Edge edge8to9 = new Edge("TEST8-9", node8, node9, 1.0);
+    private static Edge edge1to2 = new Edge("TEST1-2", node1, node2, 1.0, true);
+    private static Edge edge1to8 = new Edge("TEST1-8", node1, node8, 1.0, true);
+    private static Edge edge1to3 = new Edge("TEST1-3", node1, node3, 100.0, true);
+    private static Edge edge2to4 = new Edge("TEST2-4", node2, node4, 1.0, true);
+    private static Edge edge2to9 = new Edge("TEST2-7", node2, node9, 10.0, true);
+    private static Edge edge2to5 = new Edge("TEST2-5", node2, node5, 2.0, true);
+    private static Edge edge3to4 = new Edge("TEST3-4", node3, node4, 1.0, true);
+    private static Edge edge3to5 = new Edge("TEST3-5", node3, node5, 4.0, true);
+    private static Edge edge8to9 = new Edge("TEST8-9", node8, node9, 1.0, true);
 
     /**
      * Initialize the graph and lists for nodes and edges.

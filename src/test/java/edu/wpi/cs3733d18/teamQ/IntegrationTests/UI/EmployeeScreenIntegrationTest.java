@@ -1,4 +1,4 @@
-package edu.wpi.cs3733d18.teamQ.IntegrationTests;
+package edu.wpi.cs3733d18.teamQ.IntegrationTests.UI;
 
 import edu.wpi.cs3733d18.teamQ.ui.Controller.EmployeeEditController;
 import edu.wpi.cs3733d18.teamQ.ui.Employee;
@@ -60,10 +60,10 @@ public class EmployeeScreenIntegrationTest extends ApplicationTest {
     public static void initialize(){
        user = User.getUser();
        initializeDb();
-       System.setProperty("testfx.robot", "glass");
+       /*System.setProperty("testfx.robot", "glass");
        System.setProperty("testfx.headless", "true");
        System.setProperty("prism.order", "sw");
-       System.setProperty("prism.text", "t2k");
+       System.setProperty("prism.text", "t2k");*/
     }
 
     @Override
@@ -86,10 +86,18 @@ public class EmployeeScreenIntegrationTest extends ApplicationTest {
         write("testUser");
         clickOn("#passwordTF");
         write("testPassword");
+        clickOn("#titleTF");
+        write("Doctor");
+        clickOn("#firstTF");
+        write("first");
+        clickOn("#lastTF");
+        write("last");
         clickOn("#adminCB");
         press(KeyCode.DOWN);
         release(KeyCode.DOWN);
         press(KeyCode.ENTER);
+        release(KeyCode.ENTER);
+        press(KeyCode.TAB);
         clickOn("#confirmBtn");
     }
 
@@ -107,7 +115,7 @@ public class EmployeeScreenIntegrationTest extends ApplicationTest {
         press(KeyCode.ENTER);
 
         clickOn("#employeeTTV");
-        moveBy(0, -75);
+        moveBy(0, -200);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
     }
@@ -119,6 +127,7 @@ public class EmployeeScreenIntegrationTest extends ApplicationTest {
     @Test
     public void addStaffTest(){
         addEmployeeInputs();
+        user.saveToDB();
 
         Employee addedEmployee = getEmployee("testUser");
         removeEmployeeInputs();
@@ -136,7 +145,7 @@ public class EmployeeScreenIntegrationTest extends ApplicationTest {
     @Test
     public void editEmployeeTest(){
         addEmployeeInputs();
-
+        user.saveToDB();
         //Select edit
         clickOn("#actionCB");
         press(KeyCode.DOWN);
@@ -146,7 +155,7 @@ public class EmployeeScreenIntegrationTest extends ApplicationTest {
         press(KeyCode.ENTER);
 
         clickOn("#employeeTTV");
-        moveBy(0, -125);
+        moveBy(0, -200);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
 
@@ -158,6 +167,8 @@ public class EmployeeScreenIntegrationTest extends ApplicationTest {
 
         String userName = lookup("#usernameTF").queryAs(TextField.class).getText();
         clickOn("#confirmBtn");
+
+        user.saveToDB();
         Employee changedEmployee = getEmployee(userName);
 
         removeEmployeeInputs();
@@ -177,6 +188,8 @@ public class EmployeeScreenIntegrationTest extends ApplicationTest {
     public void removeEmployeeTest(){
         addEmployeeInputs();
         removeEmployeeInputs();
+        clickOn("#confirmBtn");
+        user.saveToDB();
 
         String userName = lookup("#usernameTF").queryAs(TextField.class).getText();
 

@@ -1,4 +1,4 @@
-package edu.wpi.cs3733d18.teamQ.IntegrationTests;
+package edu.wpi.cs3733d18.teamQ.IntegrationTests.Database;
 
 import edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem;
 import org.junit.AfterClass;
@@ -19,7 +19,7 @@ public class EmployeeRequestAndDatabaseIntegrationTest {
     private static DatabaseSystem databaseSystem;
 
     private static final Node testAddNode = new Node("TEST", 0.0, 0.0, 0, "Test Building",
-            "Test Node", "Test Node Long", "Test Node Short", "Team Q", 0.0, 0.0, 0.0);
+            "Test Node", "Test Node Long", "Test Node Short", "Team Q", 0.0, 0.0, 0.0, true);
     private final String testAddNodeAsString = "(\'TEST\', 0.0, 0.0, 0, \'Test Building\', \'Test Node\', \'Test Node Long\', \'Test Node Short\', \'Team Q\', 0.0, 0.0)";
     private final String testAddNodeID = "TEST";
 

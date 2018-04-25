@@ -49,7 +49,7 @@ public class AdminHomeScreenController implements Initializable {
 
     //initializes the buttons
     private void setUpButtons(){
-        directionBtn.setDisableVisualFocus(true);
+        //directionBtn.setDisableVisualFocus(true);
 
         directionBtn.setVisible(true);
         requestBtn.setVisible(true);

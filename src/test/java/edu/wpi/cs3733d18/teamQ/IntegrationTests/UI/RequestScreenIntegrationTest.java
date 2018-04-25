@@ -1,4 +1,4 @@
-package edu.wpi.cs3733d18.teamQ.IntegrationTests;
+package edu.wpi.cs3733d18.teamQ.IntegrationTests.UI;
 
 import com.jfoenix.controls.JFXTextField;
 import com.sun.glass.events.MouseEvent;

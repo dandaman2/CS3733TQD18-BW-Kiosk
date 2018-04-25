@@ -1,4 +1,4 @@
-package edu.wpi.cs3733d18.teamQ.IntegrationTests;
+package edu.wpi.cs3733d18.teamQ.IntegrationTests.Database;
 
 import edu.wpi.cs3733d18.teamQ.manageDB.*;
 import edu.wpi.cs3733d18.teamQ.pathfinding.Astar;
@@ -98,11 +98,11 @@ public class WholeSystemIntegrationTest {
     @Test
     public void testAddedNodePath(){
         Node testAddNode = new Node("TEST", 0.0, 0.0, 0, "Test Building",
-                "Test Node", "Test Node Long", "Test Node Short", "Team Q", 0.0, 0.0, 0.0);
+                "Test Node", "Test Node Long", "Test Node Short", "Team Q", 0.0, 0.0, 0.0, true);
         databaseSystem.addNode(testAddNode);
         Node startNode = databaseSystem.getNode(kioskNodeID);
         Node endNode = databaseSystem.getNode(sameFloorDestinationID);
-        Edge testAddEdge = new Edge("TestEdge", endNode, testAddNode, 1.0);
+        Edge testAddEdge = new Edge("TestEdge", endNode, testAddNode, 1.0, true);
         databaseSystem.addEdge(testAddEdge);
 
         ArrayList<String> noType = new ArrayList<>();

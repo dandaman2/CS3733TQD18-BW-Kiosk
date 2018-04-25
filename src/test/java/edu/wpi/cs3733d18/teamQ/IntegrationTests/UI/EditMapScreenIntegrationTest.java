@@ -1,4 +1,4 @@
-package edu.wpi.cs3733d18.teamQ.IntegrationTests;
+package edu.wpi.cs3733d18.teamQ.IntegrationTests.UI;
 
 import edu.wpi.cs3733d18.teamQ.pathfinding.Edge;
 import edu.wpi.cs3733d18.teamQ.pathfinding.Node;

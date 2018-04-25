@@ -1,4 +1,4 @@
-package edu.wpi.cs3733d18.teamQ.IntegrationTests;
+package edu.wpi.cs3733d18.teamQ.IntegrationTests.UI;
 import edu.wpi.cs3733d18.teamQ.ui.Controller.PathfindingCont;
 import edu.wpi.cs3733d18.teamQ.ui.Controller.ScreenUtil;
 import edu.wpi.cs3733d18.teamQ.ui.User;
@@ -26,7 +26,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.Assert.assertEquals;
 
 public class PathfinderScreenIntegrationTest extends ApplicationTest {
-    private final String PATH_TO_PATHFINDERFXML = "/fxmlFiles/pathfindingView.fxml";
+    private final String PATH_TO_PATHFINDERFXML = "/fxmlFiles/PathfindingScreen.fxml";
     private final String SAME_FLOOR_SAME_BUILDING_NODE_ID  = "GDEPT00702";
     private String kioskNodeID = "GELEV00N02";
     private String oneFloorFirstNodeID = "GDEPT02402";
