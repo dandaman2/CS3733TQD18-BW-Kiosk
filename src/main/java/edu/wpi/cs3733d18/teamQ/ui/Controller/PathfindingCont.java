@@ -308,8 +308,11 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         infoButt.setOnAction(e -> InfoController.displayPathInfoPage());
         infoButt.setStyle("-fx-background-radius: 50%; -fx-font-size: 20;");
-        infoButt.setText("?");
-
+        ImageView infoView = new ImageView(new Image("ButtonImages/info_symbol.png"));
+        infoView.setFitHeight(60);
+        infoView.setFitWidth(60);
+        infoButt.setText("");
+        infoButt.setGraphic(infoView);
     }
 
 
@@ -447,6 +450,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         exchange.setStyle("-fx-font-size: 30;");
         exchange.setMaxHeight(startingNodeField.getHeight());
         exchange.setPrefHeight(startingNodeField.getHeight());
+        ImageView exchangeArrows = new ImageView(new Image("ButtonImages/exchange.png"));
+        exchangeArrows.setFitWidth(40);
+        exchangeArrows.setFitHeight(40);
         exchange.setText("⇄");
 
         exchange.setPadding(new Insets(0,0,0,0));

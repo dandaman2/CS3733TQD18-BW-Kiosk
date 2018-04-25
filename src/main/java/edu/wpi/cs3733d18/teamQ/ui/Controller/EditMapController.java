@@ -296,7 +296,11 @@ public class EditMapController implements Initializable, IZoomableCont {
 
         infoButt.setOnAction(e -> InfoController.displayEditInfoPage());
         infoButt.setStyle("-fx-background-radius: 50%; -fx-font-size: 20;");
-        infoButt.setText("?");
+        ImageView infoView = new ImageView(new Image("ButtonImages/info_symbol.png"));
+        infoView.setFitHeight(60);
+        infoView.setFitWidth(60);
+        infoButt.setText("");
+        infoButt.setGraphic(infoView);
     }
 
     /**
