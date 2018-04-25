@@ -595,6 +595,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         }
         emailDrawer.setVisible(false);
         emailDrawer.setDisable(true);
+        emailDrawer.setMouseTransparent(true);
 
     }
 
@@ -928,11 +929,13 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             emailDrawer.setMinHeight(100);
             emailDrawer.setDisable(false);
             emailDrawer.setVisible(true);
+            emailDrawer.setMouseTransparent(false);
         } else {
             emailDrawer.close();
             emailDrawer.setMinWidth(0);
             emailDrawer.setDisable(true);
             emailDrawer.setVisible(false);
+            emailDrawer.setMouseTransparent(true);
         }
     }
 
@@ -1915,7 +1918,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             else{
                 transition.setOnFinished((e)-> {
                     //for emailing
+                    System.out.println("Done with final animation");
                     getSnap();
+                    System.out.println("removing final part");
                     backImagePane.getChildren().remove(movingPart);
                     playButton.setSelected(false);
                     openEmailDrawer();
@@ -1971,7 +1976,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
     //gets the snapshot of the floor
     public void getSnap(){
-        SnapData file = captureAndSaveDisplay(backImagePane, backImagePane.getWidth(), backImagePane.getHeight(), imageNumber);
+        SnapData file = captureAndSaveDisplay(outerAnchor, outerAnchor.getWidth(), outerAnchor.getHeight(), imageNumber);
         allFiles.add(file);
         imageNumber++;
     }
