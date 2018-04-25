@@ -187,6 +187,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     ImageView selectedLocation;
     Node curSelected;
     Node youHere;
+    Node cameraNode;
     Node startNode;
     Boolean isSelected = false;
     ArrayList<Button> transList = new ArrayList<Button>();
@@ -639,6 +640,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void generatePath() {
         backImagePane.getChildren().removeAll(drawnPath);
+        backImagePane.getChildren().removeAll(antPaths);
 
         ArrayList<String> RestrictedTYPES = new ArrayList<String>();
 //        if(checkElevator.isSelected() == true)
@@ -698,17 +700,17 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         ArrayList<String> RestrictedTYPES = new ArrayList<String>(); // empty
 
         Graph g = new ByTypeSearch();
-        ArrayList<Node> floor2Nodes = new ArrayList<Node>();
-        Node n;
-        // isolates the nodes on the second floor and adds them to floor2Nodes array
-        for(int i = 0; i < user.getNodes().size(); i++){
-            n = user.getNodes().get(i);
-
-            if(n.getFloor() == 2){
-                floor2Nodes.add(n);
-            }
-        }
-        g.init2(floor2Nodes,user.getEdges());
+//        ArrayList<Node> floor2Nodes = new ArrayList<Node>();
+//        Node n;
+//        // isolates the nodes on the second floor and adds them to floor2Nodes array
+//        for(int i = 0; i < user.getNodes().size(); i++){
+//            n = user.getNodes().get(i);
+//
+//            if(n.getFloor() == 2){
+//                floor2Nodes.add(n);
+//            }
+//        }
+        g.init2(user.getNodes(),user.getEdges());
 
         youHere = user.getNode("GELEV00N02");
         queuedPath = g.findShortestPathByType(youHere,Type,RestrictedTYPES);
@@ -733,6 +735,36 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         endingNodeField.setText(curSelected.getNameLong()+ ","+curSelected.getNodeID());
     }
 
+    /**
+     * Finds the nearest exit vis only stairs
+     */
+    public void findExitEmergency(int numBodies){
+        ArrayList<String> RestrictedTYPES = new ArrayList<String>(); // empty
+        RestrictedTYPES.add("ELEV");
+        Graph g = new ByTypeSearch();
+        g.init2(user.getNodes(),user.getEdges());
+
+        //HARD CODED INFO
+        cameraNode = user.getNode("AINFO001L2");
+        String securityPhone = "5413994557";
+
+        ArrayList<Node> pathExit = g.findShortestPathByType(cameraNode,"EXIT",RestrictedTYPES);
+        System.out.println("Path exit size: " + pathExit.size());
+        if(pathExit.size()<1){
+            return;
+        }
+        ArrayList<Node>pathExitFlipped = new ArrayList<>();
+        for(int i = pathExit.size()-1; i >=0; i--){
+            pathExitFlipped.add(pathExit.get(i));
+        }
+        PathInstructions ins = new PathInstructions();
+        System.out.println("Path exit "+ pathExitFlipped.size());
+        String instructions = ins.buildString(TextInstructions(pathExitFlipped));
+        System.out.println("Instructions: " + instructions);
+        String location = pathExit.get(0).getNameLong();
+        new Email().sendTextTo(instructions,securityPhone, ""+numBodies, location);
+
+    }
 
 
 
@@ -898,6 +930,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         // removes old paths and buttons before drawing new
         backImagePane.getChildren().removeAll(drawnPath);
+        backImagePane.getChildren().removeAll(antPaths);
         backImagePane.getChildren().removeAll(transList);
         backImagePane.getChildren().removeAll(labelList);
         backImagePane.getChildren().remove(starLabel);
@@ -1135,6 +1168,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             floorString = String.valueOf(currentFloor);
         }
         TreeItem<String> floorLeaf = new TreeItem<String>("Floor "+floorString);
+        floorLeaf.setExpanded(true);
 
         int instructionIndex = 0;
         for (int i = instructionIndex; i < instructions.size(); i++) {
@@ -1158,6 +1192,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                     floorString = String.valueOf(currentFloor);
                 }
                 floorLeaf = new TreeItem<String>("Floor "+floorString);
+                floorLeaf.setExpanded(true);
                 for (int i = instructionIndex; i < instructions.size(); i++) {
                     TreeItem<String> itemLeaf = new TreeItem<String>(instructions.get(i));
                     floorLeaf.getChildren().add(itemLeaf);
@@ -1301,6 +1336,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void clearPath(){
         backImagePane.getChildren().removeAll(drawnPath);
+        backImagePane.getChildren().removeAll(antPaths);
         drawnPath = new ArrayList<>();
         textTree.setVisible(false);
         textTree.setMouseTransparent(true);
@@ -2140,6 +2176,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     public void displayTextDrawer(ActionEvent actionEvent) {
         if (treeDrawer.isHidden()) {
             treeDrawer.open();
+            treeDrawer.setMouseTransparent(false);
             Image open;
             if(runningFromIntelliJ()) {
                 open = new Image("/ButtonImages/up-book.png");
@@ -2150,6 +2187,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             textBtn.setGraphic(openView);
         } else {
             treeDrawer.close();
+            treeDrawer.setMouseTransparent(true);
             Image close;
             if(runningFromIntelliJ()) {
                 close = new Image("/ButtonImages/down-book.png");

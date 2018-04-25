@@ -189,6 +189,7 @@ public class AdminHomeScreenController implements Initializable {
             Parent requestPane = requestLoader.load();
             Stage primaryStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
             Scene requestScene = sdUtil.prodAndBindScene(requestPane, primaryStage);
+            requestScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
             primaryStage.setScene(requestScene);
         }
         catch(IOException io){
@@ -248,6 +249,7 @@ public class AdminHomeScreenController implements Initializable {
             Parent employeePane = employeeLoader.load();
             Stage primaryStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             Scene employeeScene = sdUtil.prodAndBindScene(employeePane, primaryStage);
+            employeeScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
             primaryStage.setScene(employeeScene);
         } catch (IOException io) {
             System.out.println("errWelS");

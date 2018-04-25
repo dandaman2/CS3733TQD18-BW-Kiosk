@@ -14,10 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -100,6 +97,8 @@ public class EmployeeEditController implements Initializable {
         backBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#ECECEC"), new CornerRadii(0), null)));
         backBtn.setStyle("-fx-text-fill: #FFFFFF;");
         backBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
+
+        backBtn.setDisableVisualFocus(true);
 
         Image info;
         if(runningFromIntelliJ()) {
@@ -186,6 +185,7 @@ public class EmployeeEditController implements Initializable {
         employeeTTV.getColumns().setAll(levelColumn, usernameColumn, titleColumn, firstColumn, lastColumn);
         employeeTTV.setRoot(pendingRoot);
         employeeTTV.setShowRoot(false);
+        employeeTTV.setColumnResizePolicy(TreeTableView.CONSTRAINED_RESIZE_POLICY);
     }
 
 
