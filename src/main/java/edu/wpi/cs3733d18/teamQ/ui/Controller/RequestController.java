@@ -334,7 +334,7 @@ public class  RequestController implements Initializable{
         infoView.setFitHeight(40);
         backBtn.setGraphic(infoView);
 
-        //backBtn.setDisableVisualFocus(true);
+        backBtn.setDisableVisualFocus(true);
 
         backBtn.setOnAction(e->goToAdminHome(e));
 

@@ -252,7 +252,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         treeDrawer.setMouseTransparent(true);
 
-        //floorL21.setDisableVisualFocus(true);
+        floorL21.setDisableVisualFocus(true);
 
         Image close;
         if(runningFromIntelliJ()) {
