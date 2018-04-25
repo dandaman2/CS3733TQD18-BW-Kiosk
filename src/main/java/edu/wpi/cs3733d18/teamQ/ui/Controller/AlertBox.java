@@ -4,6 +4,7 @@ import com.github.fedy2.weather.data.Channel;
 import com.github.fedy2.weather.data.unit.DegreeUnit;
 import edu.wpi.cs3733d18.teamQ.pathfinding.Edge;
 import edu.wpi.cs3733d18.teamQ.pathfinding.Node;
+import edu.wpi.cs3733d18.teamQ.ui.Admin_Login.FaceRecognition;
 import edu.wpi.cs3733d18.teamQ.ui.Employee;
 import edu.wpi.cs3733d18.teamQ.ui.User;
 import javafx.event.ActionEvent;
@@ -84,7 +85,47 @@ public class AlertBox {
 
             Region spacing = new Region();
             spacing.setPrefHeight(2);
-
+            Button btnFace = new Button("Alternative Login");
+            btnFace.setStyle("-fx-font-size: 15pt;");
+            btnFace.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    User user = User.getUser();
+                    Employee userToLogIn = FaceRecognition.getInstance().compareFaces();
+                    if (userToLogIn!=null){
+                        user.setCurrentUser(userToLogIn);
+                        if(userToLogIn.getIsAdmin().equals("2")){
+                            user.setLevelAccess(2);
+                        }else {
+                            user.setLevelAccess(1);
+                        }
+                    }else {
+                        user.setCurrentUser(null);
+                        errorlbl.setText("Face not recognized in the system");
+                        errorlbl.setVisible(true);
+                    }
+                    Stage primaryStage = user.getPrimaryStage();
+                    FXMLLoader requestLoader;
+                    if (runningFromIntelliJ()) {
+                        requestLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/AdminHomeScreen.fxml"));
+                    } else {
+                        requestLoader = new FXMLLoader(getClass().getResource("/fxmlFiles/AdminHomeScreen.fxml"));
+                    }
+                    Parent requestPane = null;
+                    try {
+                        requestPane = requestLoader.load();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                    if (user.getLevelAccess() >= 1) {
+                        ScreenUtil sdUtil = new ScreenUtil();
+                        Scene requestScene = sdUtil.prodAndBindScene(requestPane, primaryStage);
+                        requestScene.getStylesheets().addAll("Stylesheet.css", "StyleMenus.css");
+                        primaryStage.setScene(requestScene);
+                        window.close();
+                    }
+                }
+            });
             // Buttons and text fields specific to the admin sign in
             Button btnSubmit = new Button("Log In");
             btnSubmit.setStyle("-fx-font-size: 15pt;");
@@ -100,6 +141,8 @@ public class AlertBox {
                     } else if (isEmployee(userName, password)) {
                         user.setLevelAccess(1);
                     } else {
+                        user.setCurrentUser(null);
+                        errorlbl.setText("Incorrect Username/Password");
                         errorlbl.setVisible(true);
                     }
                     Stage primaryStage = user.getPrimaryStage();
@@ -126,11 +169,13 @@ public class AlertBox {
 
                 private boolean isAdmin(String userName, String password) {
                     Employee user = getEmployee(userName);
+                    User.getUser().setCurrentUser(user);
                     return user != null && user.checkPassword(password) && user.getIsAdmin().equals("2");
                 }
 
                 private boolean isEmployee(String userName, String password) {
                     Employee user = getEmployee(userName);
+                    User.getUser().setCurrentUser(user);
                     return user != null && user.checkPassword(password) && (user.getIsAdmin().equals("1"));
                 }
             });
@@ -149,7 +194,7 @@ public class AlertBox {
             grid.add(pfPwd, 1, 2);
 
             // Filling a Vbox that holds the main message the grid and the submit button
-            midVbox.getChildren().addAll(label, grid, errorlbl, btnSubmit, spacing);
+            midVbox.getChildren().addAll(label, grid, errorlbl, btnSubmit, btnFace, spacing);
         }
 
         // Runs for Add a Custom Edge AlertBox

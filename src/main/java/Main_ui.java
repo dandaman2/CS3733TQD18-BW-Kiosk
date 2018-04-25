@@ -1,6 +1,7 @@
 //package edu.wpi.cs3733d18.teamQ;
 
 import edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem;
+import edu.wpi.cs3733d18.teamQ.ui.Admin_Login.FaceRecognition;
 import edu.wpi.cs3733d18.teamQ.ui.Controller.ScreenUtil;
 import edu.wpi.cs3733d18.teamQ.ui.User;
 import javafx.application.Application;
@@ -41,6 +42,7 @@ public class Main_ui extends Application {
         user.setNodes(getNodes());
         user.setEdges(getEdges());
         user.setEmployees(getEmployees());
+        FaceRecognition.getInstance();
         //user.startTimer();
 
         //Loader broken-down to allow static controller distribution
