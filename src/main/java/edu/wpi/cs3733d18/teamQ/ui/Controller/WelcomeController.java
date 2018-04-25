@@ -48,25 +48,10 @@ public class WelcomeController implements Initializable {
     private JFXButton adminButt;
 
     @FXML
-    private JFXButton EmergencyBtn;
+    JFXButton EmergencyBtn;
 
     @FXML
-    private ImageView bwhSeal;
-
-    @FXML
-    private ImageView bwhLogo;
-
-    @FXML
-    private AnchorPane sealPane;
-
-    @FXML
-    private StackPane stackPane;
-
-    @FXML
-    private VBox buttBox;
-
-    @FXML
-    private Button aboutButton;
+    private JFXButton aboutButton;
 
 
     //ScreenUtil object for resizing of loading images
@@ -78,50 +63,27 @@ public class WelcomeController implements Initializable {
      * @param rb Takes a ResourceBundle
      */
     public void initialize(URL url, ResourceBundle rb) {
-        Image logo;
-        Image seal;
-        if(runningFromIntelliJ()) {
-            logo = new Image("bwhLogo.png");
-            seal = new Image("bwhCrest.png");
-        } else{
-            logo = new Image("bwhLogo.png");
-            seal = new Image("bwhCrest.png");
-        }
-
-//        Button face = new Button("Face Recognition");
-//        face.setStyle("-fx-font-size: 15pt;");
-//        face.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                FaceRecognition.getInstance().getGesture();
-//
-//            }
-//        });
-
-        buttBox.getChildren().addAll();
-
-        // info button icon
-        Image info;
-        if(runningFromIntelliJ()) {
-            info = new Image("/ButtonImages/info_symbol.png");
-        } else{
-            info = new Image("ButtonImages/info_symbol.png");
-        }
-        ImageView infoView = new ImageView(info);
-        infoView.setFitWidth(42);
-        infoView.setFitHeight(40);
-        aboutButton.setPrefWidth(43);
-        aboutButton.setPrefHeight(41);
-        aboutButton.setGraphic(infoView);
 
         // background of welcome screen
         //bwhLogo.setImage(logo);
         //bwhSeal.setImage(seal);
 
         // Sets the action of buttons
+        Image loginIcon;
+        if(runningFromIntelliJ()) {
+            loginIcon = new Image("/ButtonImages/login.png");
+        } else{
+            loginIcon = new Image("ButtonImages/login.png");
+        }
+        ImageView loginView = new ImageView(loginIcon);
+        loginView.setFitWidth(50);
+        loginView.setFitHeight(50);
+
+        adminButt.setGraphic(loginView);
+
         aboutButton.setOnAction(e -> AboutController.displayAboutPage());
         adminButt.setOnAction(e -> AlertBox.display("Admin Login", "Please input your username and password."));
-//        directButt.setDisableVisualFocus(true);
+        directButt.setDisableVisualFocus(true);
         hoursButt.setOnAction(e -> HoursController.display());
         searchButt.setOnAction(e -> QuickSearchController.display());
 
@@ -135,8 +97,6 @@ public class WelcomeController implements Initializable {
      * @param e Takes an ActionEvent
      */
     public void pathClick(javafx.event.ActionEvent e){
-        User user = User.getUser();
-        user.setPathType(null);
         try {
             FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/PathfindingScreen.fxml"));
             Parent pathfindingParent = pathfindingload.load();
