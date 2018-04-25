@@ -236,6 +236,16 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         textTree = new JFXTreeView<String>();
         textTree.setVisible(false);
         textTree.setMouseTransparent(true);
+        textBtn.setVisible(false);
+
+        Image close;
+        if(runningFromIntelliJ()) {
+            close = new Image("/ButtonImages/down-book.png");
+        } else{
+            close = new Image("ButtonImages/down-book.png");
+        }
+        ImageView closeView = new ImageView(close);
+        textBtn.setGraphic(closeView);
 
         treeDrawer.close();
         treeDrawer.setSidePane(textTree);
@@ -1154,6 +1164,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         textTree.setRoot(root);
         textTree.setVisible(true);
         textTree.setMouseTransparent(false);
+        textBtn.setVisible(true);
     }
 
     /**
@@ -1280,6 +1291,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         drawnPath = new ArrayList<>();
         textTree.setVisible(false);
         textTree.setMouseTransparent(true);
+        textBtn.setVisible(false);
     }
 
 
@@ -2115,8 +2127,24 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     public void displayTextDrawer(ActionEvent actionEvent) {
         if (treeDrawer.isHidden()) {
             treeDrawer.open();
+            Image open;
+            if(runningFromIntelliJ()) {
+                open = new Image("/ButtonImages/up-book.png");
+            } else{
+                open = new Image("ButtonImages/up-book.png");
+            }
+            ImageView openView = new ImageView(open);
+            textBtn.setGraphic(openView);
         } else {
             treeDrawer.close();
+            Image close;
+            if(runningFromIntelliJ()) {
+                close = new Image("/ButtonImages/down-book.png");
+            } else{
+                close = new Image("ButtonImages/down-book.png");
+            }
+            ImageView closeView = new ImageView(close);
+            textBtn.setGraphic(closeView);
         }
     }
 }
