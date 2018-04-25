@@ -322,7 +322,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         ObservableList options = FXCollections.observableArrayList();
         options.addAll("Default", "Spider-Man", "Puppy", "Zombie", "Nyan Cat");
         gifSelector.getItems().addAll(options);
-        gifSelector.setStyle("-fx-background-color: WHITE;" + "-fx-padding: 50 50 50 50;");
+        gifSelector.setStyle("-fx-background-color: #aeaeae;");
 
         gifSelector.getSelectionModel()
                 .selectedIndexProperty()
@@ -353,7 +353,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                                      if(gifPath.equals("Gifs/circle.png"))
                                          movingPart.setFitWidth(40);
                                      else
-                                         movingPart.setFitWidth(130);
+                                         movingPart.setFitWidth(100);
 
                                  }
                              }
