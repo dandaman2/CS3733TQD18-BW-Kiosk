@@ -11,13 +11,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="896.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamQ.ui.Controller.WelcomeController">
+<AnchorPane fx:id="masterPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="896.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamQ.ui.Controller.WelcomeController">
    <children>
-      <ImageView fitHeight="822.0" fitWidth="1523.0" layoutX="-10.0" layoutY="-11.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="-10.0" AnchorPane.rightAnchor="-489.0" AnchorPane.topAnchor="-11.0">
-         <image>
-            <Image url="@../wallpaper.jpg" />
-         </image>
-      </ImageView>
       <VBox prefHeight="896.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
@@ -95,7 +90,7 @@
                                     </JFXButton>
                                  </children>
                               </VBox>
-                              <ImageView fitHeight="554.0" fitWidth="618.0" pickOnBounds="true">
+                              <ImageView fitHeight="554.0" fitWidth="618.0" pickOnBounds="true" HBox.hgrow="ALWAYS">
                                  <image>
                                     <Image url="@../BWHBuilding.jpg" />
                                  </image>

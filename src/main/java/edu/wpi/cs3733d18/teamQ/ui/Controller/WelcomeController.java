@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -53,6 +54,9 @@ public class WelcomeController implements Initializable {
     @FXML
     private JFXButton aboutButton;
 
+    @FXML
+    private AnchorPane masterPane;
+
 
     //ScreenUtil object for resizing of loading images
     private ScreenUtil sdUtil = new ScreenUtil();
@@ -63,10 +67,12 @@ public class WelcomeController implements Initializable {
      * @param rb Takes a ResourceBundle
      */
     public void initialize(URL url, ResourceBundle rb) {
+        User user = User.getUser();
 
         // background of welcome screen
         //bwhLogo.setImage(logo);
         //bwhSeal.setImage(seal);
+
 
         // Sets the action of buttons
         Image loginIcon;
