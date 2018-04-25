@@ -249,6 +249,8 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         textTree.setMouseTransparent(true);
         textBtn.setVisible(false);
 
+        treeDrawer.setMouseTransparent(true);
+
         Image close;
         if(runningFromIntelliJ()) {
             close = new Image("/ButtonImages/down-book.png");
