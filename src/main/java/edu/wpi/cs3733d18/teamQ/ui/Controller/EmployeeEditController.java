@@ -14,10 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -101,11 +98,13 @@ public class EmployeeEditController implements Initializable {
         backBtn.setStyle("-fx-text-fill: #FFFFFF;");
         backBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
 
+        //backBtn.setDisableVisualFocus(true);
+
         Image info;
-        if(runningFromIntelliJ()) {
-            info = new Image("/ButtonImages/home.png");
-        } else{
-            info = new Image("ButtonImages/home.png");
+        if (runningFromIntelliJ()) {
+            info = new Image("/ButtonImages/whiteHut.png");
+        } else {
+            info = new Image("ButtonImages/whiteHut.png");
         }
         ImageView infoView = new ImageView(info);
         infoView.setFitWidth(42);
@@ -186,6 +185,7 @@ public class EmployeeEditController implements Initializable {
         employeeTTV.getColumns().setAll(levelColumn, usernameColumn, titleColumn, firstColumn, lastColumn);
         employeeTTV.setRoot(pendingRoot);
         employeeTTV.setShowRoot(false);
+        employeeTTV.setColumnResizePolicy(TreeTableView.CONSTRAINED_RESIZE_POLICY);
     }
 
 
@@ -200,6 +200,7 @@ public class EmployeeEditController implements Initializable {
      * @param actionEvent Takes an action event that says it has been called
      */
     public void goToAdminHome(javafx.event.ActionEvent actionEvent){
+        user.saveToDB();
         try{
             //this line will execute immediately, not waiting for your task to complete
             FXMLLoader adminLoader;
@@ -300,10 +301,10 @@ public class EmployeeEditController implements Initializable {
                 }
 
                 if(level == "1"){
-                    employee = new Employee(uName,pass,firstName,lastName,title,false,null);
+                    employee = new Employee(uName,pass,firstName,lastName,title,false,"");
                 }
                 else{
-                    employee = new Employee(uName,pass,firstName,lastName,title,true,null);
+                    employee = new Employee(uName,pass,firstName,lastName,title,true,"");
                 }
 
                 user.addEmployeeSingleton(employee);
@@ -330,10 +331,10 @@ public class EmployeeEditController implements Initializable {
                     Employee employeeNew;
 
                     if(level == "1"){
-                        employeeNew = new Employee(uName,null,firstName,lastName,title,false,null);
+                        employeeNew = new Employee(uName,null,firstName,lastName,title,false,"");
                     }
                     else{
-                        employeeNew = new Employee(uName,null,firstName,lastName,title,true,null);
+                        employeeNew = new Employee(uName,null,firstName,lastName,title,true,"");
                     }
 
                     if(pass==null||pass.isEmpty()){
@@ -388,4 +389,6 @@ public class EmployeeEditController implements Initializable {
 
         }
     }
+
+
 }

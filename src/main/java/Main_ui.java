@@ -1,6 +1,7 @@
 //package edu.wpi.cs3733d18.teamQ;
 
 import edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem;
+import edu.wpi.cs3733d18.teamQ.ui.Admin_Login.FaceRecognition;
 import edu.wpi.cs3733d18.teamQ.ui.Controller.ScreenUtil;
 import edu.wpi.cs3733d18.teamQ.ui.User;
 import javafx.application.Application;
@@ -41,6 +42,7 @@ public class Main_ui extends Application {
         user.setNodes(getNodes());
         user.setEdges(getEdges());
         user.setEmployees(getEmployees());
+        FaceRecognition.getInstance();
         //user.startTimer();
 
         //Loader broken-down to allow static controller distribution
@@ -53,7 +55,7 @@ public class Main_ui extends Application {
         Parent welcomePane = welcomeLoader.load();
         Scene welcomeScene = new Scene(welcomePane,722,604);
 
-        welcomeScene.getStylesheets().addAll("Stylesheet.css", "StyleMenus.css");
+        welcomeScene.getStylesheets().addAll("Stylesheet.css", "StyleMenus.css", "homeBackground.css");
 
         //preparing the starting stage
         primaryStage.setMinWidth(735);
@@ -124,7 +126,7 @@ public class Main_ui extends Application {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    System.out.println(time);
+                    //System.out.println(time);
                 }
 
 
@@ -155,7 +157,7 @@ public class Main_ui extends Application {
                         }
                         Stage primaryStage = user.getPrimaryStage();
                         Scene welcomeScene = sdUtil.prodAndBindScene(welcomePane, primaryStage);
-                        welcomeScene.getStylesheets().addAll("Stylesheet.css", "StyleMenus.css");
+                        welcomeScene.getStylesheets().addAll("Stylesheet.css", "StyleMenus.css","homeBackground.css");
                         primaryStage.setScene(welcomeScene);
                     }
                 });

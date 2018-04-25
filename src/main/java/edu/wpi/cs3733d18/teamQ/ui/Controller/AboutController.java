@@ -89,7 +89,9 @@ public class AboutController {
        apiExName.setFont(Font.font("Georgia", 20));
        Label teamApiUsed = new Label("Team O's Gift service request API");
        Label apiUsed = new Label("Yahoo Weather Java API");
+       Label apiUsed16 = new Label("Webcam-capture");
        Label apiUsed1 = new Label("Jfoenix");
+       Label apiUsed14 = new Label("bridj");
        Label apiUsed2 = new Label("Javax Mail");
        Label apiUsed3 = new Label("Activation");
        Label apiUsed4 = new Label("Junit");
@@ -99,6 +101,7 @@ public class AboutController {
        Label apiUsed8 = new Label("Derbytools");
        Label apiUsed9 = new Label("Controlsfx");
        Label apiUsed10 = new Label("Hamcrest-core");
+       Label apiUsed15 = new Label("json");
        Label apiUsed11 = new Label("Jbcrypt");
        Label apiUsed12 = new Label("Slf4j-api");
        Label apiUsed13 = new Label("Slf4j-simple");
@@ -117,6 +120,9 @@ public class AboutController {
        apiUsed11.setFont(Font.font("Georgia", 15));
        apiUsed12.setFont(Font.font("Georgia", 15));
        apiUsed13.setFont(Font.font("Georgia", 15));
+       apiUsed14.setFont(Font.font("Georgia", 15));
+       apiUsed15.setFont(Font.font("Georgia", 15));
+       apiUsed16.setFont(Font.font("Georgia", 15));
 
        // Formatting for the admin login
        GridPane grid = new GridPane();
@@ -187,6 +193,9 @@ public class AboutController {
        grid.add(apiUsed11, 2, 6);
        grid.add(apiUsed12, 2, 7);
        grid.add(apiUsed13, 2, 8);
+       grid.add(apiUsed14, 2, 9);
+       grid.add(apiUsed15, 2, 10);
+       grid.add(apiUsed16, 2, 11);
 
        // Filling a Vbox that holds the main message the grid and the submit button
        vb.getChildren().addAll(grid, aPane);

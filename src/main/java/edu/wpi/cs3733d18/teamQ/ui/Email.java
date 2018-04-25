@@ -212,6 +212,43 @@ public class Email {
     }
 
     /**
+     * sends text instructions to the given phone number
+     */
+    public void sendTextTo(String instructions, String phoneNumber, String numBodies, String location){
+        this.login();
+        try {
+            System.out.println("number " + phoneNumber);
+            System.out.println("bodies " + numBodies);
+            Message message = new MimeMessage(this.session);
+            message.setFrom(new InternetAddress(this.username));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(phoneNumber + "@txt.att.net"));
+            //message.setSubject("Service Request Notification");
+            //this.setGreeting(this.request.getFirstName(), this.request.getLastName());
+            String personGrammar;
+            String isAreGrammar;
+            if(numBodies.equals("1")){
+                personGrammar = "person";
+                isAreGrammar = "is";
+            }
+            else{
+                personGrammar = "people";
+                isAreGrammar = "are";
+            }
+           message.setText("There "+ isAreGrammar + " " + numBodies + " " + personGrammar + " near " +location + "\n" + instructions);
+
+            if (this.isValidEmailAddress(phoneNumber + "@txt.att.net")) {
+                Transport.send(message);
+                System.out.println("Text sent");
+            } else {
+                System.out.println("Invalid text address.");
+            }
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * gets the absolutepath from a snapdata
      */
     public String getSnapData(SnapData data){

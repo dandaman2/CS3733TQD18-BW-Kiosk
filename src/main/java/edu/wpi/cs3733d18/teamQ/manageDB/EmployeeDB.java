@@ -13,8 +13,8 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.database.getTable;
  class EmployeeDB {
 
      static void populateEmployeeDB(){
-         addEmployee(new Employee("staff", "staff", "Staff", "Staffer", "Dr", false, null));
-         addEmployee(new Employee("admin", "admin","Admin", "McAdminson", "Lord", true, null));
+         addEmployee(new Employee("staff", "staff", "Staff", "Staffer", "Dr", false, ""));
+         addEmployee(new Employee("admin", "admin","Admin", "McAdminson", "Lord", true, "39433d228da4ba6ac1068dd16b8a1c10"));
      }
 
     /**

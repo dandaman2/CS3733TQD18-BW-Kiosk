@@ -80,16 +80,16 @@ public class InfoController {
         hb2.setStyle("-fx-background-color: #012D5A;");
         layout.setBottom(hb2);
 
-        Label pathDirection = new Label("Use this screen to edit the map nodes and edges, on both 2D and 3D maps. \n\n" +
-                "Add a new node by clicking anywhere on either map.\n\n"+
-                "Can edit by click on and dragging nodes and edges on both maps.\n\n"+
-                "Can also edit the maps using the fields in the side bar.\n\n"+
-                "Can toggle between the 2D and 3D map with button in top left corner.\n\n"+
-                "Change the search algorithm used to find the shortest path in the drop down. \n\n" +
-                "Change the floor in the drop down. \n\n" +
-                "Edit the timeout limit for the application to return to the welcome screen in the drop down.\n\n"+
-                "Can view nodes that are most popularly used by hitting heat map switch.\n\n"+
-                "Press the home button to return to the admin home screen.\n");
+        Label pathDirection = new Label("Use this screen to path find to your desired destination. \n\n" +
+                "If you select a node on the map it will show you the path.\n\n"+
+                "You can also search your desired location in the search bar.\n\n"+
+                "You can also change the starting location of your path in the search bar.\n\n"+
+                "Once a path is shown, you can choose to play an animation of the path.\n\n"+
+                "You can change the animation icon in the dropdown. \n\n" +
+                "You can select the arrows at the bottom to take you to the proper floors for your path. \n\n" +
+                "You can also change floors by selecting the buttons going down the side. \n\n" +
+                "You can switch between the 2D and 3D map with the button in the corner.\n\n"+
+                "Press the home button to return to the welcome screen.\n");
         pathDirection.setFont(Font.font("Georgia", 12));
 
 
@@ -124,15 +124,11 @@ public class InfoController {
         hb2.setStyle("-fx-background-color: #012D5A;");
         layout.setBottom(hb2);
 
-        Label pathDirection = new Label("Use this screen to edit the map nodes and edges, on both 2D and 3D maps. \n\n" +
-                "Add a new node by clicking anywhere on either map.\n\n"+
-                "Can edit by click on and dragging nodes and edges on both maps.\n\n"+
-                "Can also edit the maps using the fields in the side bar.\n\n"+
-                "Can toggle between the 2D and 3D map with button in top left corner.\n\n"+
-                "Change the search algorithm used to find the shortest path in the drop down. \n\n" +
-                "Change the floor in the drop down. \n\n" +
-                "Edit the timeout limit for the application to return to the welcome screen in the drop down.\n\n"+
-                "Can view nodes that are most popularly used by hitting heat map switch.\n\n"+
+        Label pathDirection = new Label("Use this screen to submit and fulfill service requests. \n\n" +
+                "To add a request, select the desired request. Fill out the prompted fields, and hit submit.\n\n"+
+                "To fulfill, go to the pending request tab. Select the request you would like to fulfill, fill out the fields, and select fulfill.\n\n"+
+                "You can view previously fulfilled requests in the fulfilled tab.\n\n"+
+                "You can view additional request data in the stats tab.\n\n"+
                 "Press the home button to return to the admin home screen.\n");
         pathDirection.setFont(Font.font("Georgia", 12));
 

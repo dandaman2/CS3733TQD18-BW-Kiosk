@@ -117,7 +117,7 @@ public class EditMapController implements Initializable, IZoomableCont {
     //Selector dropdown
 
     @FXML
-    private ComboBox<String> selector;
+    ComboBox<String> selector;
     ObservableList selectionOptions = FXCollections.observableArrayList();
     String mode = "";
 
@@ -296,7 +296,11 @@ public class EditMapController implements Initializable, IZoomableCont {
 
         infoButt.setOnAction(e -> InfoController.displayEditInfoPage());
         infoButt.setStyle("-fx-background-radius: 50%; -fx-font-size: 20;");
-        infoButt.setText("?");
+        ImageView infoView = new ImageView(new Image("ButtonImages/info_symbol.png"));
+        infoView.setFitHeight(60);
+        infoView.setFitWidth(60);
+        infoButt.setText("");
+        infoButt.setGraphic(infoView);
     }
 
     /**
@@ -1541,12 +1545,12 @@ public class EditMapController implements Initializable, IZoomableCont {
 
         }
         if(mode.equals("ee")){
-            Edge edgeToRemove = editUtil.getCurSel().getEdge();
-            if(edgeToRemove != null) {
+            if(editUtil.getCurSel().getEdge() != null) {
+                Edge edgeToRemove = editUtil.getCurSel().getEdge();
                 user.removeEdgeSingleton(edgeToRemove);
+                System.out.println("EDGE REMOVED");
+                updateDrawings();
             }
-            System.out.println("EDGE REMOVED");
-            updateDrawings();
         }
 
 

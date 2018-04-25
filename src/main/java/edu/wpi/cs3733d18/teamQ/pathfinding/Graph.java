@@ -75,6 +75,9 @@ public class Graph {
 
             Node n1 = e.getStartNode();
             Node n2 = e.getEndNode();
+            if(!e.isEnabled())continue;
+            if(!n1.isEnabled())continue;
+            if(!n2.isEnabled())continue;
 
             String n1id= n1.getNodeID();
             String n2id= n2.getNodeID();
@@ -91,16 +94,21 @@ public class Graph {
             n2.setIndex(ID_map.get(n2id));
         }
 
-        System.out.println(nodes.size() + " " + edges.size() + " <-------------------------------------------");
+     //   System.out.println(nodes.size() + " " + edges.size() + " <-------------------------------------------");
 
         /// setting nodes, from edges
         for(int i=0;i<edges.size();i++){
             Edge e = edges.get(i);
             if(e == null || e.getDistance() <= 0.00000001)continue;
+            Node n1 = e.getStartNode();
+            Node n2 = e.getEndNode();
+            if(!e.isEnabled())continue;
+            if(!n1.isEnabled())continue;
+            if(!n2.isEnabled())continue;
             int from = e.getStartNode().getIndex();
             int to = e.getEndNode().getIndex();
 
-            System.out.println(from + " " + to);
+     //       System.out.println(from + " " + to);
 
             NodesList.set(from, e.getStartNode());
             NodesList.set(to, e.getEndNode());
@@ -108,6 +116,12 @@ public class Graph {
 
         // add edges to graph
         for(int i=0;i<edges.size();i++){
+            Edge e = edges.get(i);
+            Node n1 = e.getStartNode();
+            Node n2 = e.getEndNode();
+            if(!e.isEnabled())continue;
+            if(!n1.isEnabled())continue;
+            if(!n2.isEnabled())continue;
             this.addEdge(edges.get(i));
         }
         System.out.println("Done Init2");
@@ -121,6 +135,13 @@ public class Graph {
         System.out.print(edge.getStartNode().getNameLong() + "\n");
         System.out.print(edge.getEndNode().getNameLong() + " ");
 */
+        Edge e = edge;
+        Node n1 = e.getStartNode();
+        Node n2 = e.getEndNode();
+        if(!e.isEnabled())return;
+        if(!n1.isEnabled())return;
+        if(!n2.isEnabled())return;
+
         int from = edge.getStartNode().getIndex();
         int to = edge.getEndNode().getIndex();
         double len = edge.getDistance();

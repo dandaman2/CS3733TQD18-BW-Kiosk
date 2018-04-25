@@ -56,6 +56,7 @@ public class Algorithm extends Graph {
 
 
     boolean isRestricted(Node node1, Node node2, ArrayList<String> noTypes) {
+ //       if(node1.)
         for (int i = 0; i < noTypes.size(); i++)
             if (node1.getType().equals(noTypes.get(i)) &&
                     node2.getType().equals(noTypes.get(i))) return false;
@@ -69,7 +70,7 @@ public class Algorithm extends Graph {
 
         int pathIndex = finish;
 
-        System.out.println(finish);
+ //       System.out.println(finish);
 //        System.out.println(parent.get(pathIndex));
 
         if (parent.get(pathIndex) == 0) {

@@ -24,6 +24,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -59,6 +60,9 @@ import static edu.wpi.cs3733d18.teamQ.ui.PathData.*;
 import static edu.wpi.cs3733d18.teamQ.ui.PathInstructions.captureAndSaveDisplay;
 import static java.lang.Math.acos;
 import static java.lang.Math.sqrt;
+import static javafx.geometry.HPos.LEFT;
+import static javafx.geometry.HPos.RIGHT;
+import static javafx.scene.input.KeyCode.U;
 
 public class PathfindingCont extends JPanel implements Initializable, IZoomableCont, DocumentListener {
 
@@ -119,6 +123,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     @FXML
     JFXButton homeButton;
 
+    @FXML
+    JFXButton infoButt;
+
     //Map Image
     @FXML
     private VBox vbox;
@@ -161,6 +168,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     @FXML
     private JFXDrawer treeDrawer;
 
+    @FXML
+    private HBox topHBox;
+
     //Scrolling and zooming functionality
     @FXML
     private ScrollPane imageScroller;
@@ -183,6 +193,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     ImageView selectedLocation;
     Node curSelected;
     Node youHere;
+    Node cameraNode;
     Node startNode;
     Boolean isSelected = false;
     ArrayList<Button> transList = new ArrayList<Button>();
@@ -236,6 +247,21 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         textTree = new JFXTreeView<String>();
         textTree.setVisible(false);
         textTree.setMouseTransparent(true);
+        textTree.setMinWidth(350);
+        textBtn.setVisible(false);
+
+        treeDrawer.setMouseTransparent(true);
+
+        //floorL21.setDisableVisualFocus(true);
+
+        Image close;
+        if(runningFromIntelliJ()) {
+            close = new Image("/ButtonImages/down-book.png");
+        } else{
+            close = new Image("ButtonImages/down-book.png");
+        }
+        ImageView closeView = new ImageView(close);
+        textBtn.setGraphic(closeView);
 
         treeDrawer.close();
         treeDrawer.setSidePane(textTree);
@@ -285,6 +311,13 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         textTree.setVisible(false);
         textTree.setMouseTransparent(true);
 
+        infoButt.setOnAction(e -> InfoController.displayPathInfoPage());
+        infoButt.setStyle("-fx-background-radius: 50%; -fx-font-size: 20;");
+        ImageView infoView = new ImageView(new Image("ButtonImages/info_symbol.png"));
+        infoView.setFitHeight(60);
+        infoView.setFitWidth(60);
+        infoButt.setText("");
+        infoButt.setGraphic(infoView);
     }
 
 
@@ -336,7 +369,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         ObservableList options = FXCollections.observableArrayList();
         options.addAll("Default", "Spider-Man", "Puppy", "Zombie", "Nyan Cat");
         gifSelector.getItems().addAll(options);
-        gifSelector.setStyle("-fx-background-color: #aeaeae;");
+        gifSelector.setStyle("-fx-background-color: #ffffff;");
 
         gifSelector.getSelectionModel()
                 .selectedIndexProperty()
@@ -363,6 +396,19 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
                                      movingPart = new ImageView(new Image(gifPath));
                                      movingPart.setPreserveRatio(true);
+
+                                     if(gifPath.equals("Gifs/dog.gif")){
+                                         selectedLocation = new ImageView(dogHouse);
+                                         selectedSize = 50;
+                                         selectedLocation.setFitHeight(selectedSize);
+                                         selectedLocation.setFitWidth(selectedSize);
+                                     }
+                                     else{
+                                         selectedLocation = new ImageView(star);
+                                         selectedSize = 30;
+                                         selectedLocation.setFitHeight(selectedSize);
+                                         selectedLocation.setFitWidth(selectedSize);
+                                     }
 
                                      if(gifPath.equals("Gifs/circle.png"))
                                          movingPart.setFitWidth(40);
@@ -398,10 +444,12 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         startingNodeField = new AutoCompleteTextField();
         startingNodeField.setPromptText("Start Location");
         startingNodeField.setText("");
-        startingNodeField.setFont(Font.font("Georgia", 15));
+        startingNodeField.setFont(Font.font("Georgia", 20));
         startingNodeField.setStyle("-fx-text-inner-color: white;");
         startingNodeField.setStyle("-fx-background-color: #FFFFFF;");
-        gridTop.add(startingNodeField,0,0);
+        startingNodeField.setMinWidth(300);
+        topHBox.getChildren().add(startingNodeField);
+        startingNodeField.toBack();
         startingNodeField.setOnMousePressed(event -> updatePath());
         startingNodeField.setOnKeyPressed(event -> updateFilterStart(startingNodeField.getText()));
 
@@ -410,10 +458,22 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         endingNodeField.setText("");
         endingNodeField.setStyle("-fx-text-inner-color: white;");
         endingNodeField.setStyle("-fx-background-color: #FFFFFF;");
-        endingNodeField.setFont(Font.font("Georgia", 15));
-        gridTop.add(endingNodeField,2,0);
+        endingNodeField.setFont(Font.font("Georgia", 20));
+        endingNodeField.setMinWidth(300);
+        topHBox.getChildren().add(endingNodeField);
+        endingNodeField.toFront();
         endingNodeField.setOnMousePressed(event -> updatePath());
         endingNodeField.setOnKeyPressed(event -> updateFilterStart(endingNodeField.getText()));
+
+        exchange.setStyle("-fx-font-size: 30;");
+        exchange.setMaxHeight(startingNodeField.getHeight());
+        exchange.setPrefHeight(startingNodeField.getHeight());
+        ImageView exchangeArrows = new ImageView(new Image("ButtonImages/exchange.png"));
+        exchangeArrows.setFitWidth(60);
+        exchangeArrows.setFitHeight(40);
+        exchange.setGraphic(exchangeArrows);
+
+        exchange.setPadding(new Insets(0,0,0,0));
     }
 
     private void initializeTopBar(){
@@ -442,6 +502,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         infoView.setFitHeight(40);
         playButton.setGraphic(playView);
         playButton.setVisible(false);
+        playButton.setDisable(true);
         playButton.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -481,7 +542,13 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         endingNodeField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                updatePath();
+                if(newValue.equals("")){
+                    //startingNodeField.setText(youHere.getNameLong()+ ","+youHere.getNodeID());
+                    clearPath();
+                    updatePath();
+                }else {
+                    updatePath();
+                }
             }
         });
         startingNodeField.textProperty().addListener(new ChangeListener<String>() {
@@ -489,6 +556,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if(newValue.equals("")){
                     //startingNodeField.setText(youHere.getNameLong()+ ","+youHere.getNodeID());
+                    clearPath();
                     updatePath();
                 }else {
                     updatePath();
@@ -557,17 +625,21 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     /**
      * Initializes star icon at finishing node(Destination)
      */
+    private Image dogHouse;
+    private Image star;
+    private double selectedSize = 30;
     public void initStar(){
-        Image star;
         if (runningFromIntelliJ()) {
             star = new Image("/ButtonImages/star.png");
         }
         else{
             star = new Image("ButtonImages/star.png");
         }
+
+        dogHouse = new Image("Gifs/doghouse.png");
         selectedLocation = new ImageView(star);
-        selectedLocation.setFitHeight(30);
-        selectedLocation.setFitWidth(30);
+        selectedLocation.setFitHeight(selectedSize);
+        selectedLocation.setFitWidth(selectedSize);
     }
 
 
@@ -599,6 +671,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                     generatePath();
                 }
             }else {
+                clearPath();
                 isPathDisplayed = false;
                 drawPath(null);
             }
@@ -618,6 +691,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void generatePath() {
         backImagePane.getChildren().removeAll(drawnPath);
+        backImagePane.getChildren().removeAll(antPaths);
 
         ArrayList<String> RestrictedTYPES = new ArrayList<String>();
 //        if(checkElevator.isSelected() == true)
@@ -677,17 +751,17 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         ArrayList<String> RestrictedTYPES = new ArrayList<String>(); // empty
 
         Graph g = new ByTypeSearch();
-        ArrayList<Node> floor2Nodes = new ArrayList<Node>();
-        Node n;
-        // isolates the nodes on the second floor and adds them to floor2Nodes array
-        for(int i = 0; i < user.getNodes().size(); i++){
-            n = user.getNodes().get(i);
-
-            if(n.getFloor() == 2){
-                floor2Nodes.add(n);
-            }
-        }
-        g.init2(floor2Nodes,user.getEdges());
+//        ArrayList<Node> floor2Nodes = new ArrayList<Node>();
+//        Node n;
+//        // isolates the nodes on the second floor and adds them to floor2Nodes array
+//        for(int i = 0; i < user.getNodes().size(); i++){
+//            n = user.getNodes().get(i);
+//
+//            if(n.getFloor() == 2){
+//                floor2Nodes.add(n);
+//            }
+//        }
+        g.init2(user.getNodes(),user.getEdges());
 
         youHere = user.getNode("GELEV00N02");
         queuedPath = g.findShortestPathByType(youHere,Type,RestrictedTYPES);
@@ -712,6 +786,36 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         endingNodeField.setText(curSelected.getNameLong()+ ","+curSelected.getNodeID());
     }
 
+    /**
+     * Finds the nearest exit vis only stairs
+     */
+    public void findExitEmergency(int numBodies){
+        ArrayList<String> RestrictedTYPES = new ArrayList<String>(); // empty
+        RestrictedTYPES.add("ELEV");
+        Graph g = new ByTypeSearch();
+        g.init2(user.getNodes(),user.getEdges());
+
+        //HARD CODED INFO
+        cameraNode = user.getNode("AINFO001L2");
+        String securityPhone = "5413994557";
+
+        ArrayList<Node> pathExit = g.findShortestPathByType(cameraNode,"EXIT",RestrictedTYPES);
+        System.out.println("Path exit size: " + pathExit.size());
+        if(pathExit.size()<1){
+            return;
+        }
+        ArrayList<Node>pathExitFlipped = new ArrayList<>();
+        for(int i = pathExit.size()-1; i >=0; i--){
+            pathExitFlipped.add(pathExit.get(i));
+        }
+        PathInstructions ins = new PathInstructions();
+        System.out.println("Path exit "+ pathExitFlipped.size());
+        String instructions = ins.buildString(TextInstructions(pathExitFlipped));
+        System.out.println("Instructions: " + instructions);
+        String location = pathExit.get(0).getNameLong();
+        new Email().sendTextTo(instructions,securityPhone, ""+numBodies, location);
+
+    }
 
 
 
@@ -844,11 +948,12 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         if(backImagePane.getChildren().contains(selectedLocation))
             backImagePane.getChildren().remove(selectedLocation);
 
-        if(n.getFloor() == getCurrFloor()) {
+
+        if(n.getFloor() == getCurrFloor() && isPathDisplayed) {
             TransPoint tp1;
             tp1 = translateCoord(n);
-            selectedLocation.setLayoutX(tp1.getTx() - 15);
-            selectedLocation.setLayoutY(tp1.getTy() - 15);
+            selectedLocation.setLayoutX(tp1.getTx() - selectedSize/2);
+            selectedLocation.setLayoutY(tp1.getTy() - selectedSize/2);
             backImagePane.getChildren().add(selectedLocation);
         }
     }
@@ -877,6 +982,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         // removes old paths and buttons before drawing new
         backImagePane.getChildren().removeAll(drawnPath);
+        backImagePane.getChildren().removeAll(antPaths);
         backImagePane.getChildren().removeAll(transList);
         backImagePane.getChildren().removeAll(labelList);
         backImagePane.getChildren().remove(starLabel);
@@ -894,7 +1000,12 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         // creates breadcrumbs
         breadCrumb.drawCrumbs(path);
 
+        if(path==null){
+            return;
+        }
+
         playButton.setVisible(true);
+        playButton.setDisable(false);
 
         // translates all nodes to new coords for when map moves
         for(Node nodeToTranslate : path){
@@ -916,7 +1027,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         int lastIndex = pta.size() - 1;
         if(getCurrFloor() == path.get(lastIndex).getFloor()) {
            // System.out.println(pta.get(lastIndex) + " " + path.get(lastIndex) + " " + path.get(lastIndex).getNameLong());
-            starLabel.setText("    End: " + path.get(lastIndex).getNameLong() + " ");
+            starLabel.setText("      End: " + path.get(lastIndex).getNameLong() + " ");
             starLabel.setPrefHeight(20);
             starLabel.setLayoutX(pta.get(lastIndex).getTx());
             starLabel.setLayoutY(pta.get(lastIndex).getTy() - 10);
@@ -1114,6 +1225,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             floorString = String.valueOf(currentFloor);
         }
         TreeItem<String> floorLeaf = new TreeItem<String>("Floor "+floorString);
+        floorLeaf.setExpanded(true);
 
         int instructionIndex = 0;
         for (int i = instructionIndex; i < instructions.size(); i++) {
@@ -1137,6 +1249,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                     floorString = String.valueOf(currentFloor);
                 }
                 floorLeaf = new TreeItem<String>("Floor "+floorString);
+                floorLeaf.setExpanded(true);
                 for (int i = instructionIndex; i < instructions.size(); i++) {
                     TreeItem<String> itemLeaf = new TreeItem<String>(instructions.get(i));
                     floorLeaf.getChildren().add(itemLeaf);
@@ -1156,6 +1269,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         textTree.setRoot(root);
         textTree.setVisible(true);
         textTree.setMouseTransparent(false);
+        textBtn.setVisible(true);
     }
 
     /**
@@ -1279,9 +1393,14 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      */
     public void clearPath(){
         backImagePane.getChildren().removeAll(drawnPath);
+        backImagePane.getChildren().removeAll(antPaths);
         drawnPath = new ArrayList<>();
         textTree.setVisible(false);
         textTree.setMouseTransparent(true);
+        textBtn.setVisible(false);
+        playButton.setVisible(false);
+        playButton.setDisable(true);
+        backImagePane.getChildren().remove(selectedLocation);
     }
 
 
@@ -1372,7 +1491,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                 Parent welcomePane = welcomeLoader.load();
                 Stage primaryStage = (Stage) ((javafx.scene.Node) actionEvent.getSource()).getScene().getWindow();
                 Scene welcomeScene = sdUtil.prodAndBindScene(welcomePane, primaryStage);
-                welcomeScene.getStylesheets().addAll("Stylesheet.css", "StyleMenus.css");
+                welcomeScene.getStylesheets().addAll("Stylesheet.css", "StyleMenus.css","homeBackground.css");
                 primaryStage.setScene(welcomeScene);
 
                 User user = User.getUser();
@@ -2117,8 +2236,26 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     public void displayTextDrawer(ActionEvent actionEvent) {
         if (treeDrawer.isHidden()) {
             treeDrawer.open();
+            treeDrawer.setMouseTransparent(false);
+            Image open;
+            if(runningFromIntelliJ()) {
+                open = new Image("/ButtonImages/up-book.png");
+            } else{
+                open = new Image("ButtonImages/up-book.png");
+            }
+            ImageView openView = new ImageView(open);
+            textBtn.setGraphic(openView);
         } else {
             treeDrawer.close();
+            treeDrawer.setMouseTransparent(true);
+            Image close;
+            if(runningFromIntelliJ()) {
+                close = new Image("/ButtonImages/down-book.png");
+            } else{
+                close = new Image("ButtonImages/down-book.png");
+            }
+            ImageView closeView = new ImageView(close);
+            textBtn.setGraphic(closeView);
         }
     }
 }

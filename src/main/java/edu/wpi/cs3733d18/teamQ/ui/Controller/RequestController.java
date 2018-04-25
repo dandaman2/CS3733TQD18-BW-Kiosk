@@ -110,6 +110,9 @@ public class  RequestController implements Initializable{
     @FXML
     JFXButton giftBtn;
 
+    //info button
+    @FXML
+    JFXButton infoButt;
 
     // description of pending request
     @FXML
@@ -139,6 +142,7 @@ public class  RequestController implements Initializable{
     //Date Picker
     @FXML
     DatePicker calendar;
+
 
     //Stats
     @FXML
@@ -278,6 +282,14 @@ public class  RequestController implements Initializable{
         sanitationDescription.setVisible(false);
         sanitationDescription.setMinHeight(100);
         sanitationDescription.setPromptText("Enter Description ... ");
+
+        infoButt.setOnAction(e -> InfoController.displayReqInfoPage());
+        infoButt.setStyle("-fx-background-radius: 50%; -fx-font-size: 20;");
+        ImageView infoView = new ImageView(new Image("ButtonImages/info_symbol.png"));
+        infoView.setFitHeight(60);
+        infoView.setFitWidth(60);
+        infoButt.setText("");
+        infoButt.setGraphic(infoView);
     }
 
 
@@ -312,20 +324,23 @@ public class  RequestController implements Initializable{
         backBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
 
         Image info;
-        if(runningFromIntelliJ()) {
-            info = new Image("/ButtonImages/home.png");
-        } else{
-            info = new Image("ButtonImages/home.png");
+        if (runningFromIntelliJ()) {
+            info = new Image("/ButtonImages/whiteHut.png");
+        } else {
+            info = new Image("ButtonImages/whiteHut.png");
         }
         ImageView infoView = new ImageView(info);
         infoView.setFitWidth(42);
         infoView.setFitHeight(40);
         backBtn.setGraphic(infoView);
+
+        //backBtn.setDisableVisualFocus(true);
+
         backBtn.setOnAction(e->goToAdminHome(e));
 
 
         stat1.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        stat1.setStyle("-fx-text-fill: #FFFFFF;");
+        stat1.setStyle("-fx-border-color: YELLOW;" + "-fx-border-width: 5;" + "-fx-text-fill: #FFFFFF;");
         stat1.setRipplerFill(Paint.valueOf("#FFFFFF"));
         stat1.setOnAction(e->showStat1(e));
 
@@ -424,6 +439,10 @@ public class  RequestController implements Initializable{
         interpreterBtn.setStyle("-fx-text-fill: #FFFFFF;");
         sanitationBtn.setStyle("-fx-text-fill: #FFFFFF;");
         giftBtn.setStyle("-fx-text-fill: #FFFFFF;");
+
+        stat1.setStyle("-fx-text-fill: #FFFFFF;");
+        stat2.setStyle("-fx-text-fill: #FFFFFF;");
+        stat3.setStyle("-fx-text-fill: #FFFFFF;");
     }
 
     /**
@@ -433,6 +452,9 @@ public class  RequestController implements Initializable{
         pieChart.setVisible(true);
         pieChart1.setVisible(false);
         barChart.setVisible(false);
+
+        clearBtnBorders();
+        stat1.setStyle("-fx-border-color: YELLOW;" + "-fx-border-width: 5;" + "-fx-text-fill: #FFFFFF;");
     }
 
     /**
@@ -442,6 +464,9 @@ public class  RequestController implements Initializable{
         pieChart.setVisible(false);
         pieChart1.setVisible(true);
         barChart.setVisible(false);
+
+        clearBtnBorders();
+        stat2.setStyle("-fx-border-color: YELLOW;" + "-fx-border-width: 5;" + "-fx-text-fill: #FFFFFF;");
     }
 
     /**
@@ -451,6 +476,9 @@ public class  RequestController implements Initializable{
         pieChart.setVisible(false);
         pieChart1.setVisible(false);
         barChart.setVisible(true);
+
+        clearBtnBorders();
+        stat3.setStyle("-fx-border-color: YELLOW;" + "-fx-border-width: 5;" + "-fx-text-fill: #FFFFFF;");
     }
 
     //initializes charts on tab click

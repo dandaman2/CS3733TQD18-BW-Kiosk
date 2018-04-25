@@ -1,6 +1,7 @@
 package edu.wpi.cs3733d18.teamQ.ui.Controller;
 
 import com.jfoenix.controls.JFXButton;
+import edu.wpi.cs3733d18.teamQ.ui.Admin_Login.FaceRecognition;
 import edu.wpi.cs3733d18.teamQ.ui.User;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -9,10 +10,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -24,6 +26,9 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.runningFromIntelli
 
 
 public class AdminHomeScreenController implements Initializable {
+
+    @FXML
+    Label welcomelbl;
 
     @FXML
     JFXButton directionBtn;
@@ -54,6 +59,7 @@ public class AdminHomeScreenController implements Initializable {
     User user = User.getUser();
 
     public void initialize(URL url, ResourceBundle rb) {
+        welcomelbl.setText("Welcome, "+user.getCurrentUser().getFirstName()+" "+user.getCurrentUser().getLastName());
         setUpButtons();
         setUpScrollText();
     }
@@ -67,12 +73,14 @@ public class AdminHomeScreenController implements Initializable {
         editMapBtn.setVisible(true);
         employeeEdit.setVisible(true);
         logOut.setVisible(true);
+        addFaceButton.setVisible(true);
 
         directionBtn.setMouseTransparent(false);
         requestBtn.setMouseTransparent(false);
         editMapBtn.setMouseTransparent(false);
         employeeEdit.setMouseTransparent(false);
         logOut.setMouseTransparent(false);
+        addFaceButton.setMouseTransparent(false);
 
         //if user is not an admin, then they can't access edit map or employee screens
         if(User.getUser().getLevelAccess() < 2){
@@ -80,6 +88,7 @@ public class AdminHomeScreenController implements Initializable {
             employeeEdit.setVisible(false);
             editMapBtn.setMouseTransparent(true);
             employeeEdit.setMouseTransparent(true);
+            addFaceButton.setMouseTransparent(false);
         }
 
         directionBtn.setOnAction(e -> goToPathfinding(e));
@@ -87,6 +96,7 @@ public class AdminHomeScreenController implements Initializable {
         editMapBtn.setOnAction(e -> goToEditMap(e));
         employeeEdit.setOnAction(e -> goToEmployeeEdit(e));
         logOut.setOnAction(e -> goToWelcome(e));
+        addFaceButton.setOnAction(e ->runFace(e));
     }
 
     //initializes scrolling text
@@ -152,6 +162,17 @@ public class AdminHomeScreenController implements Initializable {
         }
     }
 
+    public void runFace(javafx.event.ActionEvent actionEvent){
+        String temp =FaceRecognition.getInstance().addFace();
+        if (temp==null){
+//            addedFaceLabel.setText("Face ID setup failed!");
+//            addedFaceLabel.setVisible(true);
+        }else {
+//            addedFaceLabel.setText("Face ID configured successfully!");
+//            addedFaceLabel.setVisible(true);
+        }
+    }
+
     /**
      * Goes to the Request Screen when called
      * @param actionEvent Takes an action event that says it has been called
@@ -168,6 +189,7 @@ public class AdminHomeScreenController implements Initializable {
             Parent requestPane = requestLoader.load();
             Stage primaryStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
             Scene requestScene = sdUtil.prodAndBindScene(requestPane, primaryStage);
+            requestScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
             primaryStage.setScene(requestScene);
         }
         catch(IOException io){
@@ -183,7 +205,9 @@ public class AdminHomeScreenController implements Initializable {
     public void goToWelcome(javafx.event.ActionEvent actionEvent){
         try{
             User user = User.getUser();
+            user.saveToDB();
             user.setLevelAccess(0);
+            user.setCurrentUser(null);
             Runnable r = new Runnable() {
                 public void run() {
                     user.saveToDB();
@@ -201,7 +225,7 @@ public class AdminHomeScreenController implements Initializable {
             Parent welcomePane = welcomeLoader.load();
             Stage primaryStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
             Scene welcomeScene = sdUtil.prodAndBindScene(welcomePane, primaryStage);
-            welcomeScene.getStylesheets().addAll("Stylesheet.css", "StyleMenus.css");
+            welcomeScene.getStylesheets().addAll("Stylesheet.css", "StyleMenus.css", "homeBackground.css");
             primaryStage.setScene(welcomeScene);
         }
         catch(IOException io){
@@ -225,6 +249,7 @@ public class AdminHomeScreenController implements Initializable {
             Parent employeePane = employeeLoader.load();
             Stage primaryStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             Scene employeeScene = sdUtil.prodAndBindScene(employeePane, primaryStage);
+            employeeScene.getStylesheets().addAll("Stylesheet.css", "StylePath.css");
             primaryStage.setScene(employeeScene);
         } catch (IOException io) {
             System.out.println("errWelS");

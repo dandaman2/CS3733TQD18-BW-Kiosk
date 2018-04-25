@@ -79,6 +79,8 @@ public class MapEditUtil {
                 le.setCursor(Cursor.HAND);
 
                 le.setOnMousePressed((event) -> {
+                    controller.selector.getSelectionModel().select(2);
+
                     // resets originally selected line color
                     curSel.setStroke(edgeColor);
                     oppSel.setStroke(edgeColor);

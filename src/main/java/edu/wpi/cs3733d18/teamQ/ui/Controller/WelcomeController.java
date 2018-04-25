@@ -1,9 +1,12 @@
 package edu.wpi.cs3733d18.teamQ.ui.Controller;
 
 import com.jfoenix.controls.JFXButton;
+import edu.wpi.cs3733d18.teamQ.ui.Admin_Login.FaceRecognition;
 import edu.wpi.cs3733d18.teamQ.ui.Requests.EmergencyRequest;
 import edu.wpi.cs3733d18.teamQ.ui.User;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -45,25 +49,19 @@ public class WelcomeController implements Initializable {
     private JFXButton adminButt;
 
     @FXML
-    private JFXButton EmergencyBtn;
+    JFXButton EmergencyBtn;
 
     @FXML
-    private ImageView bwhSeal;
+    private JFXButton aboutButton;
 
     @FXML
-    private ImageView bwhLogo;
+    private AnchorPane masterPane;
 
     @FXML
-    private AnchorPane sealPane;
+    ImageView gifPane;
 
-    @FXML
-    private StackPane stackPane;
-
-    @FXML
-    private VBox buttBox;
-
-    @FXML
-    private Button aboutButton;
+    //Global user
+    User user = User.getUser();
 
 
     //ScreenUtil object for resizing of loading images
@@ -75,35 +73,28 @@ public class WelcomeController implements Initializable {
      * @param rb Takes a ResourceBundle
      */
     public void initialize(URL url, ResourceBundle rb) {
-        Image logo;
-        Image seal;
-        if(runningFromIntelliJ()) {
-            logo = new Image("bwhLogo.png");
-            seal = new Image("bwhCrest.png");
-        } else{
-            logo = new Image("bwhLogo.png");
-            seal = new Image("bwhCrest.png");
-        }
-
-        // info button icon
-        Image info;
-        if(runningFromIntelliJ()) {
-            info = new Image("/ButtonImages/info_symbol.png");
-        } else{
-            info = new Image("ButtonImages/info_symbol.png");
-        }
-        ImageView infoView = new ImageView(info);
-        infoView.setFitWidth(42);
-        infoView.setFitHeight(40);
-        aboutButton.setPrefWidth(43);
-        aboutButton.setPrefHeight(41);
-        aboutButton.setGraphic(infoView);
 
         // background of welcome screen
         //bwhLogo.setImage(logo);
         //bwhSeal.setImage(seal);
 
+        initializeGif();
+
+
         // Sets the action of buttons
+        Image loginIcon;
+        if(runningFromIntelliJ()) {
+            loginIcon = new Image("/ButtonImages/login.png");
+        } else{
+            loginIcon = new Image("ButtonImages/login.png");
+        }
+        ImageView loginView = new ImageView(loginIcon);
+        loginView.setFitWidth(50);
+        loginView.setFitHeight(50);
+
+        adminButt.setGraphic(loginView);
+        //adminButt.setDisableVisualFocus(true);
+
         aboutButton.setOnAction(e -> AboutController.displayAboutPage());
         adminButt.setOnAction(e -> AlertBox.display("Admin Login", "Please input your username and password."));
         //directButt.setDisableVisualFocus(true);
@@ -115,13 +106,79 @@ public class WelcomeController implements Initializable {
     //ScreenUtil object for resizing of loading images
     private PathfindingCont pathCont = new PathfindingCont();
 
+
+    /**
+     * initializes which gif to play
+     */
+    private void initializeGif(){
+        int gifNum = user.getGifIndex();
+        System.out.println("GifNum: " +gifNum);
+
+        if(gifNum == 0){
+            Image gif1;
+            if(runningFromIntelliJ()) {
+                gif1 = new Image("/Gif1.gif");
+            } else{
+                gif1 = new Image("/Gif1.gif");
+            }
+
+            gifPane.setImage(gif1);
+            user.setGifIndex(1);
+        }
+        else if(gifNum == 1){
+            Image gif2;
+            if(runningFromIntelliJ()) {
+                gif2 = new Image("/Gif2.gif");
+            } else{
+                gif2 = new Image("/Gif2.gif");
+            }
+
+            gifPane.setImage(gif2);
+            user.setGifIndex(2);
+        }
+        else if(gifNum == 2){
+            Image gif3;
+            if(runningFromIntelliJ()) {
+                gif3 = new Image("/Gif3.gif");
+            } else{
+                gif3 = new Image("/Gif3.gif");
+            }
+
+            gifPane.setImage(gif3);
+            user.setGifIndex(3);
+        }
+        else if(gifNum == 3){
+            Image gif4;
+            if(runningFromIntelliJ()) {
+                gif4 = new Image("/Gif4.gif");
+            } else{
+                gif4 = new Image("/Gif4.gif");
+            }
+
+            gifPane.setImage(gif4);
+            user.setGifIndex(4);
+        }
+        else {
+            Image gif5;
+            if(runningFromIntelliJ()) {
+                gif5 = new Image("/Gif5.gif");
+            } else{
+                gif5 = new Image("/Gif5.gif");
+            }
+
+            gifPane.setImage(gif5);
+            user.setGifIndex(0);
+        }
+    }
+
+
+
+
     /**
      * Will open the main pathCont map
      * @param e Takes an ActionEvent
      */
     public void pathClick(javafx.event.ActionEvent e){
-        User user = User.getUser();
-        user.setPathType(null);
         try {
             FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/PathfindingScreen.fxml"));
             Parent pathfindingParent = pathfindingload.load();
@@ -138,6 +195,11 @@ public class WelcomeController implements Initializable {
      * Makes an emergency request from the home screen
      */
     public void emergencyRequest(){
+        int bodies = FaceRecognition.getInstance().detectBody();
+        if(bodies>0){
+            //FaceRecognition.getInstance().detectBody()>0
+            new PathfindingCont().findExitEmergency(bodies);
+        }
         EmergencyRequest emergencyRequest = new EmergencyRequest("NA", "NA", "NA", "NA", User.getUser().getNodeLocation());
         emergencyRequest.setPriority("Critical");
         emergencyRequest.setType("EMERGENCY");

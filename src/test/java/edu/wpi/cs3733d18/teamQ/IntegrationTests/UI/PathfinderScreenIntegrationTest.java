@@ -120,7 +120,7 @@ public class PathfinderScreenIntegrationTest extends ApplicationTest {
      */
     public void getDirectionsToNode(String nodeID){
         //**Should** enter the search bar, write a node id, then search it
-        clickOn("#gridTop");
+        clickOn("#topBar");
         moveBy(150, 0);
         press(MouseButton.PRIMARY);
         release(MouseButton.PRIMARY);
