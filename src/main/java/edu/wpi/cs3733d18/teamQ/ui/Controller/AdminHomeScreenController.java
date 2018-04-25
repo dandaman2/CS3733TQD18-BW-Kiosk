@@ -10,11 +10,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -26,6 +26,9 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.runningFromIntelli
 
 
 public class AdminHomeScreenController implements Initializable {
+
+    @FXML
+    Label welcomelbl;
 
     @FXML
     JFXButton directionBtn;
@@ -56,6 +59,7 @@ public class AdminHomeScreenController implements Initializable {
     User user = User.getUser();
 
     public void initialize(URL url, ResourceBundle rb) {
+        welcomelbl.setText("Welcome, "+user.getCurrentUser().getFirstName()+" "+user.getCurrentUser().getLastName());
         setUpButtons();
         setUpScrollText();
     }

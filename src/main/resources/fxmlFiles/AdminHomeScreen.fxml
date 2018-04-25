@@ -91,6 +91,11 @@
                                     <Label fx:id="addFaceLabel" layoutX="103.0" layoutY="18.0" prefHeight="35.0" prefWidth="261.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
+                              <Label fx:id="welcomelbl" text="Welcome" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="36.0" />
+                                 </font>
+                              </Label>
                            </children>
                            <opaqueInsets>
                               <Insets />
