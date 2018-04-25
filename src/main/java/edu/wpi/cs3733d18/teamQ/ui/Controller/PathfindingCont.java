@@ -59,6 +59,7 @@ import static edu.wpi.cs3733d18.teamQ.ui.PathData.*;
 import static edu.wpi.cs3733d18.teamQ.ui.PathInstructions.captureAndSaveDisplay;
 import static java.lang.Math.acos;
 import static java.lang.Math.sqrt;
+import static javafx.scene.input.KeyCode.U;
 
 public class PathfindingCont extends JPanel implements Initializable, IZoomableCont, DocumentListener {
 
@@ -421,7 +422,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         gridTop.add(startingNodeField,0,0);
         startingNodeField.setOnMousePressed(event -> updatePath());
         startingNodeField.setOnKeyPressed(event -> updateFilterStart(startingNodeField.getText()));
-        exchange.setPrefHeight(startingNodeField.getHeight());
 
         endingNodeField = new AutoCompleteTextField();
         endingNodeField.setPromptText("End Location");
@@ -432,6 +432,11 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         gridTop.add(endingNodeField,2,0);
         endingNodeField.setOnMousePressed(event -> updatePath());
         endingNodeField.setOnKeyPressed(event -> updateFilterStart(endingNodeField.getText()));
+
+        exchange.setStyle("-fx-font-size: 30;");
+        exchange.setPrefHeight(startingNodeField.getHeight());
+        exchange.setPrefSize(30,30);
+        exchange.setText("⇄");
     }
 
     private void initializeTopBar(){
