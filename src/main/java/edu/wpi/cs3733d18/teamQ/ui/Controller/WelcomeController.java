@@ -112,6 +112,7 @@ public class WelcomeController implements Initializable {
      */
     private void initializeGif(){
         int gifNum = user.getGifIndex();
+        System.out.println("GifNum: " +gifNum);
 
         if(gifNum == 0){
             Image gif1;
@@ -122,7 +123,7 @@ public class WelcomeController implements Initializable {
             }
 
             gifPane.setImage(gif1);
-            user.setGifIndex();
+            user.setGifIndex(1);
         }
         else if(gifNum == 1){
             Image gif2;
@@ -133,7 +134,7 @@ public class WelcomeController implements Initializable {
             }
 
             gifPane.setImage(gif2);
-            user.setGifIndex();
+            user.setGifIndex(2);
         }
         else if(gifNum == 2){
             Image gif3;
@@ -144,7 +145,7 @@ public class WelcomeController implements Initializable {
             }
 
             gifPane.setImage(gif3);
-            user.setGifIndex();
+            user.setGifIndex(3);
         }
         else if(gifNum == 3){
             Image gif4;
@@ -155,7 +156,7 @@ public class WelcomeController implements Initializable {
             }
 
             gifPane.setImage(gif4);
-            user.setGifIndex();
+            user.setGifIndex(4);
         }
         else {
             Image gif5;
@@ -166,7 +167,7 @@ public class WelcomeController implements Initializable {
             }
 
             gifPane.setImage(gif5);
-            user.setGifIndex();
+            user.setGifIndex(0);
         }
     }
 

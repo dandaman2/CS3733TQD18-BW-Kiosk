@@ -585,12 +585,7 @@ public class User {
         return gifIndex;
     }
 
-    public void setGifIndex() {
-        if(gifIndex < 5){
-            this.gifIndex = this.gifIndex++;
-        }
-        else{
-            this.gifIndex = 0;
-        }
+    public void setGifIndex(int gifIndex) {
+        this.gifIndex = gifIndex;
     }
 }
