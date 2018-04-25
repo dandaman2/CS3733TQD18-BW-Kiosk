@@ -1395,7 +1395,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                 Parent welcomePane = welcomeLoader.load();
                 Stage primaryStage = (Stage) ((javafx.scene.Node) actionEvent.getSource()).getScene().getWindow();
                 Scene welcomeScene = sdUtil.prodAndBindScene(welcomePane, primaryStage);
-                welcomeScene.getStylesheets().addAll("Stylesheet.css", "StyleMenus.css");
+                welcomeScene.getStylesheets().addAll("Stylesheet.css", "StyleMenus.css","homeBackground.css");
                 primaryStage.setScene(welcomeScene);
 
                 User user = User.getUser();

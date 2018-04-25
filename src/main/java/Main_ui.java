@@ -157,7 +157,7 @@ public class Main_ui extends Application {
                         }
                         Stage primaryStage = user.getPrimaryStage();
                         Scene welcomeScene = sdUtil.prodAndBindScene(welcomePane, primaryStage);
-                        welcomeScene.getStylesheets().addAll("Stylesheet.css", "StyleMenus.css");
+                        welcomeScene.getStylesheets().addAll("Stylesheet.css", "StyleMenus.css","homeBackground.css");
                         primaryStage.setScene(welcomeScene);
                     }
                 });
