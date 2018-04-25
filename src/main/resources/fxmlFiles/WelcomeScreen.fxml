@@ -90,10 +90,7 @@
                                     </JFXButton>
                                  </children>
                               </VBox>
-                              <ImageView fitHeight="554.0" fitWidth="618.0" pickOnBounds="true" HBox.hgrow="ALWAYS">
-                                 <image>
-                                    <Image url="@../BWHBuilding.jpg" />
-                                 </image>
+                              <ImageView fx:id="gifPane" fitHeight="554.0" fitWidth="618.0" pickOnBounds="true" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
                                  </HBox.margin>

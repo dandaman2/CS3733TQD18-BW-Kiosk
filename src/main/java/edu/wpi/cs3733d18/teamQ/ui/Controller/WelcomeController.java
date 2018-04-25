@@ -57,6 +57,12 @@ public class WelcomeController implements Initializable {
     @FXML
     private AnchorPane masterPane;
 
+    @FXML
+    ImageView gifPane;
+
+    //Global user
+    User user = User.getUser();
+
 
     //ScreenUtil object for resizing of loading images
     private ScreenUtil sdUtil = new ScreenUtil();
@@ -67,11 +73,12 @@ public class WelcomeController implements Initializable {
      * @param rb Takes a ResourceBundle
      */
     public void initialize(URL url, ResourceBundle rb) {
-        User user = User.getUser();
 
         // background of welcome screen
         //bwhLogo.setImage(logo);
         //bwhSeal.setImage(seal);
+
+        initializeGif();
 
 
         // Sets the action of buttons
@@ -98,6 +105,73 @@ public class WelcomeController implements Initializable {
 
     //ScreenUtil object for resizing of loading images
     private PathfindingCont pathCont = new PathfindingCont();
+
+
+    /**
+     * initializes which gif to play
+     */
+    private void initializeGif(){
+        int gifNum = user.getGifIndex();
+
+        if(gifNum == 0){
+            Image gif1;
+            if(runningFromIntelliJ()) {
+                gif1 = new Image("/Gif1.gif");
+            } else{
+                gif1 = new Image("/Gif1.gif");
+            }
+
+            gifPane.setImage(gif1);
+            user.setGifIndex();
+        }
+        else if(gifNum == 1){
+            Image gif2;
+            if(runningFromIntelliJ()) {
+                gif2 = new Image("/Gif2.gif");
+            } else{
+                gif2 = new Image("/Gif2.gif");
+            }
+
+            gifPane.setImage(gif2);
+            user.setGifIndex();
+        }
+        else if(gifNum == 2){
+            Image gif3;
+            if(runningFromIntelliJ()) {
+                gif3 = new Image("/Gif3.gif");
+            } else{
+                gif3 = new Image("/Gif3.gif");
+            }
+
+            gifPane.setImage(gif3);
+            user.setGifIndex();
+        }
+        else if(gifNum == 3){
+            Image gif4;
+            if(runningFromIntelliJ()) {
+                gif4 = new Image("/Gif4.gif");
+            } else{
+                gif4 = new Image("/Gif4.gif");
+            }
+
+            gifPane.setImage(gif4);
+            user.setGifIndex();
+        }
+        else {
+            Image gif5;
+            if(runningFromIntelliJ()) {
+                gif5 = new Image("/Gif5.gif");
+            } else{
+                gif5 = new Image("/Gif5.gif");
+            }
+
+            gifPane.setImage(gif5);
+            user.setGifIndex();
+        }
+    }
+
+
+
 
     /**
      * Will open the main pathCont map
