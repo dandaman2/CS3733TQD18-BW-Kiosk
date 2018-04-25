@@ -346,7 +346,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         ObservableList options = FXCollections.observableArrayList();
         options.addAll("Default", "Spider-Man", "Puppy", "Zombie", "Nyan Cat");
         gifSelector.getItems().addAll(options);
-        gifSelector.setStyle("-fx-background-color: #aeaeae;");
+        gifSelector.setStyle("-fx-background-color: #ffffff;");
 
         gifSelector.getSelectionModel()
                 .selectedIndexProperty()
@@ -408,19 +408,20 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         startingNodeField = new AutoCompleteTextField();
         startingNodeField.setPromptText("Start Location");
         startingNodeField.setText("");
-        startingNodeField.setFont(Font.font("Georgia", 15));
+        startingNodeField.setFont(Font.font("Georgia", 20));
         startingNodeField.setStyle("-fx-text-inner-color: white;");
         startingNodeField.setStyle("-fx-background-color: #FFFFFF;");
         gridTop.add(startingNodeField,0,0);
         startingNodeField.setOnMousePressed(event -> updatePath());
         startingNodeField.setOnKeyPressed(event -> updateFilterStart(startingNodeField.getText()));
+        exchange.setPrefHeight(startingNodeField.getHeight());
 
         endingNodeField = new AutoCompleteTextField();
         endingNodeField.setPromptText("End Location");
         endingNodeField.setText("");
         endingNodeField.setStyle("-fx-text-inner-color: white;");
         endingNodeField.setStyle("-fx-background-color: #FFFFFF;");
-        endingNodeField.setFont(Font.font("Georgia", 15));
+        endingNodeField.setFont(Font.font("Georgia", 20));
         gridTop.add(endingNodeField,2,0);
         endingNodeField.setOnMousePressed(event -> updatePath());
         endingNodeField.setOnKeyPressed(event -> updateFilterStart(endingNodeField.getText()));

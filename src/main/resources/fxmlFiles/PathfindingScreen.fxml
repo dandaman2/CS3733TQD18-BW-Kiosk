@@ -133,7 +133,7 @@
                                     <Insets bottom="15.0" top="15.0" />
                                  </padding>
                                  <children>
-                                    <JFXButton fx:id="exchange" onAction="#exchangeTextFields" prefHeight="60.0" prefWidth="60.0" text="&lt;&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <JFXButton fx:id="exchange" onAction="#exchangeTextFields" prefHeight="30.0" prefWidth="60.0" text="&lt;&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
