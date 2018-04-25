@@ -200,6 +200,7 @@ public class EmployeeEditController implements Initializable {
      * @param actionEvent Takes an action event that says it has been called
      */
     public void goToAdminHome(javafx.event.ActionEvent actionEvent){
+        user.saveToDB();
         try{
             //this line will execute immediately, not waiting for your task to complete
             FXMLLoader adminLoader;
