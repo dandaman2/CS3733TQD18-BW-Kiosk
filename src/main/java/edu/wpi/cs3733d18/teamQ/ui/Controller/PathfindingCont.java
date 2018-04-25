@@ -270,6 +270,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         textTree.setVisible(false);
         textTree.setMouseTransparent(true);
+
     }
 
 
