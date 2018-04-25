@@ -421,6 +421,30 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         infoView.setFitHeight(40);
         playButton.setGraphic(playView);
         playButton.setVisible(false);
+        playButton.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!oldValue){
+                    Image pause;
+                    if(runningFromIntelliJ()) {
+                        pause = new Image("/ButtonImages/pause-icon.png");
+                    } else{
+                        pause = new Image("ButtonImages/pause-icon.png");
+                    }
+                    ImageView pauseView = new ImageView(pause);
+                    playButton.setGraphic(pauseView);
+                } else{
+                    Image play;
+                    if(runningFromIntelliJ()) {
+                        play = new Image("/ButtonImages/play-icon.png");
+                    } else{
+                        play = new Image("ButtonImages/play-icon.png");
+                    }
+                    ImageView playView = new ImageView(play);
+                    playButton.setGraphic(playView);
+                }
+            }
+        });
     }
 
     /**
