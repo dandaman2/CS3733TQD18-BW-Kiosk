@@ -6,17 +6,20 @@ import com.github.sarxos.webcam.Webcam;
 import edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem;
 import edu.wpi.cs3733d18.teamQ.ui.Employee;
 import edu.wpi.cs3733d18.teamQ.ui.User;
+import javafx.print.Collation;
 import jdk.nashorn.internal.scripts.JO;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 
@@ -118,6 +121,7 @@ public class FaceRecognition {
     public FaceRecognition() {
         cameraThread = new Thread(()->{
             webcam = Webcam.getDefault();
+            webcam.setViewSize(new Dimension(640, 480));
             webcam.open();
             while (true){
                 this.capture = webcam.getImage();
@@ -267,6 +271,46 @@ public class FaceRecognition {
             e.printStackTrace();
         }
 
+    }
+
+    public void getGesture(){
+        String feedback = "";
+        String url = "https://api-us.faceplusplus.com/humanbodypp/beta/gesture";
+        byte[] buff = getBytesFromFile(file);
+        HashMap<String, String> map = new HashMap<>();
+        HashMap<String, byte[]> byteMap = new HashMap<>();
+        byteMap.put("image_file",buff);
+        map.put("api_key", apikey);
+        map.put("api_secret", apisecret);
+        ArrayList<Double> values = new ArrayList<Double>();
+        try {
+            Response rsp = post(url, map, byteMap);
+            JSONObject result = new JSONObject(new String(rsp.getContent()));
+            System.out.println(result.toString());
+            System.out.println(result.getJSONArray("hands"));
+            Object gestures = result.getJSONArray("hands").get(0);
+            JSONObject gest = new JSONObject(gestures.toString());
+            JSONObject hand = gest.getJSONObject("gesture");
+            values.add(hand.getDouble("thumb_up"));
+            values.add(hand.getDouble("thumb_down"));
+            values.add(hand.getDouble("rock"));
+            values.add(hand.getDouble("heart_b"));
+            values.add(hand.getDouble("ok"));
+            if (values.indexOf(Collections.max(values))==0){
+                feedback="thumb_up";
+            }else if (values.indexOf(Collections.max(values))==1){
+                feedback="thumb_down";
+            }else if (values.indexOf(Collections.max(values))==2){
+                feedback="rock";
+            }else if (values.indexOf(Collections.max(values))==3){
+                feedback="heart";
+            }else if (values.indexOf(Collections.max(values))==4){
+                feedback="ok";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(feedback);
     }
 
 }

@@ -87,13 +87,13 @@ public class WelcomeController implements Initializable {
             logo = new Image("bwhLogo.png");
             seal = new Image("bwhCrest.png");
         }
-//
+
 //        Button face = new Button("Face Recognition");
 //        face.setStyle("-fx-font-size: 15pt;");
 //        face.setOnAction(new EventHandler<ActionEvent>() {
 //            @Override
 //            public void handle(ActionEvent event) {
-//                FaceRecognition.getInstance().detectBody();
+//                FaceRecognition.getInstance().getGesture();
 //
 //            }
 //        });
