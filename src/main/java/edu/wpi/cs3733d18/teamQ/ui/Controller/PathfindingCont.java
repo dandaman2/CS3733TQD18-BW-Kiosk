@@ -18,6 +18,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -70,7 +71,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     private AutoCompleteTextField endingNodeField;
 
     @FXML
-    private Button exchange;
+    private JFXButton exchange;
 
     //Shortcuts for quickpaths
     @FXML
@@ -152,8 +153,13 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     @FXML
     private JFXComboBox<String> gifSelector;
 
-    @FXML
     private JFXTreeView<String> textTree;
+
+    @FXML
+    private JFXButton textBtn;
+
+    @FXML
+    private JFXDrawer treeDrawer;
 
     //Scrolling and zooming functionality
     @FXML
@@ -227,6 +233,13 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      * @param rb
      */
     public void initialize(URL url, ResourceBundle rb) {
+        textTree = new JFXTreeView<String>();
+        textTree.setVisible(false);
+        textTree.setMouseTransparent(true);
+
+        treeDrawer.close();
+        treeDrawer.setSidePane(textTree);
+
         nodes = getNodes();
 
         //list of nodes from running algorithm
@@ -2097,6 +2110,14 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     @Override
     public void changedUpdate(DocumentEvent e) {
         updatePath();
+    }
+
+    public void displayTextDrawer(ActionEvent actionEvent) {
+        if (treeDrawer.isHidden()) {
+            treeDrawer.open();
+        } else {
+            treeDrawer.close();
+        }
     }
 }
 
