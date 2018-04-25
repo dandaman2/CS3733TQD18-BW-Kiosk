@@ -220,7 +220,7 @@ public class AdminHomeScreenController implements Initializable {
             Parent welcomePane = welcomeLoader.load();
             Stage primaryStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
             Scene welcomeScene = sdUtil.prodAndBindScene(welcomePane, primaryStage);
-            welcomeScene.getStylesheets().addAll("Stylesheet.css", "StyleMenus.css");
+            welcomeScene.getStylesheets().addAll("Stylesheet.css", "StyleMenus.css", "homeBackground.css");
             primaryStage.setScene(welcomeScene);
         }
         catch(IOException io){
