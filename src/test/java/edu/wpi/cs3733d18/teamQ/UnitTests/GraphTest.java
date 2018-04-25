@@ -104,7 +104,7 @@ public class GraphTest {
      * Tests that a path that is not a trivial one step is correctly generated, even
      * with another option that would be found sooner.
      */
-    @Test @Ignore
+    @Test
     public void testNonTrivalPath(){
         ArrayList<Node> expectedPath = new ArrayList<Node>();
         ArrayList<String> noType = new ArrayList<>();
@@ -112,8 +112,7 @@ public class GraphTest {
         expectedPath.add(node1);
         expectedPath.add(node2);
         expectedPath.add(node4);
-        expectedPath.add(node3);
-        ArrayList<Node> fetchedPath = testGraph.findPath(node1, node3, noType);
+        ArrayList<Node> fetchedPath = testGraph.findPath(node1, node4, noType);
 
         assertEquals(expectedPath, fetchedPath);
     }
