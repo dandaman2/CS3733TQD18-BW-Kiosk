@@ -119,6 +119,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     @FXML
     JFXButton homeButton;
 
+    @FXML
+    JFXButton infoButt;
+
     //Map Image
     @FXML
     private VBox vbox;
@@ -294,6 +297,10 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         textTree.setVisible(false);
         textTree.setMouseTransparent(true);
+
+        infoButt.setOnAction(e -> InfoController.displayPathInfoPage());
+        infoButt.setStyle("-fx-background-radius: 50%; -fx-font-size: 20;");
+        infoButt.setText("?");
 
     }
 
