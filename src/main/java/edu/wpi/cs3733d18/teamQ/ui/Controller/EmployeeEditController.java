@@ -300,10 +300,10 @@ public class EmployeeEditController implements Initializable {
                 }
 
                 if(level == "1"){
-                    employee = new Employee(uName,pass,firstName,lastName,title,false,null);
+                    employee = new Employee(uName,pass,firstName,lastName,title,false,"");
                 }
                 else{
-                    employee = new Employee(uName,pass,firstName,lastName,title,true,null);
+                    employee = new Employee(uName,pass,firstName,lastName,title,true,"");
                 }
 
                 user.addEmployeeSingleton(employee);
@@ -330,10 +330,10 @@ public class EmployeeEditController implements Initializable {
                     Employee employeeNew;
 
                     if(level == "1"){
-                        employeeNew = new Employee(uName,null,firstName,lastName,title,false,null);
+                        employeeNew = new Employee(uName,null,firstName,lastName,title,false,"");
                     }
                     else{
-                        employeeNew = new Employee(uName,null,firstName,lastName,title,true,null);
+                        employeeNew = new Employee(uName,null,firstName,lastName,title,true,"");
                     }
 
                     if(pass==null||pass.isEmpty()){
@@ -384,4 +384,6 @@ public class EmployeeEditController implements Initializable {
 
         }
     }
+
+
 }
