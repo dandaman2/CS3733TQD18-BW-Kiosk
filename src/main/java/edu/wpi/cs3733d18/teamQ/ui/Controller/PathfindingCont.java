@@ -252,7 +252,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         treeDrawer.setMouseTransparent(true);
 
-        floorL21.setDisableVisualFocus(true);
+        //floorL21.setDisableVisualFocus(true);
 
         Image close;
         if(runningFromIntelliJ()) {
@@ -667,7 +667,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             sTempEnd = endingNodeField.getText();
             if (!(endingNodeField.getText().isEmpty())) {
                 getNodeFromTextFields(startingNodeField, endingNodeField);
-                generatePath();
+                if(startNode != null && curSelected != null) {
+                    generatePath();
+                }
             }else {
                 clearPath();
                 isPathDisplayed = false;

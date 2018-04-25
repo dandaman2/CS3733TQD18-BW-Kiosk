@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="masterPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="896.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamQ.ui.Controller.WelcomeController">
+   <children>
+      <VBox prefHeight="896.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="bwhLogo" fitHeight="116.0" fitWidth="331.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../bwhLogo.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Region prefHeight="105.0" prefWidth="579.0" HBox.hgrow="ALWAYS" />
+                  <JFXButton fx:id="adminButt" buttonType="RAISED" contentDisplay="RIGHT" prefHeight="70.0" prefWidth="69.0" style="-fx-background-radius: 70px;">
+                     <font>
+                        <Font name="Georgia" size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </JFXButton>
+               </children>
+               <VBox.margin>
+                  <Insets right="10.0" />
+               </VBox.margin>
+            </HBox>
+            <StackPane alignment="CENTER_RIGHT" prefHeight="814.0" prefWidth="1024.0">
+               <children>
+                  <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="924.0">
+                     <children>
+                        <JFXButton fx:id="directButt" buttonType="RAISED" maxHeight="100.0" minHeight="100.0" onAction="#pathClick" prefHeight="100.0" prefWidth="955.0" text="Directions">
+                           <font>
+                              <Font name="Georgia" size="51.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets right="10.0" />
+                           </VBox.margin>
+                        </JFXButton>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="851.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <VBox prefHeight="635.0" prefWidth="311.0">
+                                 <children>
+                                    <JFXButton fx:id="searchButt" buttonType="RAISED" maxHeight="100.0" minHeight="100.0" prefHeight="100.0" prefWidth="310.0" text="Quick Search" VBox.vgrow="ALWAYS">
+                                       <font>
+                                          <Font name="Georgia" size="33.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </JFXButton>
+                                    <JFXButton fx:id="hoursButt" buttonType="RAISED" maxHeight="100.0" minHeight="100.0" prefHeight="100.0" prefWidth="310.0" text="Hospital Hours">
+                                       <font>
+                                          <Font name="Georgia" size="33.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </JFXButton>
+                                    <JFXButton fx:id="aboutButton" buttonType="RAISED" maxHeight="100.0" minHeight="100.0" prefHeight="100.0" prefWidth="310.0" text="About">
+                                       <font>
+                                          <Font name="Georgia" size="33.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </JFXButton>
+                                    <Region prefHeight="279.0" prefWidth="306.0" />
+                                    <JFXButton fx:id="EmergencyBtn" buttonType="RAISED" maxHeight="100.0" minHeight="100.0" onAction="#emergencyRequest" prefHeight="100.0" prefWidth="310.0" text="Emergency">
+                                       <font>
+                                          <Font name="Georgia" size="33.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </JFXButton>
+                                 </children>
+                              </VBox>
+                              <ImageView fx:id="gifPane" fitHeight="554.0" fitWidth="618.0" pickOnBounds="true" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+                                 </HBox.margin>
+                              </ImageView>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="20.0" left="50.0" right="10.0" />
+               </VBox.margin>
+            </StackPane>
+            <HBox maxHeight="50.0" minHeight="50.0" prefHeight="50.0" prefWidth="1024.0" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -334,7 +334,7 @@ public class  RequestController implements Initializable{
         infoView.setFitHeight(40);
         backBtn.setGraphic(infoView);
 
-        backBtn.setDisableVisualFocus(true);
+        //backBtn.setDisableVisualFocus(true);
 
         backBtn.setOnAction(e->goToAdminHome(e));
 
@@ -1144,10 +1144,11 @@ public class  RequestController implements Initializable{
             fulfilledRequestEmail.sendRequestText(r);
 
             final TreeItem<Request> pendingRoot = new RecursiveTreeItem<Request>(getPendingRequests(), RecursiveTreeObject::getChildren);
-            if(pendingRoot != null){
+            if(pendingRoot.getValue() != null) {
                 treeTableViewPending.setRoot(pendingRoot);
-                treeTableViewPending.setShowRoot(false);
             }
+            treeTableViewPending.setShowRoot(false);
+
 
             //pendingListView.setItems(getPendingRequests());
             //requestDB.remove(r);
@@ -1407,7 +1408,9 @@ public class  RequestController implements Initializable{
             removeRequest(r);
 
             final TreeItem<Request> fulfulledRoot = new RecursiveTreeItem<Request>(getFulfilledRequests(), RecursiveTreeObject::getChildren);
-            treeTableViewFulfilled.setRoot(fulfulledRoot);
+            if(fulfulledRoot.getValue() != null) {
+                treeTableViewFulfilled.setRoot(fulfulledRoot);
+            }
             treeTableViewFulfilled.setShowRoot(false);
 
             Text text = new Text("Description:");

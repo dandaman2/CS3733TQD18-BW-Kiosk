@@ -1,0 +1,22 @@
+/* Internal Stylesheet for the Pathfinding Screen */
+
+/*Button {
+    -fx-background-color: rgba(1,64,120,.9);
+    -fx-text-fill: white;
+    -fx-font-size: 15pt;
+}
+Button:hover {
+    -fx-background-color: rgba(1,45,90,1);
+}
+Button:pressed {
+    -fx-background-color: rgba(1,60,120,1);
+}*/
+#playButton {
+    -fx-background-color: rgba(1,60,120,1);
+    -fx-max-width: 100px;
+    -fx-max-height: 80px;
+    -fx-min-width: 100px;
+    -fx-min-height: 80px;
+    -fx-text-fill: white;
+    -fx-font-size: 21pt;
+}

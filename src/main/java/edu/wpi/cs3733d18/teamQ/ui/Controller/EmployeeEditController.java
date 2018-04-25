@@ -98,7 +98,7 @@ public class EmployeeEditController implements Initializable {
         backBtn.setStyle("-fx-text-fill: #FFFFFF;");
         backBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
 
-        backBtn.setDisableVisualFocus(true);
+        //backBtn.setDisableVisualFocus(true);
 
         Image info;
         if (runningFromIntelliJ()) {
@@ -350,7 +350,9 @@ public class EmployeeEditController implements Initializable {
 
                     ObservableList<Employee> allEmployees = FXCollections.observableArrayList(user.getEmployees());
                     final TreeItem<Employee> pendingRoot = new RecursiveTreeItem<Employee>(allEmployees, RecursiveTreeObject::getChildren);
-                    employeeTTV.setRoot(pendingRoot);
+                    if(pendingRoot.getValue() != null) {
+                        employeeTTV.setRoot(pendingRoot);
+                    }
                     employeeTTV.setShowRoot(false);
 
                     resetDefault();
@@ -373,7 +375,9 @@ public class EmployeeEditController implements Initializable {
 
                     ObservableList<Employee> allEmployees = FXCollections.observableArrayList(user.getEmployees());
                     final TreeItem<Employee> pendingRoot = new RecursiveTreeItem<Employee>(allEmployees, RecursiveTreeObject::getChildren);
-                    employeeTTV.setRoot(pendingRoot);
+                    if(pendingRoot.getValue() != null) {
+                        employeeTTV.setRoot(pendingRoot);
+                    }
                     employeeTTV.setShowRoot(false);
 
                     resetDefault();

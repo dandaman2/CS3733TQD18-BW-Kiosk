@@ -93,11 +93,11 @@ public class WelcomeController implements Initializable {
         loginView.setFitHeight(50);
 
         adminButt.setGraphic(loginView);
-        adminButt.setDisableVisualFocus(true);
+        //adminButt.setDisableVisualFocus(true);
 
         aboutButton.setOnAction(e -> AboutController.displayAboutPage());
         adminButt.setOnAction(e -> AlertBox.display("Admin Login", "Please input your username and password."));
-        directButt.setDisableVisualFocus(true);
+        //directButt.setDisableVisualFocus(true);
         hoursButt.setOnAction(e -> HoursController.display());
         searchButt.setOnAction(e -> QuickSearchController.display());
 
