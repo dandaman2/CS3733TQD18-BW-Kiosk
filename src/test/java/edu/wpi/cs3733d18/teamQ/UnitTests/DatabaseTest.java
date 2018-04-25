@@ -46,8 +46,8 @@ public class DatabaseTest {
     //new InterpreterRequest(0,"testEmail@test.com", "111111111", testRequestID, "Spanish");
     private final String testFulfilledName = "Test Doctor";
 
-    private final Employee testEmployee = new Employee("bobsmith", "password", false);
-    private final Employee testAdmin = new Employee("bigcheese", "bosspass", true);
+    private final Employee testEmployee = new Employee("bobsmith", "password",null, null, null, false, "");
+    private final Employee testAdmin = new Employee("bigcheese", "bosspass",null, null, null, true, "");
 
     private final String firstPassword = "testPassword";
     private final String secondPassword = "testPassword2";

@@ -69,6 +69,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
                   <VBox prefHeight="200.0" prefWidth="224.0" GridPane.rowIndex="2">
@@ -140,15 +141,20 @@
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font></JFXButton>
-                  <JFXButton fx:id="betweenFloorEdges" onAction="#multiFloorEdgeAdd" prefHeight="50.0" prefWidth="267.0" text="Connect Floors" GridPane.rowIndex="11">
+                  <JFXButton fx:id="betweenFloorEdges" onAction="#multiFloorEdgeAdd" prefHeight="50.0" prefWidth="267.0" text="Connect Floors" GridPane.rowIndex="12">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font></JFXButton>
-                  <JFXButton fx:id="clearButton" onAction="#handleAction" prefHeight="50.0" prefWidth="267.0" text="Clear" GridPane.rowIndex="12">
+                  <JFXButton fx:id="clearButton" onAction="#handleAction" prefHeight="50.0" prefWidth="267.0" text="Clear" GridPane.rowIndex="13">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font></JFXButton>
                   <JFXButton fx:id="guessBtn" onAction="#estimateCoords" prefHeight="50.0" prefWidth="267.0" text="Estimate Coords" GridPane.rowIndex="5">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="toggleBtn" onAction="#toggleElement" prefHeight="50.0" prefWidth="267.0" text="Toggle Node" GridPane.rowIndex="11">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -162,7 +168,7 @@
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <ScrollPane fx:id="twoDScroll" prefHeight="321.0" prefWidth="819.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="0.0">
+                              <ScrollPane fx:id="twoDScroll" pannable="true" prefHeight="321.0" prefWidth="819.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="0.0">
                                  <content>
                                     <AnchorPane fx:id="mapFrame2D">
                                        <children>
@@ -175,7 +181,7 @@
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <ScrollPane fx:id="threeDScroll" layoutX="171.0" layoutY="121.0" prefHeight="321.0" prefWidth="986.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <ScrollPane fx:id="threeDScroll" layoutX="171.0" layoutY="121.0" pannable="true" prefHeight="321.0" prefWidth="986.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <content>
                                     <AnchorPane fx:id="mapFrame3D">
                                        <children>

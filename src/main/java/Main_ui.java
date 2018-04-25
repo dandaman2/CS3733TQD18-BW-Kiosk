@@ -23,6 +23,7 @@ public class Main_ui extends Application {
         user.initLoadMaps();
         user.setNodes(getNodes());
         user.setEdges(getEdges());
+        user.setEmployees(getEmployees());
         FaceRecognition.getInstance();
         //user.startTimer();
 

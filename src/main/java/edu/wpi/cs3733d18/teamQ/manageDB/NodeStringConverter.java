@@ -27,7 +27,8 @@ import java.sql.SQLException;
                     results.getString("TEAMNAME"),
                     results.getDouble("XCOORD3D"),
                     results.getDouble("YCOORD3D"),
-                    results.getDouble("HITS"));
+                    results.getDouble("HITS"),
+                    results.getInt("ISENABLED")==1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -53,7 +54,8 @@ import java.sql.SQLException;
                     +rs2.getString("TEAMNAME") + ','
                     +rs2.getString("XCOORD3D") +','
                     +rs2.getString("YCOORD3D") +','
-                    +rs2.getString("HITS") +'\n';
+                    +rs2.getString("HITS") +','
+                    +rs2.getString("ISENABLED") +'\n';
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -77,7 +79,8 @@ import java.sql.SQLException;
                 +"\'" + input.getAssignedTeam() +"\',"
                 +input.getxPos3D() +','
                 +input.getyPos3D() +','
-                +input.getHits()+ ')';
+                +input.getHits() +','
+                +input.isEnabledInt()+ ')';
         return node;
     }
 
@@ -98,7 +101,8 @@ import java.sql.SQLException;
                 +"TEAMNAME=\'" + input.getAssignedTeam() +"\',"
                 +"XCOORD3D="+input.getxPos3D() +','
                 +"YCOORD3D="+input.getyPos3D() +','
-                +"HITS="+input.getHits();
+                +"HITS="+input.getHits() +','
+                +"ISENABLED="+input.isEnabledInt();
         return node;
     }
 

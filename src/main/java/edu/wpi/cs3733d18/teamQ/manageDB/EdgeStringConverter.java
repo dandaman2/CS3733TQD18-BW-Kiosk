@@ -18,7 +18,8 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.NodeDB.getNode;
         String edge = "(\'" +input.getEdgeID() +"\',"
                 +"\'" + input.getStartNode().getNodeID() +"\',"
                 +"\'" + input.getEndNode().getNodeID() +"\',"
-                +input.getDistance() +')';
+                +input.getDistance() + ","
+                +input.isEnabledInt() + ')';
         return edge;
     }
 
@@ -29,9 +30,10 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.NodeDB.getNode;
      */
      static String edgeToStringUpdate(Edge input){
         String edge = "EDGEID=\'" +input.getEdgeID() +"\',"
-                +"STARTNODE=\'" + input.getStartNode() +"\',"
-                +"ENDNODE=\'" + input.getEndNode() +"',"
-                +"DISTANCE="+input.getDistance();
+                +"STARTNODE=\'" + input.getStartNode().getNodeID() +"\',"
+                +"ENDNODE=\'" + input.getEndNode().getNodeID() +"',"
+                +"DISTANCE=" + input.getDistance() + ","
+                +"ISENABLED=" + input.isEnabledInt();
         return edge;
     }
 
@@ -46,7 +48,8 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.NodeDB.getNode;
             edge = rs1.getString("EDGEID") + ','
                     +rs1.getString("STARTNODE") + ','
                     +rs1.getString("ENDNODE") + ','
-                    +rs1.getString("DISTANCE") + '\n';
+                    +rs1.getString("DISTANCE") + ','
+                    +rs1.getString("ISENABLED") + '\n';
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -64,7 +67,8 @@ import static edu.wpi.cs3733d18.teamQ.manageDB.NodeDB.getNode;
             edge = new Edge(rs.getString("EDGEID"),
                     getNode(rs.getString("STARTNODE")),
                     getNode(rs.getString("ENDNODE")),
-                    rs.getDouble("DISTANCE"));
+                    rs.getDouble("DISTANCE"),
+                    rs.getInt("ISENABLED")==1);
         } catch (SQLException e) {
             e.printStackTrace();
         }

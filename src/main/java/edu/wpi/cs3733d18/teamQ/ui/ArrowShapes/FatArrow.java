@@ -1,41 +1,21 @@
 package edu.wpi.cs3733d18.teamQ.ui.ArrowShapes;
 
 
-import javafx.scene.control.TextField;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
-public class FatArrow extends Polygon {
-    private int floor;
-    private double height;
-    private double width;
+public class FatArrow extends ArrowShape {
     private double overHang = .33;
+    private Polygon shape;
 
-    private double x;
-    private double y;
+    public FatArrow(double height, double width, double x, double y) {
+        super(height, width, x, y);
 
-    public FatArrow(double height, double width, int floor, double x, double y) {
-        this.height = height;
-        this.width = width;
-        this.floor = floor;
-        this.x = x;
-        this.y = y;
-
-        this.getPoints().addAll(new Double []{
-                0.0,0.0,
+        this.getPoints().addAll(new Double[]{
+                0.0, 0.0,
                 width, 0.0,
                 (1 + overHang) * width, height / 2.0,
                 width, height,
                 0.0, height,
-                overHang * width, height / 2.0 });
-
-        this.setLayoutX(x);
-        this.setLayoutY(y);
-        this.setStroke(Color.BLACK);
-    }
-
-    public int getFloor() {
-        return floor;
+                overHang * width, height / 2.0});
     }
 }

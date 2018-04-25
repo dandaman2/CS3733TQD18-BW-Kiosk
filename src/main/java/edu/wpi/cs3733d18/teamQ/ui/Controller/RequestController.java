@@ -2,14 +2,14 @@ package edu.wpi.cs3733d18.teamQ.ui.Controller;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import edu.wpi.cs3733d18.teamOapi.giftShop.GiftShop;
 import edu.wpi.cs3733d18.teamQ.pathfinding.Node;
 import edu.wpi.cs3733d18.teamQ.ui.Email;
 import edu.wpi.cs3733d18.teamQ.ui.Requests.InterpreterRequest;
 import edu.wpi.cs3733d18.teamQ.ui.Requests.Request;
 import edu.wpi.cs3733d18.teamQ.ui.Requests.SanitationRequest;
 import edu.wpi.cs3733d18.teamQ.ui.User;
-//import edu.wpi.cs3733d18.teamQ2.ui.Controller.RequestController2;
-//import edu.wpi.cs3733d18.teamQ2.ui.Controller.RequestController2;
+import edu.wpi.cs3733d18.teamQ2.ui.Controller.RequestController2;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,6 +28,9 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import me.xdrop.fuzzywuzzy.FuzzySearch;
+import me.xdrop.fuzzywuzzy.model.ExtractedResult;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
 import javax.naming.ServiceUnavailableException;
@@ -37,6 +40,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.*;
@@ -48,8 +52,6 @@ public class  RequestController implements Initializable{
     private AnchorPane requestPane;
 
     //Drop Down Menu
-    @FXML
-    private ComboBox<String> dropDown;
 
     private ChoiceBox<String> interpreterCB = new ChoiceBox<String>();
 
@@ -61,8 +63,8 @@ public class  RequestController implements Initializable{
     private JFXTextField firstNameTF;
     @FXML
     private JFXTextField lastNameTF;
-    @FXML
-    private JFXTextField roomLocationTF;
+
+    AutoCompleteTextField roomLocationTF;
     @FXML
     private JFXTextField emailTF;
     @FXML
@@ -98,6 +100,15 @@ public class  RequestController implements Initializable{
     JFXButton stat2;
     @FXML
     JFXButton stat3;
+
+    //request buttons
+    @FXML
+    JFXButton interpreterBtn;
+    @FXML
+    JFXButton sanitationBtn;
+    @FXML
+    JFXButton giftBtn;
+
 
     // description of pending request
     @FXML
@@ -141,10 +152,6 @@ public class  RequestController implements Initializable{
     private PieChart pieChart1;
     private BarChart<String,Number> barChart;
 
-    //api
-    @FXML
-    JFXButton apiBtn;
-
 
 
     //Global Variables to monitor:------------
@@ -182,6 +189,7 @@ public class  RequestController implements Initializable{
     // screenUtil object for request room searching
     ScreenUtil pUtil = new ScreenUtil();
     public ArrayList<Node> nodes;
+    public ArrayList<String> currentFilter;
 
 
     //Initializes the scene
@@ -210,29 +218,8 @@ public class  RequestController implements Initializable{
 
 
         // Action for button to submit fields
-        submit.setOnAction(e -> submitFulFillRequest());
         scrollPane.setStyle("-fx-font: 16px \"System\";");
         scrollPaneFulFill.setStyle("-fx-font: 16px \"System\";");
-
-        clear.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        clear.setStyle("-fx-text-fill: #FFFFFF;");
-        clear.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        submitRequest.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        submitRequest.setStyle("-fx-text-fill: #FFFFFF;");
-        submitRequest.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        submit.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        submit.setStyle("-fx-text-fill: #FFFFFF;");
-        submit.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        removeFulFilled.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        removeFulFilled.setStyle("-fx-text-fill: #FFFFFF;");
-        removeFulFilled.setRipplerFill(Paint.valueOf("#FFFFFF"));
-
-        removePending.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        removePending.setStyle("-fx-text-fill: #FFFFFF;");
-        removePending.setRipplerFill(Paint.valueOf("#FFFFFF"));
 
     }
 
@@ -240,13 +227,6 @@ public class  RequestController implements Initializable{
 
     //initialize the drop down menus
     private void setUpDropBox() {
-        dropDown.getItems().add("Interpreter");
-        dropDown.getItems().add("Sanitation");
-        //dropDown.getItems().add("Delivery");
-        //dropDown.getItems().add("Religious");
-        dropDown.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> displayRequestType(newValue));
-
-
         //create ChoiceBox for an Interpreter request
         interpreterCB.getItems().add("English");
         interpreterCB.getItems().add("French");
@@ -275,8 +255,14 @@ public class  RequestController implements Initializable{
         lastNameTF.setPromptText("Requester's Last Name");
         lastNameTF.setText(null);
 
+        roomLocationTF = new AutoCompleteTextField();
         roomLocationTF.setPromptText("Room Location");
-        roomLocationTF.setText(null);
+        roomLocationTF.setText("");
+        grid1_1_1.add(roomLocationTF,0,3);
+        //roomLocationTF.setOnInputMethodTextChanged(event -> updateFilter(roomLocationTF.getText()));
+        //roomLocationTF.setOnKeyPressed(event -> updateFilter(roomLocationTF.getText()));
+        roomLocationTF.setOnKeyReleased(event -> updateFilter(roomLocationTF.getText()));
+        //roomLocationTF.setOnKeyTyped(event -> updateFilter(roomLocationTF.getText()));
 
         emailTF.setPromptText("Email");
         emailTF.setText(null);
@@ -293,10 +279,32 @@ public class  RequestController implements Initializable{
         sanitationDescription.setPromptText("Enter Description ... ");
     }
 
+
     //Initialize buttons of request screen
     private void setUpButtons() {
         clear.setOnAction(e -> handleAction(e));
-        submit.setOnAction(e -> handleAction(e));
+        //submit.setOnAction(e -> handleAction(e));
+
+        clear.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
+        clear.setStyle("-fx-text-fill: #FFFFFF;");
+        clear.setRipplerFill(Paint.valueOf("#FFFFFF"));
+
+        submitRequest.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
+        submitRequest.setStyle("-fx-text-fill: #FFFFFF;");
+        submitRequest.setRipplerFill(Paint.valueOf("#FFFFFF"));
+
+        submit.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
+        submit.setStyle("-fx-text-fill: #FFFFFF;");
+        submit.setRipplerFill(Paint.valueOf("#FFFFFF"));
+        submit.setOnAction(e -> submitFulFillRequest());
+
+        removeFulFilled.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
+        removeFulFilled.setStyle("-fx-text-fill: #FFFFFF;");
+        removeFulFilled.setRipplerFill(Paint.valueOf("#FFFFFF"));
+
+        removePending.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
+        removePending.setStyle("-fx-text-fill: #FFFFFF;");
+        removePending.setRipplerFill(Paint.valueOf("#FFFFFF"));
 
         backBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#ECECEC"), new CornerRadii(0), null)));
         backBtn.setStyle("-fx-text-fill: #FFFFFF;");
@@ -304,7 +312,7 @@ public class  RequestController implements Initializable{
 
         Image info;
         if(runningFromIntelliJ()) {
-            info = new Image("../resources/ButtonImages/home.png");
+            info = new Image("/ButtonImages/home.png");
         } else{
             info = new Image("ButtonImages/home.png");
         }
@@ -312,7 +320,6 @@ public class  RequestController implements Initializable{
         infoView.setFitWidth(42);
         infoView.setFitHeight(40);
         backBtn.setGraphic(infoView);
-
         backBtn.setOnAction(e->goToAdminHome(e));
 
 
@@ -332,9 +339,90 @@ public class  RequestController implements Initializable{
         stat3.setRipplerFill(Paint.valueOf("#FFFFFF"));
         stat3.setOnAction(e->showStat3(e));
 
-        apiBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
-        apiBtn.setStyle("-fx-text-fill: #FFFFFF;");
-        apiBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
+
+        //Buttons on first tab
+        Image interpreterIcon;
+        if(runningFromIntelliJ()) {
+            interpreterIcon = new Image("/ButtonImages/Interpreter_Icon3.png");
+        } else{
+            interpreterIcon = new Image("ButtonImages/Interpreter_Icon3.png");
+        }
+        ImageView interpreterView = new ImageView(interpreterIcon);
+        interpreterView.setFitWidth(280);
+        interpreterView.setFitHeight(180);
+
+        interpreterBtn.setGraphic(interpreterView);
+        interpreterBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
+        interpreterBtn.setStyle("-fx-text-fill: #FFFFFF;");
+        interpreterBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
+        interpreterBtn.setOnAction(e  -> displayRequestType("Interpreter"));
+
+
+        Image sanitationIcon;
+        if(runningFromIntelliJ()) {
+            sanitationIcon = new Image("/ButtonImages/Sanitation_Icon3.png");
+        } else{
+            sanitationIcon = new Image("ButtonImages/Sanitation_Icon3.png");
+        }
+        ImageView sanitationView = new ImageView(sanitationIcon);
+        sanitationView.setFitWidth(280);
+        sanitationView.setFitHeight(180);
+
+        sanitationBtn.setGraphic(sanitationView);
+        sanitationBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
+        sanitationBtn.setStyle("-fx-text-fill: #FFFFFF;");
+        sanitationBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
+        sanitationBtn.setOnAction(e  -> displayRequestType("Sanitation"));
+
+
+        Image giftIcon;
+        if(runningFromIntelliJ()) {
+            giftIcon = new Image("/ButtonImages/Gift_Icon3.png");
+        } else{
+            giftIcon = new Image("ButtonImages/Gift_Icon3.png");
+        }
+        ImageView giftView = new ImageView(giftIcon);
+        giftView.setFitWidth(280);
+        giftView.setFitHeight(180);
+
+        giftBtn.setGraphic(giftView);
+        giftBtn.setBackground(new Background(new BackgroundFill(Paint.valueOf("#012D5A"), new CornerRadii(0), null)));
+        giftBtn.setStyle("-fx-text-fill: #FFFFFF;");
+        giftBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
+        giftBtn.setOnAction(e  -> displayRequestType("Gift"));
+
+    }
+
+
+    /**
+     * highlights the button of the selected floor
+     */
+    public void highlightButton() {
+        clearBtnBorders();
+
+        switch (requestType) {
+            case "Interpreter": interpreterBtn.setStyle("-fx-border-color: YELLOW;" + "-fx-border-width: 5;" + "-fx-text-fill: #FFFFFF;");
+                break;
+
+            case "Sanitation": sanitationBtn.setStyle("-fx-border-color: YELLOW;" + "-fx-border-width: 5;" + "-fx-text-fill: #FFFFFF;");
+                break;
+
+            case "Gift": giftBtn.setStyle("-fx-border-color: YELLOW;" + "-fx-border-width: 5;" + "-fx-text-fill: #FFFFFF;");
+                break;
+
+            default:
+                break;
+        }
+    }
+
+
+    /**
+     * clears the borders of all the floor selector buttons
+     */
+    public void clearBtnBorders(){
+        interpreterBtn.setStyle("-fx-text-fill: #FFFFFF;");
+        sanitationBtn.setStyle("-fx-text-fill: #FFFFFF;");
+        giftBtn.setStyle("-fx-text-fill: #FFFFFF;");
     }
 
     /**
@@ -808,6 +896,7 @@ public class  RequestController implements Initializable{
         treeTableViewPending.getColumns().setAll(priorityColumn, idColumn, typeColumn, roomColumn, lastNameColumn);
         treeTableViewPending.setRoot(pendingRoot);
         treeTableViewPending.setShowRoot(false);
+        treeTableViewPending.setColumnResizePolicy(TreeTableView.CONSTRAINED_RESIZE_POLICY);
     }
 
 
@@ -861,6 +950,7 @@ public class  RequestController implements Initializable{
         treeTableViewFulfilled.getColumns().setAll(priorityColumn, idColumn, typeColumn, roomColumn, lastNameColumn);
         treeTableViewFulfilled.setRoot(pendingRoot);
         treeTableViewFulfilled.setShowRoot(false);
+        treeTableViewFulfilled.setColumnResizePolicy(TreeTableView.CONSTRAINED_RESIZE_POLICY);
     }
 
 
@@ -871,7 +961,27 @@ public class  RequestController implements Initializable{
     private void initAutoComp(ArrayList<Node> nodeList) {
         ArrayList<String> nodeIdentification = pUtil.getNameIdNode(nodeList);
 
-        TextFields.bindAutoCompletion(roomLocationTF, nodeIdentification);
+        //TextFields.bindAutoCompletion(roomLocationTF, nodeIdentification);
+    }
+
+
+    /**
+     * updates the filter for the searching
+     * @param text
+     */
+    private void updateFilter(String text) {
+        ArrayList<String> nodeIdentification = pUtil.getNameIdNode(nodes);
+        List<ExtractedResult> fuzzyFilter =  FuzzySearch.extractSorted(text, nodeIdentification);
+
+        currentFilter = new ArrayList<String>();
+        for(int i = 0; i < fuzzyFilter.size(); i++){
+            ExtractedResult current = fuzzyFilter.get(i);
+            //System.out.println(current.getString() + " - " + current.getScore() + " for " +text);
+
+            currentFilter.add(current.getString());
+        }
+
+        roomLocationTF.getEntries().addAll(currentFilter);
     }
 
     //Helper Methods-----------------------------------------------------------------------------------------------
@@ -1011,24 +1121,24 @@ public class  RequestController implements Initializable{
             case "Interpreter":
                 resetDefault();
                 requestType = "Interpreter";
+                highlightButton();
                 interpreterCB.setVisible(true);
                 break;
             //Sanitation
             case "Sanitation":
                 resetDefault();
                 requestType = "Sanitation";
+                highlightButton();
                 sanitationDescription.setVisible(true);
                 break;
-            //Delivery
-            case "Delivery":
+            //Gift
+            case "Gift":
                 resetDefault();
-                System.out.println("Delivery");
+                requestType = "Gift";
+                highlightButton();
+                runAPI();
                 break;
-            //Religious
-            case "Religious":
-                resetDefault();
-                System.out.println("Religious");
-                break;
+
             default:
         }
     }
@@ -1147,6 +1257,7 @@ public class  RequestController implements Initializable{
                 System.out.println("Sent!");
                 resetTextFields();
                 hideError();
+                clearBtnBorders();
             }
             else if(requestType == "Sanitation"){
 
@@ -1177,6 +1288,7 @@ public class  RequestController implements Initializable{
                 System.out.println("Sent!");
                 resetTextFields();
                 hideError();
+                clearBtnBorders();
             }
         }
     }
@@ -1188,7 +1300,7 @@ public class  RequestController implements Initializable{
     private void resetTextFields(){
         firstNameTF.setText(null);
         lastNameTF.setText(null);
-        roomLocationTF.setText(null);
+        roomLocationTF.setText("");
         emailTF.setText(null);
         phoneNumberTF.setText(null);
         sanitationDescription.setText(null);
@@ -1250,7 +1362,13 @@ public class  RequestController implements Initializable{
 
 
     //runAPI
-    public void runAPI() throws IOException {
+    public void runAPI() {
+        GiftShop giftShop = new GiftShop();
+        giftShop.run(0, 0, 1900, 1000, (String)null, "Path A", (String)null);
+    }
+
+//    //runAPI
+//    public void runAPI() throws IOException {
 //        RequestController2 requestController2 = new RequestController2();
 //        try {
 //            requestController2.run(0, 0, 1900, 1000, (String)null, (String)null, (String)null);
@@ -1259,7 +1377,7 @@ public class  RequestController implements Initializable{
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-    }
+//    }
 
 }
 

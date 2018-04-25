@@ -1,6 +1,7 @@
 package edu.wpi.cs3733d18.teamQ.IntegrationTests;
 
 import edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem;
+import edu.wpi.cs3733d18.teamQ.pathfinding.Astar;
 import org.junit.AfterClass;
 import edu.wpi.cs3733d18.teamQ.pathfinding.Graph;
 import edu.wpi.cs3733d18.teamQ.pathfinding.Edge;
@@ -48,7 +49,7 @@ public class GraphAndDatabaseIntegrationTest {
         databaseSystem = new DatabaseSystem();
         databaseSystem.initializeDb();
 
-        testGraph = new Graph();
+        testGraph = new Astar();
     }
 
     @AfterClass
@@ -74,7 +75,7 @@ public class GraphAndDatabaseIntegrationTest {
         expectedPath.add(databaseSystem.getNode(oneFloorSixthNodeID));
         expectedPath.add(endNode);
         testGraph.init2(databaseSystem.getNodes(), databaseSystem.getEdges());
-        ArrayList<Node> foundPath = testGraph.findShortestPath(startNode, endNode, noType);
+        ArrayList<Node> foundPath = testGraph.findPath(startNode, endNode, noType);
 
         assertEquals(expectedPath.size(), foundPath.size());
         for(int i = 0; i < expectedPath.size(); i++){
@@ -108,7 +109,7 @@ public class GraphAndDatabaseIntegrationTest {
         expectedPath.add(testAddNode);
 
         testGraph.init2(databaseSystem.getNodes(), databaseSystem.getEdges());
-        ArrayList<Node> foundPath = testGraph.findShortestPath(startNode, testAddNode, noType);
+        ArrayList<Node> foundPath = testGraph.findPath(startNode, testAddNode, noType);
 
         assertEquals(expectedPath.size(), foundPath.size());
         for(int i = 0; i < expectedPath.size(); i++){
@@ -139,7 +140,7 @@ public class GraphAndDatabaseIntegrationTest {
 
         testGraph.init2(databaseSystem.getNodes(), databaseSystem.getEdges());
         ArrayList<Node> expectedPath = new ArrayList<>();
-        ArrayList<Node> foundPath = testGraph.findShortestPath(startNode, testAddNode, noType);
+        ArrayList<Node> foundPath = testGraph.findPath(startNode, testAddNode, noType);
 
         assertEquals(expectedPath, foundPath);
     }
@@ -161,7 +162,7 @@ public class GraphAndDatabaseIntegrationTest {
         expectedPath.add(endNode);
         testGraph.init2(databaseSystem.getNodes(), databaseSystem.getEdges());
 
-        ArrayList<Node> foundPath = testGraph.findShortestPath(startNode, endNode, noType);
+        ArrayList<Node> foundPath = testGraph.findPath(startNode, endNode, noType);
 
         assertEquals(expectedPath.size(), foundPath.size());
         for(int i = 0; i < expectedPath.size(); i++){
@@ -192,7 +193,7 @@ public class GraphAndDatabaseIntegrationTest {
         expectedPath.add(fifth);
         expectedPath.add(endNode);
         testGraph.init2(databaseSystem.getNodes(), databaseSystem.getEdges());
-        ArrayList<Node> foundPath = testGraph.findShortestPath(startNode, endNode, noType);
+        ArrayList<Node> foundPath = testGraph.findPath(startNode, endNode, noType);
 
         assertEquals(expectedPath.size(), foundPath.size());
         for(int i = 0; i < expectedPath.size(); i++){

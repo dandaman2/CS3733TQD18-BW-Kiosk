@@ -4,6 +4,7 @@ import edu.wpi.cs3733d18.teamQ.pathfinding.Node;
 import edu.wpi.cs3733d18.teamQ.ui.Controller.PathfindingCont;
 import edu.wpi.cs3733d18.teamQ.ui.TransPoint;
 import edu.wpi.cs3733d18.teamQ.ui.User;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
@@ -12,6 +13,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+import org.controlsfx.control.PopOver;
 
 import java.util.ArrayList;
 
@@ -63,24 +66,20 @@ public class MapNoder {
                 searchField.setText(n.getNameLong() + ","+ n.getNodeID());
             });
 
-            Tooltip tip = new Tooltip(n.getNameLong());
-            Tooltip.install(circle, tip);
+//            Tooltip tip = new Tooltip(n.getNameLong());
+//            Tooltip.install(circle, tip);
+            Text nodeName = new Text(n.getNameLong());
+            PopOver popOver = new PopOver(nodeName);
 
-//           circle.setOnMouseEntered((e) -> {
-//                System.out.println("hover label");
-//                nodeLabel = new Label( "  " + n.getNameLong() + " ");
-//                nodeLabel.setPrefHeight(14);
-//                nodeLabel.setLayoutX(tx);
-//                nodeLabel.setLayoutY(ty - 7);
-//               System.out.println("x: " + tx + " y: " + ty);
-//                nodeLabel.setStyle("-fx-background-color: #3e3c3a;");
-//                nodeLabel.setTextFill(Color.WHITE);
-//                nodeLabel.toFront();
-//            });
-//
-//           circle.setOnMouseExited((e) -> {
-//               nodeLabel.setVisible(false);
-//           });
+            circle.setCursor(Cursor.HAND);
+
+           circle.setOnMouseEntered((e) -> {
+               popOver.show(circle,-10);
+            });
+
+           circle.setOnMouseExited((e) -> {
+                popOver.hide();
+           });
 
             pointList.add(circle);
             pane.getChildren().add(circle);

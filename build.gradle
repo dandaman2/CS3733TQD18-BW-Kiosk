@@ -10,8 +10,10 @@ version = '1.0'
 mainClassName = 'Main_ui'
 
 repositories {
-    mavenCentral()
-    maven { url "http://maven.openimaj.org/" }
+	mavenCentral()
+	maven {
+		url "https://ravana.dyn.wpi.edu/maven"
+	}
 }
 
 dependencies {
@@ -27,7 +29,9 @@ dependencies {
 		[group: 'org.mindrot', name: 'jbcrypt', version: '0.4'],
 		[group: 'org.apache.derby', name: 'derby', version: '10.11.1.1'],
 		[group: 'org.apache.derby', name: 'derbyclient', version: '10.11.1.1'],
-		[group: 'org.apache.derby', name: 'derbytools', version: '10.11.1.1']
+		[group: 'org.apache.derby', name: 'derbytools', version: '10.11.1.1'],
+			[group: 'd18.teamO', name: 'GiftShop', version: '1.0.1']
+
 	)
 	compile(
 		[group: 'junit', name: 'junit', version: '4.12'],
@@ -40,13 +44,14 @@ dependencies {
 		[group: 'org.apache.derby', name: 'derby', version: '10.11.1.1'],
 		[group: 'org.apache.derby', name: 'derbyclient', version: '10.11.1.1'],
 		[group: 'org.apache.derby', name: 'derbytools', version: '10.11.1.1'],
+			[group: 'd18.teamO', name: 'GiftShop', version: '1.0.1'],
             [group: 'com.github.sarxos', name:'webcam-capture', version: '0.3.12'],
-
             [group: 'org.json', name:'json', version: '20170516']
 
     )
     compile 'junit:junit:4.12'
     compile 'junit:junit:4.12'
+	compile 'me.xdrop:fuzzywuzzy:1.1.10'
 	//compile 'javax/mail/javax.mail-api/:1.6.1'
 	//maven2/javax/mail/javax.mail-api/
 }

@@ -40,12 +40,15 @@ public class User {
     private ArrayList<Node> nodesToRemove = new ArrayList<Node>();
     private ArrayList<Node> nodesToAdd = new ArrayList<Node>();
 
+    private ArrayList<Edge> edgesToEdit = new ArrayList<Edge>();
     private ArrayList<Edge> edgesToRemove = new ArrayList<Edge>();
     private ArrayList<Edge> edgesToAdd = new ArrayList<Edge>();
 
     private ArrayList<Employee> employeesToEdit = new ArrayList<Employee>();
     private ArrayList<Employee> employeesToRemove = new ArrayList<Employee>();
     private ArrayList<Employee> employeesToAdd = new ArrayList<Employee>();
+
+    private String pathType;
 
     //For utility functions
     ScreenUtil uUtil = new ScreenUtil();
@@ -132,52 +135,73 @@ public class User {
 
     public void saveToDB() {
         System.out.println("Saving to DB");
-        System.out.println("Editing nodes");
+        if(nodesToEdit.size()>0) {
+            System.out.println("Editing nodes");
+        }
         for(Node n:nodesToEdit){
             editNode(n);
             System.out.println(".");
         }
         nodesToEdit = new ArrayList<Node>();
-        System.out.println("Removing nodes");
+        if(nodesToRemove.size()>0) {
+            System.out.println("Removing nodes");
+        }
         for(Node n:nodesToRemove){
             removeNode(n);
             System.out.println(".");
         }
         nodesToRemove = new ArrayList<Node>();
-        System.out.println("Adding nodes");
+        if(nodesToAdd.size()>0) {
+            System.out.println("Adding nodes");
+        }
         for(Node n:nodesToAdd){
             addNode(n);
             System.out.println(".");
         }
         nodesToAdd = new ArrayList<Node>();
-        System.out.println("Removing edges");
+        if(edgesToEdit.size()>0){
+            System.out.println("Editing edges");
+        }
+        for (Edge e:edgesToEdit) {
+            editEdge(e);
+            System.out.println(".");
+        }
+        edgesToEdit = new ArrayList<Edge>();
+        if(edgesToRemove.size()>0) {
+            System.out.println("Removing edges");
+        }
         for (Edge e:edgesToRemove) {
             removeEdge(e);
             System.out.println(".");
         }
         edgesToRemove = new ArrayList<Edge>();
-        System.out.println("Adding edges");
+        if(edgesToAdd.size()>0) {
+            System.out.println("Adding edges");
+        }
         for (Edge e:edgesToAdd) {
             addEdge(e);
             System.out.println(".");
         }
         edgesToAdd = new ArrayList<Edge>();
-
-        System.out.println("Editing employees");
+        if(employeesToEdit.size()>0) {
+            System.out.println("Editing employees");
+        }
         for(Employee em:employeesToEdit){
             editEmployee(em);
             System.out.println(".");
         }
         employeesToEdit = new ArrayList<Employee>();
-
-        System.out.println("Removing employees");
+        if(employeesToRemove.size()>0) {
+            System.out.println("Removing employees");
+        }
         for(Employee em:employeesToRemove){
             removeEmployee(em);
             System.out.println(".");
         }
         employeesToRemove = new ArrayList<Employee>();
-
-        System.out.println("Adding employees");
+        if(employeesToAdd.size()>0) {
+            System.out.println("Adding employees");
+        }
         for(Employee em:employeesToAdd){
             addEmployee(em);
             System.out.println(".");
@@ -249,6 +273,14 @@ public class User {
             }
         }
         return floorEdges;
+    }
+
+    public String getPathType() {
+        return pathType;
+    }
+
+    public void setPathType(String pathType) {
+        this.pathType = pathType;
     }
 
     private static class UserHolder{
@@ -408,6 +440,28 @@ public class User {
         }
         //System.out.println("add");
         nodesToEdit.add(nodeToEdit);
+    }
+
+    public void editEdgeSingleton(Edge toBeToggled) {
+        for (int i = 0; i < edges.size(); i++) {
+            Edge e = edges.get(i);
+            if (e.getEdgeID().equals(toBeToggled.getEdgeID())) {
+                edges.set(i, toBeToggled);
+                //n = nodeToEdit;
+                //System.out.println("editing singleton node");
+            }
+        }
+        for (int i = 0; i < edgesToEdit.size(); i++) {
+            Edge e = edgesToEdit.get(i);
+            if (e.getEdgeID().equals(toBeToggled.getEdgeID())) {
+                edgesToEdit.set(i,toBeToggled);
+                //n = nodeToEdit;
+                //System.out.println("modify");
+                return;
+            }
+        }
+        //System.out.println("add");
+        edgesToEdit.add(toBeToggled);
     }
 
     public void editEmployeeSingleton(Employee employeeToEdit){
