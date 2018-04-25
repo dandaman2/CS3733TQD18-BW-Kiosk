@@ -24,7 +24,7 @@
    <children>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="80.0" prefWidth="726.0" style="-fx-border-color: black; -fx-background-color: #012D5A;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <JFXButton fx:id="backBtn" prefHeight="78.0" prefWidth="221.0" text="Button">
+            <JFXButton fx:id="backBtn" prefHeight="78.0" prefWidth="221.0">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
