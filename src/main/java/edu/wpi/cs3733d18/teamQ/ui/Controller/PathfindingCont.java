@@ -396,7 +396,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
                                      movingPart = new ImageView(new Image(gifPath));
                                      movingPart.setPreserveRatio(true);
-
+                                     if(backImagePane.getChildren().contains(selectedLocation)){
+                                         backImagePane.getChildren().remove(selectedLocation);
+                                     }
                                      if(gifPath.equals("Gifs/dog.gif")){
                                          selectedLocation = new ImageView(dogHouse);
                                          selectedSize = 50;
@@ -415,7 +417,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                                          movingPart.setFitWidth(40);
                                      else
                                          movingPart.setFitWidth(100);
-
+                                    showSelection(curSelected);
                                  }
                              }
                 );
