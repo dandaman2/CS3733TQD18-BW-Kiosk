@@ -283,7 +283,7 @@ public class  RequestController implements Initializable{
         sanitationDescription.setMinHeight(100);
         sanitationDescription.setPromptText("Enter Description ... ");
 
-        infoButt.setOnAction(e -> InfoController.displayEditInfoPage());
+        infoButt.setOnAction(e -> InfoController.displayReqInfoPage());
         infoButt.setStyle("-fx-background-radius: 50%; -fx-font-size: 20;");
         infoButt.setText("?");
     }
