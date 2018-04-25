@@ -984,8 +984,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         backImagePane.getChildren().removeAll(transList);
         backImagePane.getChildren().removeAll(labelList);
         backImagePane.getChildren().remove(starLabel);
-//        breadCrumb.removeArrows();
-//        hboxProgress.getChildren().removeAll(breadCrumb.getArrowList());
 
         // clears list
         transList.clear();
@@ -997,6 +995,13 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         // creates breadcrumbs
         breadCrumb.drawCrumbs(path);
+
+        if(playButton.isSelected()) {
+            breadCrumb.removeArrows();
+            breadCrumb.drawSpecificCrumbs(transisitonIndex);
+        }
+        else
+            breadCrumb.addArrows();
 
         if(path==null){
             return;
@@ -1288,16 +1293,11 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             if(t.getFloor()==getCurrFloor()){
                 dashLine(t.getPathData());
 
-                System.out.println("XPos get0 " + t.getNodeShells().get(0).getxPos());
-                System.out.println("XPos get1 " + t.getNodeShells().get(1).getxPos());
-
                 if(t.getNodeShells().get(0).getxPos() > t.getNodeShells().get(1).getxPos()){
-                    System.out.println("Flip");
                     movingPart.setScaleY(-1);
                     movingPart.setScaleX(1);
                 }
                 else {
-                    System.out.println("UnFlip");
                     movingPart.setScaleY(1);
                     movingPart.setScaleX(1);
                 }
@@ -1306,7 +1306,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         }
         backImagePane.getChildren().addAll(antPaths);
         for(Timeline antline: antTimeLines){
-            System.out.println("playing ants");
             antline.play();
         }
 
@@ -1856,13 +1855,13 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             allTransitions.stop();
             backImagePane.getChildren().remove(movingPart);
             isUIDisabled(false);
-
         }
     }
 
-
+    private int transisitonIndex;
     //Runs all the transitions queued up in the transitions Arraylist
     public void runTransitions() {
+        transisitonIndex = 0;
         if(!isSelected){
             return;
         }
@@ -1886,17 +1885,11 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         backImagePane.getChildren().remove(movingPart);
         backImagePane.getChildren().add(movingPart);
 
-
         transitions.add(null);
         //centerScrollToPath(transitions.get(0).getNodeShells(),transitions.get(0).getFloor(),floorMaps.getIs2D(), false);
         for (int i = 0; i < transitions.size()-1; i++) {
             TransitionData curTrans = transitions.get(i);
-//            System.out.println("Transitions Count: " + transitions.size());
-//            System.out.println("curTrans Floor: " + curTrans.getFloor());
-//            System.out.println("Points: " + curTrans.getPathData().getPoints());
-            //  System.out.println("Length: " + curTrans.getTransitionLength());
-            //floorChoice.getSelectionModel().select(dbToIndex(curTrans.getFloor()));
-            //drawPath(queuedPath);
+
             Polyline path = curTrans.getPathData();
             PathTransition transition = new PathTransition();
             transition.setDuration(Duration.seconds(curTrans.getCalcDuration()));
@@ -1905,14 +1898,16 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             transition.setPath(path);
             transition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
 
-            if(transitions.get(i+1)  != null ) {
+
+
+            if(transitions.get(i+1) != null ) {
                 System.out.println("Grabbing next transition floor selection");
                 TransitionData nextData = transitions.get(i+1);
                 transition.setOnFinished((e) -> {
+                    transisitonIndex ++;
                     getSnap();
                     updateFloorMap(nextData.getFloor());
-                    //centerScrollToPath(nextData.getNodeShells(),nextData.getFloor(),floorMaps.getIs2D(), true);
-                }
+                        }
                 );
             }
             else{
@@ -2114,8 +2109,6 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         double x = floorMaps.getIs2D() ? n.getxPos() : n.getxPos3D();
         double y = floorMaps.getIs2D() ? n.getyPos() : n.getyPos3D();
 
-        //startMarker.setCenterX(x);
-        //startMarker.setCenterY(y);
         double newHValue = Math.max((x - Screen.getPrimary().getBounds().getWidth() / 2), 0) / (5000 - Screen.getPrimary().getBounds().getWidth());
         double newVValue = Math.max((y - Screen.getPrimary().getBounds().getHeight() / 2), 0) / ((floorMaps.getIs2D() ? 3400 : 2776) - Screen.getPrimary().getBounds().getHeight());
         KeyValue xValue = new KeyValue(imageScroller.hvalueProperty(), newHValue);
