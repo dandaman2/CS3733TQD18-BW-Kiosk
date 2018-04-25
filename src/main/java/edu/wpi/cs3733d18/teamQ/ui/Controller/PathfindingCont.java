@@ -1135,6 +1135,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             floorString = String.valueOf(currentFloor);
         }
         TreeItem<String> floorLeaf = new TreeItem<String>("Floor "+floorString);
+        floorLeaf.setExpanded(true);
 
         int instructionIndex = 0;
         for (int i = instructionIndex; i < instructions.size(); i++) {
@@ -1158,6 +1159,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                     floorString = String.valueOf(currentFloor);
                 }
                 floorLeaf = new TreeItem<String>("Floor "+floorString);
+                floorLeaf.setExpanded(true);
                 for (int i = instructionIndex; i < instructions.size(); i++) {
                     TreeItem<String> itemLeaf = new TreeItem<String>(instructions.get(i));
                     floorLeaf.getChildren().add(itemLeaf);
@@ -2140,6 +2142,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     public void displayTextDrawer(ActionEvent actionEvent) {
         if (treeDrawer.isHidden()) {
             treeDrawer.open();
+            treeDrawer.setMouseTransparent(false);
             Image open;
             if(runningFromIntelliJ()) {
                 open = new Image("/ButtonImages/up-book.png");
@@ -2150,6 +2153,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             textBtn.setGraphic(openView);
         } else {
             treeDrawer.close();
+            treeDrawer.setMouseTransparent(true);
             Image close;
             if(runningFromIntelliJ()) {
                 close = new Image("/ButtonImages/down-book.png");
