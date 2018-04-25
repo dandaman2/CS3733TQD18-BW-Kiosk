@@ -24,6 +24,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -59,6 +60,8 @@ import static edu.wpi.cs3733d18.teamQ.ui.PathData.*;
 import static edu.wpi.cs3733d18.teamQ.ui.PathInstructions.captureAndSaveDisplay;
 import static java.lang.Math.acos;
 import static java.lang.Math.sqrt;
+import static javafx.geometry.HPos.LEFT;
+import static javafx.geometry.HPos.RIGHT;
 import static javafx.scene.input.KeyCode.U;
 
 public class PathfindingCont extends JPanel implements Initializable, IZoomableCont, DocumentListener {
@@ -164,6 +167,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
     @FXML
     private JFXDrawer treeDrawer;
+
+    @FXML
+    private HBox topHBox;
 
     //Scrolling and zooming functionality
     @FXML
@@ -420,7 +426,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         startingNodeField.setFont(Font.font("Georgia", 20));
         startingNodeField.setStyle("-fx-text-inner-color: white;");
         startingNodeField.setStyle("-fx-background-color: #FFFFFF;");
-        gridTop.add(startingNodeField,0,0);
+        startingNodeField.setMinWidth(300);
+        topHBox.getChildren().add(startingNodeField);
+        startingNodeField.toBack();
         startingNodeField.setOnMousePressed(event -> updatePath());
         startingNodeField.setOnKeyPressed(event -> updateFilterStart(startingNodeField.getText()));
 
@@ -430,14 +438,18 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         endingNodeField.setStyle("-fx-text-inner-color: white;");
         endingNodeField.setStyle("-fx-background-color: #FFFFFF;");
         endingNodeField.setFont(Font.font("Georgia", 20));
-        gridTop.add(endingNodeField,2,0);
+        endingNodeField.setMinWidth(300);
+        topHBox.getChildren().add(endingNodeField);
+        endingNodeField.toFront();
         endingNodeField.setOnMousePressed(event -> updatePath());
         endingNodeField.setOnKeyPressed(event -> updateFilterStart(endingNodeField.getText()));
 
         exchange.setStyle("-fx-font-size: 30;");
+        exchange.setMaxHeight(startingNodeField.getHeight());
         exchange.setPrefHeight(startingNodeField.getHeight());
-        exchange.setPrefSize(30,30);
         exchange.setText("⇄");
+
+        exchange.setPadding(new Insets(0,0,0,0));
     }
 
     private void initializeTopBar(){

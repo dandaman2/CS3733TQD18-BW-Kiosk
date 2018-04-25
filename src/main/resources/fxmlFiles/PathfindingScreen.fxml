@@ -120,26 +120,21 @@
                      <children>
                         <AnchorPane prefHeight="90.0" prefWidth="715.0">
                            <children>
-                              <GridPane fx:id="gridTop" prefHeight="90.0" prefWidth="698.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                <columnConstraints>
-                                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="352.0" minWidth="10.0" prefWidth="128.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="229.0" minWidth="0.0" prefWidth="59.0" />
-                                    <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="310.0" minWidth="10.0" prefWidth="153.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                                 <padding>
-                                    <Insets bottom="15.0" top="15.0" />
-                                 </padding>
+                              <HBox fx:id="topHBox" layoutX="123.0" layoutY="35.0" prefWidth="60.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <JFXButton fx:id="exchange" onAction="#exchangeTextFields" prefHeight="30.0" prefWidth="60.0" text="&lt;&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                                    <JFXButton fx:id="exchange" maxHeight="40.0" maxWidth="60.0" minHeight="40.0" minWidth="60.0" onAction="#exchangeTextFields" prefHeight="40.0" prefWidth="60.0" text="&lt;&gt;">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
                                     </JFXButton>
                                  </children>
-                              </GridPane>
+                                 <padding>
+                                    <Insets top="30.0" />
+                                 </padding>
+                              </HBox>
                            </children>
                         </AnchorPane>
                      </children>
