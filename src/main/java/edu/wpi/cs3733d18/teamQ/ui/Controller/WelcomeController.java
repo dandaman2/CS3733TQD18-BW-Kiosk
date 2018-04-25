@@ -48,7 +48,7 @@ public class WelcomeController implements Initializable {
     JFXButton EmergencyBtn;
 
     @FXML
-    private Button aboutButton;
+    private JFXButton aboutButton;
 
 
     //ScreenUtil object for resizing of loading images
@@ -60,33 +60,24 @@ public class WelcomeController implements Initializable {
      * @param rb Takes a ResourceBundle
      */
     public void initialize(URL url, ResourceBundle rb) {
-        Image logo;
-        Image seal;
-        if(runningFromIntelliJ()) {
-            logo = new Image("bwhLogo.png");
-            seal = new Image("BWHBuilding.jpg");
-        } else{
-            logo = new Image("bwhLogo.png");
-            seal = new Image("BWHBuilding.jpg");
-        }
-
-        // info button icon
-        Image info;
-        if(runningFromIntelliJ()) {
-            info = new Image("/ButtonImages/info_symbol.png");
-        } else{
-            info = new Image("ButtonImages/info_symbol.png");
-        }
-        ImageView infoView = new ImageView(info);
-        infoView.setFitWidth(42);
-        infoView.setFitHeight(40);
-        aboutButton.setGraphic(infoView);
 
         // background of welcome screen
         //bwhLogo.setImage(logo);
         //bwhSeal.setImage(seal);
 
         // Sets the action of buttons
+        Image loginIcon;
+        if(runningFromIntelliJ()) {
+            loginIcon = new Image("/ButtonImages/login.png");
+        } else{
+            loginIcon = new Image("ButtonImages/login.png");
+        }
+        ImageView loginView = new ImageView(loginIcon);
+        loginView.setFitWidth(50);
+        loginView.setFitHeight(50);
+
+        adminButt.setGraphic(loginView);
+
         aboutButton.setOnAction(e -> AboutController.displayAboutPage());
         adminButt.setOnAction(e -> AlertBox.display("Admin Login", "Please input your username and password."));
         directButt.setDisableVisualFocus(true);

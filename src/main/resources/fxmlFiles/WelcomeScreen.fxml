@@ -31,7 +31,7 @@
                      </HBox.margin>
                   </ImageView>
                   <Region prefHeight="105.0" prefWidth="579.0" HBox.hgrow="ALWAYS" />
-                  <JFXButton fx:id="adminButt" buttonType="RAISED" contentDisplay="RIGHT" prefHeight="76.0" prefWidth="114.0" style="-fx-background-radius: 150;" text="Admin">
+                  <JFXButton fx:id="adminButt" buttonType="RAISED" contentDisplay="RIGHT" prefHeight="70.0" prefWidth="69.0" style="-fx-background-radius: 70px;">
                      <font>
                         <Font name="Georgia" size="16.0" />
                      </font>
