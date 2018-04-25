@@ -379,6 +379,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         startingNodeField.setText("");
         startingNodeField.setFont(Font.font("Georgia", 15));
         startingNodeField.setStyle("-fx-text-inner-color: white;");
+        startingNodeField.setStyle("-fx-background-color: #FFFFFF;");
         gridTop.add(startingNodeField,0,0);
         startingNodeField.setOnMousePressed(event -> updatePath());
         startingNodeField.setOnKeyPressed(event -> updateFilterStart(startingNodeField.getText()));
@@ -387,6 +388,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         endingNodeField.setPromptText("End Location");
         endingNodeField.setText("");
         endingNodeField.setStyle("-fx-text-inner-color: white;");
+        endingNodeField.setStyle("-fx-background-color: #FFFFFF;");
         endingNodeField.setFont(Font.font("Georgia", 15));
         gridTop.add(endingNodeField,2,0);
         endingNodeField.setOnMousePressed(event -> updatePath());
