@@ -404,6 +404,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                                          selectedLocation.setFitWidth(selectedSize);
                                      }
                                      else{
+                                         backImagePane.getChildren().remove(selectedLocation);
                                          selectedLocation = new ImageView(star);
                                          selectedSize = 30;
                                          selectedLocation.setFitHeight(selectedSize);
