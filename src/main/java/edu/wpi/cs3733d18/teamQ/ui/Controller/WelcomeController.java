@@ -60,6 +60,12 @@ public class WelcomeController implements Initializable {
     @FXML
     ImageView gifPane;
 
+    @FXML
+    StackPane pane;
+
+    @FXML
+    VBox vbox;
+
     //Global user
     User user = User.getUser();
 
@@ -77,6 +83,9 @@ public class WelcomeController implements Initializable {
         // background of welcome screen
         //bwhLogo.setImage(logo);
         //bwhSeal.setImage(seal);
+
+        pane.setMinWidth(masterPane.getWidth());
+        vbox.setMinWidth(masterPane.getWidth());
 
         initializeGif();
 
