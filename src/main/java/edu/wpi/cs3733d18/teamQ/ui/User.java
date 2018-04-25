@@ -31,6 +31,8 @@ public class User {
     private int time = 300;
     private int currentTimeIndex = 2;
 
+    private int gifIndex = 0;
+
 
     // Arrays to hold pre-loaded images
     private ArrayList<Image> maps3D = new ArrayList<Image>();
@@ -573,5 +575,17 @@ public class User {
 
     public void setCurrentTimeIndex(int currentTimeIndex) {
         this.currentTimeIndex = currentTimeIndex;
+    }
+
+
+    //determines which gifts are going to be played
+
+
+    public int getGifIndex() {
+        return gifIndex;
+    }
+
+    public void setGifIndex(int gifIndex) {
+        this.gifIndex = gifIndex;
     }
 }
