@@ -224,8 +224,17 @@ public class Email {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(phoneNumber + "@txt.att.net"));
             //message.setSubject("Service Request Notification");
             //this.setGreeting(this.request.getFirstName(), this.request.getLastName());
-
-           message.setText("There are " + numBodies + " people near " +location + "\n" + instructions);
+            String personGrammar;
+            String isAreGrammar;
+            if(numBodies.equals("1")){
+                personGrammar = "person";
+                isAreGrammar = "is";
+            }
+            else{
+                personGrammar = "people";
+                isAreGrammar = "are";
+            }
+           message.setText("There "+ isAreGrammar + " " + numBodies + " " + personGrammar + " near " +location + "\n" + instructions);
 
             if (this.isValidEmailAddress(phoneNumber + "@txt.att.net")) {
                 Transport.send(message);
