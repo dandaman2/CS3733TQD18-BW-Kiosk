@@ -1,8 +1,11 @@
 package edu.wpi.cs3733d18.teamQ.ui.Controller;
 
 import com.jfoenix.controls.JFXButton;
+import edu.wpi.cs3733d18.teamQ.ui.Admin_Login.FaceRecognition;
 import edu.wpi.cs3733d18.teamQ.ui.Requests.EmergencyRequest;
 import edu.wpi.cs3733d18.teamQ.ui.User;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -81,6 +84,18 @@ public class WelcomeController implements Initializable {
             seal = new Image("bwhCrest.png");
         }
 
+        Button face = new Button("Face Recognition");
+        face.setStyle("-fx-font-size: 15pt;");
+        face.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                FaceRecognition.getInstance().compareFaces();
+
+            }
+        });
+
+        buttBox.getChildren().addAll(face);
+
         // info button icon
         Image info;
         if(runningFromIntelliJ()) {
@@ -102,7 +117,7 @@ public class WelcomeController implements Initializable {
         // Sets the action of buttons
         aboutButton.setOnAction(e -> AboutController.displayAboutPage());
         adminButt.setOnAction(e -> AlertBox.display("Admin Login", "Please input your username and password."));
-        directButt.setDisableVisualFocus(true);
+//        directButt.setDisableVisualFocus(true);
         hoursButt.setOnAction(e -> HoursController.display());
         searchButt.setOnAction(e -> QuickSearchController.display());
     }
