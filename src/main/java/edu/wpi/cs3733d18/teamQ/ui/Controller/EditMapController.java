@@ -127,6 +127,9 @@ public class EditMapController implements Initializable, IZoomableCont {
     @FXML
     private ChoiceBox<String> algChoice;
 
+    @FXML
+    private ChoiceBox<String> timerValue;
+
     //text field for search bar
     @FXML
     private TextField searchMenu;
@@ -284,6 +287,8 @@ public class EditMapController implements Initializable, IZoomableCont {
         System.out.println(curTime - startTime + " init floor select");
 
         initAlgSelector();
+        initTimerSelector();
+
         setUpButtons();
     }
 
@@ -581,6 +586,29 @@ public class EditMapController implements Initializable, IZoomableCont {
                 );
 
     }
+
+
+    /**
+     * Sets the timer to a new value
+     */
+    public void initTimerSelector(){
+        ObservableList options = FXCollections.observableArrayList();
+        options.addAll("30 Seconds", "1 Minute", "5 Minutes", "10 Minutes", "1 Hour");
+        timerValue.getItems().addAll(options);
+
+        timerValue.getSelectionModel()
+                .selectedIndexProperty()
+                .addListener(new ChangeListener<Number>() {
+                                 @Override
+                                 public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                                     System.out.println(newValue.toString());
+                                     user.setTime(newValue.toString());
+                                 }
+                             }
+                );
+        timerValue.getSelectionModel().select(user.getCurrentTimeIndex());
+    }
+
 
     /**
      * Initializes the possible option selections

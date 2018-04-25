@@ -3,6 +3,7 @@ package edu.wpi.cs3733d18.teamQ.ui.Controller;
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733d18.teamQ.ui.Requests.EmergencyRequest;
 import edu.wpi.cs3733d18.teamQ.ui.User;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,9 +18,13 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.addRequest;
 import static edu.wpi.cs3733d18.teamQ.manageDB.DatabaseSystem.runningFromIntelliJ;
@@ -104,6 +109,7 @@ public class WelcomeController implements Initializable {
         directButt.setDisableVisualFocus(true);
         hoursButt.setOnAction(e -> HoursController.display());
         searchButt.setOnAction(e -> QuickSearchController.display());
+
     }
 
     //ScreenUtil object for resizing of loading images
