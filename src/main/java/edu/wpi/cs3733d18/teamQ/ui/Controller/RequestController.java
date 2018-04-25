@@ -109,6 +109,9 @@ public class  RequestController implements Initializable{
     @FXML
     JFXButton giftBtn;
 
+    //info button
+    @FXML
+    JFXButton infoButt;
 
     // description of pending request
     @FXML
@@ -138,6 +141,7 @@ public class  RequestController implements Initializable{
     //Date Picker
     @FXML
     DatePicker calendar;
+
 
     //Stats
     @FXML
@@ -277,6 +281,10 @@ public class  RequestController implements Initializable{
         sanitationDescription.setVisible(false);
         sanitationDescription.setMinHeight(100);
         sanitationDescription.setPromptText("Enter Description ... ");
+
+        infoButt.setOnAction(e -> InfoController.displayEditInfoPage());
+        infoButt.setStyle("-fx-background-radius: 50%; -fx-font-size: 20;");
+        infoButt.setText("?");
     }
 
 

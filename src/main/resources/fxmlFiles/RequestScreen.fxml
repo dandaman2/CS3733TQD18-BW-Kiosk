@@ -26,6 +26,8 @@
       <HBox layoutX="10.0" layoutY="10.0" maxHeight="90.0" minHeight="90.0" minWidth="726.0" prefHeight="90.0" prefWidth="726.0" style="-fx-background-color: #012D5A; -fx-border-color: black;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <JFXButton fx:id="backBtn" maxHeight="90.0" maxWidth="90.0" minHeight="90.0" minWidth="90.0" prefHeight="90.0" prefWidth="90.0" />
+            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <JFXButton fx:id="infoButt" prefHeight="79.0" prefWidth="79.0" textFill="WHITE" />
          </children>
       </HBox>
       <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="90.0">
