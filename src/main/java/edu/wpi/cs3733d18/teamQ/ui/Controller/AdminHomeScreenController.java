@@ -53,7 +53,7 @@ public class AdminHomeScreenController implements Initializable {
 
     //initializes the buttons
     private void setUpButtons(){
-        directionBtn.setDisableVisualFocus(true);
+//        directionBtn.setDisableVisualFocus(true);
 
         directionBtn.setVisible(true);
         requestBtn.setVisible(true);
@@ -177,6 +177,7 @@ public class AdminHomeScreenController implements Initializable {
         try{
             User user = User.getUser();
             user.setLevelAccess(0);
+            user.setCurrentUser(null);
             Runnable r = new Runnable() {
                 public void run() {
                     user.saveToDB();

@@ -181,7 +181,7 @@ public class FaceRecognition {
     }
 
 
-    public String compareFaces(){
+    public Employee compareFaces(){
 //        webcam = Webcam.getDefault();
 //        webcam.open();
 //        this.capture = webcam.getImage();
@@ -233,7 +233,7 @@ public class FaceRecognition {
             System.out.println(maxEmp.getFaceID());
             System.out.println(maxConf);
             System.out.println(maxEmp.getUsername());
-            return maxEmp.getFaceID();
+            return maxEmp;
         }else {
             System.out.println("Null emp");
             return null;
@@ -249,6 +249,24 @@ public class FaceRecognition {
 
     public static String getUserFaceToken() {
         return userFaceToken;
+    }
+
+    public void detectBody(){
+        String url = "https://api-us.faceplusplus.com/humanbodypp/beta/detect";
+        byte[] buff = getBytesFromFile(file);
+        HashMap<String, String> map = new HashMap<>();
+        HashMap<String, byte[]> byteMap = new HashMap<>();
+        byteMap.put("image_file",buff);
+        map.put("api_key", apikey);
+        map.put("api_secret", apisecret);
+        try {
+            Response rsp = post(url, map, byteMap);
+            JSONObject result = new JSONObject(new String(rsp.getContent()));
+            System.out.println("Detected "+result.getJSONArray("humanbodies").length()+" bodies");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

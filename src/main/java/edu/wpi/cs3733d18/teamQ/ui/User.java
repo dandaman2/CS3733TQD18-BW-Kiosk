@@ -52,6 +52,16 @@ public class User {
     private ArrayList<Employee> employeesToRemove = new ArrayList<Employee>();
     private ArrayList<Employee> employeesToAdd = new ArrayList<Employee>();
 
+    public Employee getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(Employee currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    private Employee currentUser = null;
+
     private String pathType;
 
     //For utility functions

@@ -331,7 +331,7 @@ public class EditMapController implements Initializable, IZoomableCont {
         infoView.setFitHeight(40);
         backBtn.setGraphic(infoView);
         backBtn.setPrefWidth(editMapSide.getPrefWidth() + 48);
-        backBtn.setDisableVisualFocus(true);
+//        backBtn.setDisableVisualFocus(true);
 
         backBtn.setOnAction(e -> goToAdminHome(e));
 
