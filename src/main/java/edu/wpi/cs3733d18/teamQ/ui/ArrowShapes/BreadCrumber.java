@@ -109,6 +109,9 @@ public class BreadCrumber {
 
     // helper function to get all floors needed
     public void getListofFloorChanges(ArrayList<Node> path){
+        if(path==null){
+            return;
+        }
         floorsOfPath.add(path.get(0).getFloor());
         for(int i=0; i < path.size()-1; i++){
             if(path.get(i).getFloor() != path.get(i + 1).getFloor()){

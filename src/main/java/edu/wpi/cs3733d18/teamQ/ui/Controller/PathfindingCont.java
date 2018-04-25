@@ -486,6 +486,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         infoView.setFitHeight(40);
         playButton.setGraphic(playView);
         playButton.setVisible(false);
+        playButton.setDisable(true);
         playButton.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -525,7 +526,13 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         endingNodeField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                updatePath();
+                if(newValue.equals("")){
+                    //startingNodeField.setText(youHere.getNameLong()+ ","+youHere.getNodeID());
+                    clearPath();
+                    updatePath();
+                }else {
+                    updatePath();
+                }
             }
         });
         startingNodeField.textProperty().addListener(new ChangeListener<String>() {
@@ -533,6 +540,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if(newValue.equals("")){
                     //startingNodeField.setText(youHere.getNameLong()+ ","+youHere.getNodeID());
+                    clearPath();
                     updatePath();
                 }else {
                     updatePath();
@@ -641,6 +649,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                 getNodeFromTextFields(startingNodeField, endingNodeField);
                 generatePath();
             }else {
+                clearPath();
                 isPathDisplayed = false;
                 drawPath(null);
             }
@@ -917,7 +926,8 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         if(backImagePane.getChildren().contains(selectedLocation))
             backImagePane.getChildren().remove(selectedLocation);
 
-        if(n.getFloor() == getCurrFloor()) {
+
+        if(n.getFloor() == getCurrFloor() && isPathDisplayed) {
             TransPoint tp1;
             tp1 = translateCoord(n);
             selectedLocation.setLayoutX(tp1.getTx() - 15);
@@ -968,7 +978,12 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         // creates breadcrumbs
         breadCrumb.drawCrumbs(path);
 
+        if(path==null){
+            return;
+        }
+
         playButton.setVisible(true);
+        playButton.setDisable(false);
 
         // translates all nodes to new coords for when map moves
         for(Node nodeToTranslate : path){
@@ -1361,6 +1376,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         textTree.setVisible(false);
         textTree.setMouseTransparent(true);
         textBtn.setVisible(false);
+        playButton.setVisible(false);
+        playButton.setDisable(true);
+        backImagePane.getChildren().remove(selectedLocation);
     }
 
 
