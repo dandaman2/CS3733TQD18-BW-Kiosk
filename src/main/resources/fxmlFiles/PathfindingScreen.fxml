@@ -106,7 +106,7 @@
                   <Font name="System Bold" size="100.0" />
                </font>
             </Label>
-            <JFXDrawer fx:id="treeDrawer" defaultDrawerSize="330.0" layoutX="379.0" layoutY="207.0" prefHeight="400.0" prefWidth="330.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="90.0" />
+            <JFXDrawer fx:id="treeDrawer" defaultDrawerSize="330.0" layoutX="379.0" layoutY="207.0" prefHeight="700.0" prefWidth="330.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="90.0" />
          </children>
       </AnchorPane>
       <HBox fx:id="topBar" maxHeight="90.0" minHeight="90.0" prefHeight="90.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
