@@ -247,9 +247,12 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         textTree = new JFXTreeView<String>();
         textTree.setVisible(false);
         textTree.setMouseTransparent(true);
+        textTree.setMinWidth(350);
         textBtn.setVisible(false);
 
         treeDrawer.setMouseTransparent(true);
+
+        floorL21.setDisableVisualFocus(true);
 
         Image close;
         if(runningFromIntelliJ()) {
