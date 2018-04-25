@@ -101,6 +101,8 @@ public class EmployeeEditController implements Initializable {
         backBtn.setStyle("-fx-text-fill: #FFFFFF;");
         backBtn.setRipplerFill(Paint.valueOf("#FFFFFF"));
 
+        backBtn.setDisableVisualFocus(true);
+
         Image info;
         if(runningFromIntelliJ()) {
             info = new Image("/ButtonImages/home.png");
