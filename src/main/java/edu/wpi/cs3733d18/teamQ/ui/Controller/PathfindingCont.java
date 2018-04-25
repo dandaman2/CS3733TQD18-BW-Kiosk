@@ -71,7 +71,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     private AutoCompleteTextField endingNodeField;
 
     @FXML
-    private Button exchange;
+    private JFXButton exchange;
 
     //Shortcuts for quickpaths
     @FXML
