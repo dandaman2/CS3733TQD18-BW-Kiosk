@@ -55,7 +55,7 @@ public class Main_ui extends Application {
         Parent welcomePane = welcomeLoader.load();
         Scene welcomeScene = new Scene(welcomePane,722,604);
 
-        welcomeScene.getStylesheets().addAll("Stylesheet.css", "StyleMenus.css");
+        welcomeScene.getStylesheets().addAll("Stylesheet.css", "StyleMenus.css", "homeBackground.css");
 
         //preparing the starting stage
         primaryStage.setMinWidth(735);
