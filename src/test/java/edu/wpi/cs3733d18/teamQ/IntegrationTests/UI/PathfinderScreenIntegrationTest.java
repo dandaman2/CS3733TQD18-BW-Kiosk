@@ -199,4 +199,18 @@ public class PathfinderScreenIntegrationTest extends ApplicationTest {
             assertEquals(path.get(i).getNodeID(), pathIDs.get(i));
         }
     }
+
+    /*@Test
+    public void changeFloorTests(){
+        clickOn("#floorL21");
+        assertEquals(-2, pathCont.getCurrFloor());
+        clickOn("#floorL11");
+        assertEquals(-1, pathCont.getCurrFloor());
+        clickOn("#floor11");
+        assertEquals(1, pathCont.getCurrFloor());
+        clickOn("#floor21");
+        assertEquals(2, pathCont.getCurrFloor());
+        clickOn("#floor31");
+        assertEquals(3, pathCont.getCurrFloor());
+    }*/
 }
