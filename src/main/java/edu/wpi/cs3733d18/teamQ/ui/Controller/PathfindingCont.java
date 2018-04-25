@@ -410,14 +410,15 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         homeButton.setGraphic(infoView);
         Image play;
         if(runningFromIntelliJ()) {
-            play = new Image("/ButtonImages/video-play-icon.png");
+            play = new Image("/ButtonImages/play-icon.png");
         } else{
-            play = new Image("ButtonImages/video-play-icon.png");
+            play = new Image("ButtonImages/play-icon.png");
         }
         ImageView playView = new ImageView(play);
         infoView.setFitWidth(42);
         infoView.setFitHeight(40);
         playButton.setGraphic(playView);
+        playButton.setVisible(false);
     }
 
     /**
@@ -843,6 +844,8 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         // creates breadcrumbs
         breadCrumb.drawCrumbs(path);
+
+        playButton.setVisible(true);
 
         // translates all nodes to new coords for when map moves
         for(Node nodeToTranslate : path){
@@ -1664,16 +1667,23 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     public void toggleRunAnimation(){
         if(playButton.isSelected()){
             runTransitions();
-            playButton.setGraphic(null);
-            playButton.setText("STOP");
+            Image pause;
+            if(runningFromIntelliJ()) {
+                pause = new Image("/ButtonImages/pause-icon.png");
+            } else{
+                pause = new Image("ButtonImages/pause-icon.png");
+            }
+            ImageView pauseView = new ImageView(pause);
+            playButton.setGraphic(pauseView);
+            //playButton.setText("STOP");
         }
         else{
             playButton.setText(null);
             Image play;
             if(runningFromIntelliJ()) {
-                play = new Image("/ButtonImages/video-play-icon.png");
+                play = new Image("/ButtonImages/play-icon.png");
             } else{
-                play = new Image("ButtonImages/video-play-icon.png");
+                play = new Image("ButtonImages/play-icon.png");
             }
             ImageView playView = new ImageView(play);
             playButton.setGraphic(playView);
