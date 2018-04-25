@@ -18,6 +18,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +33,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
 import javafx.scene.text.Font;
@@ -69,7 +71,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     private AutoCompleteTextField endingNodeField;
 
     @FXML
-    private Button exchange;
+    private JFXButton exchange;
 
     //Shortcuts for quickpaths
     @FXML
@@ -151,8 +153,13 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     @FXML
     private JFXComboBox<String> gifSelector;
 
-    @FXML
     private JFXTreeView<String> textTree;
+
+    @FXML
+    private JFXButton textBtn;
+
+    @FXML
+    private JFXDrawer treeDrawer;
 
     //Scrolling and zooming functionality
     @FXML
@@ -226,6 +233,13 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
      * @param rb
      */
     public void initialize(URL url, ResourceBundle rb) {
+        textTree = new JFXTreeView<String>();
+        textTree.setVisible(false);
+        textTree.setMouseTransparent(true);
+
+        treeDrawer.close();
+        treeDrawer.setSidePane(textTree);
+
         nodes = getNodes();
 
         //list of nodes from running algorithm
@@ -270,6 +284,7 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         textTree.setVisible(false);
         textTree.setMouseTransparent(true);
+
     }
 
 
@@ -319,10 +334,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     private String gifPath;
     public void initGifSelector(){
         ObservableList options = FXCollections.observableArrayList();
-        options.addAll("Spider-Man", "Puppy", "Zombie", "Nyan Cat");
+        options.addAll("Default", "Spider-Man", "Puppy", "Zombie", "Nyan Cat");
         gifSelector.getItems().addAll(options);
-
-        movingPart = new ImageView(new Image("Gifs/dog.gif"));
+        gifSelector.setStyle("-fx-background-color: #aeaeae;");
 
         gifSelector.getSelectionModel()
                 .selectedIndexProperty()
@@ -331,27 +345,34 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                                  public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                                      switch(newValue.intValue()){
                                          case 0:
-                                             gifPath = "Gifs/spiderman.gif";
+                                             gifPath = "Gifs/circle.png";
                                              break;
                                          case 1:
-                                             gifPath = "Gifs/dog.gif";
+                                             gifPath = "Gifs/spiderman.gif";
                                              break;
                                          case 2:
-                                             gifPath = "Gifs/zombie.gif";
+                                             gifPath = "Gifs/dog.gif";
                                              break;
                                          case 3:
+                                             gifPath = "Gifs/zombie.gif";
+                                             break;
+                                         case 4:
                                              gifPath = "Gifs/nyan.gif";
                                              break;
                                      }
 
                                      movingPart = new ImageView(new Image(gifPath));
                                      movingPart.setPreserveRatio(true);
-                                     movingPart.setFitWidth(130);
+
+                                     if(gifPath.equals("Gifs/circle.png"))
+                                         movingPart.setFitWidth(40);
+                                     else
+                                         movingPart.setFitWidth(100);
 
                                  }
                              }
                 );
-        gifSelector.getSelectionModel().select(1);
+        gifSelector.getSelectionModel().select(0);
     }
 
     private FadeTransition fadeIn = new FadeTransition( Duration.millis(1500));
@@ -2089,6 +2110,14 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     @Override
     public void changedUpdate(DocumentEvent e) {
         updatePath();
+    }
+
+    public void displayTextDrawer(ActionEvent actionEvent) {
+        if (treeDrawer.isHidden()) {
+            treeDrawer.open();
+        } else {
+            treeDrawer.close();
+        }
     }
 }
 

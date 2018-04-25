@@ -6,10 +6,12 @@ import edu.wpi.cs3733d18.teamQ.ui.Controller.ScreenUtil;
 import edu.wpi.cs3733d18.teamQ.ui.User;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.awt.*;
 import java.io.IOException;
@@ -24,6 +26,14 @@ public class Main_ui extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent e) {
+                Platform.exit();
+                System.exit(0);
+                }
+            });
 
         //create user
         User user = User.getUser();
@@ -70,16 +80,6 @@ public class Main_ui extends Application {
      */
     public static void main(String[] args) {
         DatabaseSystem.initializeDb();
-//        Node nodes = getNode("BCONF00102");
-//        System.out.println(nodes);
-//        editNodeType(nodes.get(0), "CHANGED");
-        //ArrayList<Edge> edges= getEdges();
-        //ArrayList<Node> nodes= getNodes();
-//        System.out.println(edges.get(0).getDistance() + edges.get(0).getEdgeID());
-//        System.out.println(nodes.get(0).getNodeID());
-        //exportNodeToCSV();
-        //exportEdgeToCSV();
-
         launch(args);
 
         User user = User.getUser();

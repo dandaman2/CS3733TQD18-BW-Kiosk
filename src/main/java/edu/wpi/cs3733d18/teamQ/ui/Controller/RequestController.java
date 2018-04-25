@@ -5,6 +5,7 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import edu.wpi.cs3733d18.teamOapi.giftShop.GiftShop;
 import edu.wpi.cs3733d18.teamQ.pathfinding.Node;
 import edu.wpi.cs3733d18.teamQ.ui.Email;
+import edu.wpi.cs3733d18.teamQ.ui.Requests.GiftRequest;
 import edu.wpi.cs3733d18.teamQ.ui.Requests.InterpreterRequest;
 import edu.wpi.cs3733d18.teamQ.ui.Requests.Request;
 import edu.wpi.cs3733d18.teamQ.ui.Requests.SanitationRequest;
@@ -109,6 +110,9 @@ public class  RequestController implements Initializable{
     @FXML
     JFXButton giftBtn;
 
+    //info button
+    @FXML
+    JFXButton infoButt;
 
     // description of pending request
     @FXML
@@ -138,6 +142,7 @@ public class  RequestController implements Initializable{
     //Date Picker
     @FXML
     DatePicker calendar;
+
 
     //Stats
     @FXML
@@ -277,6 +282,10 @@ public class  RequestController implements Initializable{
         sanitationDescription.setVisible(false);
         sanitationDescription.setMinHeight(100);
         sanitationDescription.setPromptText("Enter Description ... ");
+
+        infoButt.setOnAction(e -> InfoController.displayEditInfoPage());
+        infoButt.setStyle("-fx-background-radius: 50%; -fx-font-size: 20;");
+        infoButt.setText("?");
     }
 
 
@@ -503,6 +512,7 @@ public class  RequestController implements Initializable{
         int interpreterReqs=0;
         int sanitationReqs=0;
         int emergReqs=0;
+        int giftReqs=0;
         for (Request req:requests) {
             switch (req.getType()) {
                 case "Interpreter":
@@ -514,13 +524,17 @@ public class  RequestController implements Initializable{
                 case "EMERGENCY":
                     emergReqs++;
                     break;
+                case "Gift":
+                    giftReqs++;
+                    break;
             }
         }
         ObservableList<PieChart.Data> pieChartData =
                 FXCollections.observableArrayList(
                         new PieChart.Data("Interpreter", interpreterReqs),
                         new PieChart.Data("Sanitation", sanitationReqs),
-        new PieChart.Data("Emergency", emergReqs));
+                        new PieChart.Data("Emergency", emergReqs),
+                        new PieChart.Data("Gift", giftReqs));
         pieChart.setTitle("Request Breakdown");
         pieChart.setData(pieChartData);
 
@@ -569,6 +583,8 @@ public class  RequestController implements Initializable{
         int fulfilledSanitation=0;
         int pendingEmerg=0;
         int fulfilledEmerg=0;
+        int pendingGift=0;
+        int fulfilledGift=0;
 
         for (Request req:requests) {
             switch (req.getType()) {
@@ -593,6 +609,12 @@ public class  RequestController implements Initializable{
                         pendingEmerg++;
                     }
                     break;
+                case "Gift":
+                    if(req.isFulfilled()==1){
+                        fulfilledGift++;
+                    } else {
+                        pendingGift++;
+                    }
             }
         }
 
@@ -600,15 +622,19 @@ public class  RequestController implements Initializable{
         totalSeries.getData().add(new XYChart.Data("Interpreter", interpreterReqs));
         totalSeries.getData().add(new XYChart.Data("Sanitation", sanitationReqs));
         totalSeries.getData().add(new XYChart.Data("Emergency", emergReqs));
+        totalSeries.getData().add(new XYChart.Data("Gift", giftReqs));
 
         pendingSeries.setName("Pending");
         pendingSeries.getData().add(new XYChart.Data("Interpreter", pendingInterpreter));
         pendingSeries.getData().add(new XYChart.Data("Sanitation", pendingSanitation));
         pendingSeries.getData().add(new XYChart.Data("Emergency", pendingEmerg));
+        pendingSeries.getData().add(new XYChart.Data("Gift", pendingGift));
+
         fulfilledSeries.setName("Fulfilled");
         fulfilledSeries.getData().add(new XYChart.Data("Interpreter", fulfilledInterpreter));
         fulfilledSeries.getData().add(new XYChart.Data("Sanitation", fulfilledSanitation));
         fulfilledSeries.getData().add(new XYChart.Data("Emergency", fulfilledEmerg));
+        fulfilledSeries.getData().add(new XYChart.Data("Gift", fulfilledGift));
 
         //Scene scene  = new Scene(bc,800,600);
         //barChart.getData().addAll(totalSeries, pendingSeries, fulfilledSeries);
@@ -627,6 +653,7 @@ public class  RequestController implements Initializable{
         int interpreterReqs=0;
         int sanitationReqs=0;
         int emergReqs=0;
+        int giftReqs=0;
         for (Request req:requests) {
             switch (req.getType()) {
                 case "Interpreter":
@@ -638,13 +665,17 @@ public class  RequestController implements Initializable{
                 case "EMERGENCY":
                     emergReqs++;
                     break;
+                case "Gift":
+                    giftReqs++;
+                    break;
             }
         }
         ObservableList<PieChart.Data> pieChartData =
                 FXCollections.observableArrayList(
                         new PieChart.Data("Interpreter", interpreterReqs),
                         new PieChart.Data("Sanitation", sanitationReqs),
-        new PieChart.Data("Emergency", emergReqs));
+                        new PieChart.Data("Emergency", emergReqs),
+                        new PieChart.Data("Gift", giftReqs));
         pieChart.setTitle("Request Breakdown");
         pieChart.setData(pieChartData);
 
@@ -694,6 +725,8 @@ public class  RequestController implements Initializable{
         int fulfilledSanitation=0;
         int pendingEmerg=0;
         int fulfilledEmerg=0;
+        int pendingGift=0;
+        int fulfilledGift=0;
 
         for (Request req:requests) {
             switch (req.getType()) {
@@ -718,26 +751,35 @@ public class  RequestController implements Initializable{
                         pendingEmerg++;
                     }
                     break;
+                case "Gift":
+                    if(req.isFulfilled()==1){
+                        fulfilledGift++;
+                    } else{
+                        pendingGift++;
+                    }
             }
         }
 
         totalSeries = new XYChart.Series();
         totalSeries.setName("Total");
-        //totalSeries.getData().add(new XYChart.Data("Interpreter", interpreterReqs));
+        totalSeries.getData().add(new XYChart.Data("Interpreter", interpreterReqs));
         totalSeries.getData().add(new XYChart.Data("Sanitation", sanitationReqs));
-        //totalSeries.getData().add(new XYChart.Data("Emergency", emergReqs));
+        totalSeries.getData().add(new XYChart.Data("Emergency", emergReqs));
+        totalSeries.getData().add(new XYChart.Data("Gift", giftReqs));
 
         pendingSeries = new XYChart.Series();
         pendingSeries.setName("Pending");
         pendingSeries.getData().add(new XYChart.Data("Interpreter", pendingInterpreter));
         pendingSeries.getData().add(new XYChart.Data("Sanitation", pendingSanitation));
         pendingSeries.getData().add(new XYChart.Data("Emergency", pendingEmerg));
+        pendingSeries.getData().add(new XYChart.Data("Gift", pendingGift));
 
         fulfilledSeries = new XYChart.Series();
         fulfilledSeries.setName("Fulfilled");
         fulfilledSeries.getData().add(new XYChart.Data("Interpreter", fulfilledInterpreter));
         fulfilledSeries.getData().add(new XYChart.Data("Sanitation", fulfilledSanitation));
         fulfilledSeries.getData().add(new XYChart.Data("Emergency", fulfilledEmerg));
+        fulfilledSeries.getData().add(new XYChart.Data("Gift", fulfilledGift));
 
         //Scene scene  = new Scene(bc,800,600);
         barChart.getData().addAll(totalSeries, pendingSeries, fulfilledSeries);
@@ -1364,6 +1406,14 @@ public class  RequestController implements Initializable{
     //runAPI
     public void runAPI() {
         GiftShop giftShop = new GiftShop();
+        GiftRequest giftRequest = new GiftRequest("NA","NA",null,null,user.getNode("GELEV00N02").getNameLong());
+        giftRequest.setPriority("Medium");
+        giftRequest.setFulfilled(0);
+        addRequest(giftRequest);
+        pendingListView.setItems(getPendingRequests());
+        final TreeItem<Request> pendingRoot = new RecursiveTreeItem<Request>(getPendingRequests(), RecursiveTreeObject::getChildren);
+        treeTableViewPending.setRoot(pendingRoot);
+        treeTableViewPending.setShowRoot(false);
         giftShop.run(0, 0, 1900, 1000, (String)null, "Path A", (String)null);
     }
 

@@ -135,6 +135,8 @@ public class WelcomeController implements Initializable {
      * @param e Takes an ActionEvent
      */
     public void pathClick(javafx.event.ActionEvent e){
+        User user = User.getUser();
+        user.setPathType(null);
         try {
             FXMLLoader pathfindingload = new FXMLLoader(getClass().getResource("/fxmlFiles/PathfindingScreen.fxml"));
             Parent pathfindingParent = pathfindingload.load();
