@@ -32,6 +32,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
 import javafx.scene.text.Font;
@@ -319,10 +320,9 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
     private String gifPath;
     public void initGifSelector(){
         ObservableList options = FXCollections.observableArrayList();
-        options.addAll("Spider-Man", "Puppy", "Zombie", "Nyan Cat");
+        options.addAll("Default", "Spider-Man", "Puppy", "Zombie", "Nyan Cat");
         gifSelector.getItems().addAll(options);
-
-        movingPart = new ImageView(new Image("Gifs/dog.gif"));
+        gifSelector.setStyle("-fx-background-color: #aeaeae;");
 
         gifSelector.getSelectionModel()
                 .selectedIndexProperty()
@@ -331,27 +331,34 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
                                  public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                                      switch(newValue.intValue()){
                                          case 0:
-                                             gifPath = "Gifs/spiderman.gif";
+                                             gifPath = "Gifs/circle.png";
                                              break;
                                          case 1:
-                                             gifPath = "Gifs/dog.gif";
+                                             gifPath = "Gifs/spiderman.gif";
                                              break;
                                          case 2:
-                                             gifPath = "Gifs/zombie.gif";
+                                             gifPath = "Gifs/dog.gif";
                                              break;
                                          case 3:
+                                             gifPath = "Gifs/zombie.gif";
+                                             break;
+                                         case 4:
                                              gifPath = "Gifs/nyan.gif";
                                              break;
                                      }
 
                                      movingPart = new ImageView(new Image(gifPath));
                                      movingPart.setPreserveRatio(true);
-                                     movingPart.setFitWidth(130);
+
+                                     if(gifPath.equals("Gifs/circle.png"))
+                                         movingPart.setFitWidth(40);
+                                     else
+                                         movingPart.setFitWidth(100);
 
                                  }
                              }
                 );
-        gifSelector.getSelectionModel().select(1);
+        gifSelector.getSelectionModel().select(0);
     }
 
     private FadeTransition fadeIn = new FadeTransition( Duration.millis(1500));
@@ -421,6 +428,30 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
         infoView.setFitHeight(40);
         playButton.setGraphic(playView);
         playButton.setVisible(false);
+        playButton.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!oldValue){
+                    Image pause;
+                    if(runningFromIntelliJ()) {
+                        pause = new Image("/ButtonImages/pause-icon.png");
+                    } else{
+                        pause = new Image("ButtonImages/pause-icon.png");
+                    }
+                    ImageView pauseView = new ImageView(pause);
+                    playButton.setGraphic(pauseView);
+                } else{
+                    Image play;
+                    if(runningFromIntelliJ()) {
+                        play = new Image("/ButtonImages/play-icon.png");
+                    } else{
+                        play = new Image("ButtonImages/play-icon.png");
+                    }
+                    ImageView playView = new ImageView(play);
+                    playButton.setGraphic(playView);
+                }
+            }
+        });
     }
 
     /**
