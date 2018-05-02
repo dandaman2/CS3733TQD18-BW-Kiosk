@@ -3,6 +3,7 @@ package edu.wpi.cs3733d18.teamQ.ui;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class Employee extends RecursiveTreeObject<Employee> {
@@ -13,9 +14,10 @@ public class Employee extends RecursiveTreeObject<Employee> {
     private SimpleStringProperty title;
     private StringProperty isAdmin;
     private String faceID;
+    private String phoneNumber;
 
     //constructor
-    public Employee(String  username, String password, String firstName, String lastName, String title, boolean isAdmin, String faceID) {
+    public Employee(String  username, String password, String firstName, String lastName, String title, boolean isAdmin, String faceID, String phoneNumber) {
 
         this.username = new SimpleStringProperty((String) username);
         this.password = new SimpleStringProperty(BCrypt.hashpw(password, BCrypt.gensalt()));
@@ -29,9 +31,10 @@ public class Employee extends RecursiveTreeObject<Employee> {
             this.isAdmin = new SimpleStringProperty("1");
         }
         this.faceID = faceID;
+        this.phoneNumber = phoneNumber;
     }
 
-    public Employee(String username, String firstName, String lastName, String title, boolean isAdmin, String faceID) {
+    public Employee(String username, String firstName, String lastName, String title, boolean isAdmin, String faceID, String phoneNumber) {
         this.username = new SimpleStringProperty((String) username);
         this.firstName = new SimpleStringProperty(firstName);
         this.lastName = new SimpleStringProperty(lastName);
@@ -43,6 +46,7 @@ public class Employee extends RecursiveTreeObject<Employee> {
             this.isAdmin = new SimpleStringProperty("1");
         }
         this.faceID = faceID;
+        this.phoneNumber = phoneNumber;
     }
 
 
@@ -171,5 +175,17 @@ public class Employee extends RecursiveTreeObject<Employee> {
     public void setFaceID(String faceID) {
         this.faceID = faceID;
 
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public ObservableValue<String> phoneNumberProperty() {
+        return new SimpleStringProperty(phoneNumber);
     }
 }

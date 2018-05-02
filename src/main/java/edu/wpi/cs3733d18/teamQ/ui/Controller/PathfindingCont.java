@@ -801,7 +801,11 @@ public class PathfindingCont extends JPanel implements Initializable, IZoomableC
 
         //HARD CODED INFO
         cameraNode = user.getNode("AINFO001L2");
-        String securityPhone = "5413994557";
+        String securityPhone = user.getSecurityNumber();
+        if(securityPhone==null){
+            System.out.println("No security phone numbers found");
+            return;
+        }
 
         ArrayList<Node> pathExit = g.findShortestPathByType(cameraNode,"EXIT",RestrictedTYPES);
         System.out.println("Path exit size: " + pathExit.size());
