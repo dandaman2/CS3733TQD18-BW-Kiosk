@@ -143,7 +143,8 @@ class database {
                     "LASTNAME VARCHAR(100),\n" +
                     "TITLE VARCHAR(50),\n" +
                     "ISADMIN INT,\n" +
-                    "FACEID VARCHAR(500))";
+                    "FACEID VARCHAR(500),\n" +
+                    "PHONENUMBER VARCHAR(20))";
             String execution5 = "CREATE TABLE ABILITY " +
                     "(USERNAME VARCHAR(100), " +
                     "TYPE INT, " +

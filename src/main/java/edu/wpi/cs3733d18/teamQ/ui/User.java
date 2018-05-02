@@ -589,4 +589,13 @@ public class User {
     public void setGifIndex(int gifIndex) {
         this.gifIndex = gifIndex;
     }
+
+    public String getSecurityNumber(){
+        for (Employee e:employees) {
+            if(e.getTitle().toLowerCase().equals("security")){
+                return e.getPhoneNumber();
+            }
+        }
+        return null;
+    }
 }

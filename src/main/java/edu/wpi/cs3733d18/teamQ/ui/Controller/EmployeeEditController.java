@@ -57,6 +57,8 @@ public class EmployeeEditController implements Initializable {
     JFXTextField firstTF;
     @FXML
     JFXTextField lastTF;
+    @FXML
+    JFXTextField phoneTF;
 
     //dropDowns
     @FXML
@@ -178,11 +180,18 @@ public class EmployeeEditController implements Initializable {
                 return param.getValue().getValue().lastNameProperty();
             }
         });
+        JFXTreeTableColumn<Employee, String> phoneColumn = new JFXTreeTableColumn<>("Phone Number");
+        phoneColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Employee, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Employee, String> param) {
+                return param.getValue().getValue().phoneNumberProperty();
+            }
+        });
 
 
         ObservableList<Employee> allEmployees = FXCollections.observableArrayList(user.getEmployees());
         final TreeItem<Employee> pendingRoot = new RecursiveTreeItem<Employee>(allEmployees, RecursiveTreeObject::getChildren);
-        employeeTTV.getColumns().setAll(levelColumn, usernameColumn, titleColumn, firstColumn, lastColumn);
+        employeeTTV.getColumns().setAll(levelColumn, usernameColumn, titleColumn, firstColumn, lastColumn, phoneColumn);
         employeeTTV.setRoot(pendingRoot);
         employeeTTV.setShowRoot(false);
         employeeTTV.setColumnResizePolicy(TreeTableView.CONSTRAINED_RESIZE_POLICY);
@@ -251,6 +260,7 @@ public class EmployeeEditController implements Initializable {
         titleTF.setText("");
         firstTF.setText("");
         lastTF.setText("");
+        phoneTF.setText("");
         adminCB.getSelectionModel().clearSelection();
     }
 
@@ -263,6 +273,7 @@ public class EmployeeEditController implements Initializable {
         titleTF.setText(employee.getTitle());
         firstTF.setText(employee.getFirstName());
         lastTF.setText(employee.getLastName());
+        phoneTF.setText(employee.getPhoneNumber());
         //passwordTF.setText(employee.getPassword());
         adminCB.setValue(String.valueOf(Integer.parseInt(employee.getIsAdmin())));
     }
@@ -282,6 +293,7 @@ public class EmployeeEditController implements Initializable {
             String title = titleTF.getText();
             String firstName = firstTF.getText();
             String lastName = lastTF.getText();
+            String phoneNumber = phoneTF.getText();
 
             //determines if text fields are blank
             if(uName ==null || uName.isEmpty() || adminCB == null) {
@@ -301,10 +313,10 @@ public class EmployeeEditController implements Initializable {
                 }
 
                 if(level == "1"){
-                    employee = new Employee(uName,pass,firstName,lastName,title,false,"");
+                    employee = new Employee(uName,pass,firstName,lastName,title,false,"",phoneNumber);
                 }
                 else{
-                    employee = new Employee(uName,pass,firstName,lastName,title,true,"");
+                    employee = new Employee(uName,pass,firstName,lastName,title,true,"",phoneNumber);
                 }
 
                 user.addEmployeeSingleton(employee);
@@ -315,6 +327,7 @@ public class EmployeeEditController implements Initializable {
                 employeeTTV.setShowRoot(false);
 
                 resetDefault();
+                return;
 
             }
             if(actionType == "Modify Employee"){
@@ -331,14 +344,14 @@ public class EmployeeEditController implements Initializable {
                     Employee employeeNew;
 
                     if(level == "1"){
-                        employeeNew = new Employee(uName,null,firstName,lastName,title,false,"");
+                        employeeNew = new Employee(uName,null,firstName,lastName,title,false,employee.getFaceID(),phoneNumber);
                     }
                     else{
-                        employeeNew = new Employee(uName,null,firstName,lastName,title,true,"");
+                        employeeNew = new Employee(uName,null,firstName,lastName,title,true,employee.getFaceID(),phoneNumber);
                     }
 
                     if(pass==null||pass.isEmpty()){
-                        System.out.println("Employee Error - no Password");
+                        System.out.println("No password entered, keeping old password");
                         employeeNew.setHashedPassword(employee.getPassword());
                     } else{
                         employeeNew.setPassword(pass);
@@ -350,12 +363,15 @@ public class EmployeeEditController implements Initializable {
 
                     ObservableList<Employee> allEmployees = FXCollections.observableArrayList(user.getEmployees());
                     final TreeItem<Employee> pendingRoot = new RecursiveTreeItem<Employee>(allEmployees, RecursiveTreeObject::getChildren);
-                    if(pendingRoot.getValue() != null) {
+                    /*if(pendingRoot.getValue() != null) {
                         employeeTTV.setRoot(pendingRoot);
                     }
+                    employeeTTV.setShowRoot(false);*/
+                    employeeTTV.setRoot(pendingRoot);
                     employeeTTV.setShowRoot(false);
 
                     resetDefault();
+                    return;
                 }
 
                 System.out.println("No Employee Exists");
@@ -381,6 +397,7 @@ public class EmployeeEditController implements Initializable {
                     employeeTTV.setShowRoot(false);
 
                     resetDefault();
+                    return;
                 }
 
                 System.out.println("No Employee Exists");
